@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>ASPN · S/4HANA Group Reporting Add-in · 3단 브로슈어</title>
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+    <rect width="400" height="400" fill="#0E1828"/>
+    <g transform="translate(80,80)">
+      <rect x="0" y="0" width="80" height="240" fill="#F8F4EA" opacity="0.92"/>
+      <rect x="80" y="0" width="80" height="240" fill="#EBE3D2" opacity="0.92"/>
+      <rect x="160" y="0" width="80" height="240" fill="#9C7C4E" opacity="0.92"/>
+      <text x="120" y="280" text-anchor="middle" font-family="Georgia, serif" font-size="34" font-weight="600" fill="#F8F4EA">ASPN</text>
+      <text x="120" y="306" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" letter-spacing="3" fill="#9C7C4E">BROCHURE</text>
+    </g>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root {
+    --ink:        #0E1828;
+    --ink-2:      #1F2A3C;
+    --ink-soft:   #4A5468;
+    --line:       #C8BFAE;
+    --line-soft:  #E5DDCC;
+    --cream:      #F2EBDD;
+    --cream-2:    #EBE3D2;
+    --paper:      #F8F4EA;
+    --paper-2:    #FBF8F1;
+    --gold:       #9C7C4E;
+    --gold-deep:  #6F5733;
+    --rule:       rgba(14, 24, 40, 0.14);
+
+    --serif:  'Noto Serif KR', 'Iowan Old Style', 'Times New Roman', serif;
+    --sans:   'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono:   'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #2A2520;
+    background-image:
+      radial-gradient(ellipse at 50% 0%, #3a342d 0%, #221e19 60%, #15120F 100%);
+    font-family: var(--sans);
+    color: var(--ink);
+  }
+
+  /* Workspace */
+  .workspace {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 40px 120px;
+    gap: 56px;
+  }
+
+  .deliverable-label {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: #9E9384;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .deliverable-label::before,
+  .deliverable-label::after {
+    content: "";
+    width: 80px;
+    height: 1px;
+    background: #4E463B;
+  }
+
+  /* Brochure spreads */
+  .spread {
+    width: 1680px;
+    height: 1190px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    background: var(--paper);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.04) inset,
+      0 30px 60px -20px rgba(0,0,0,0.55),
+      0 60px 140px -40px rgba(0,0,0,0.6);
+    position: relative;
+    overflow: hidden;
+  }
+  /* Subtle fold lines */
+  .spread::before,
+  .spread::after {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: rgba(14, 24, 40, 0.06);
+    pointer-events: none;
+    z-index: 5;
+  }
+  .spread::before { left: 33.333%; box-shadow: -8px 0 24px -16px rgba(0,0,0,0.08), 8px 0 24px -16px rgba(0,0,0,0.08); }
+  .spread::after  { left: 66.666%; box-shadow: -8px 0 24px -16px rgba(0,0,0,0.08), 8px 0 24px -16px rgba(0,0,0,0.08); }
+
+  .panel {
+    position: relative;
+    padding: 64px 56px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Tiny corner marker text on every panel */
+  .corner-tag {
+    position: absolute;
+    top: 32px; left: 56px; right: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .corner-tag > span { white-space: nowrap; }
+  .corner-tag .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold);
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: 1px;
+  }
+  .corner-tag .panel-no {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--gold-deep);
+    letter-spacing: 0.04em;
+    text-transform: none;
+    font-size: 14px;
+  }
+
+  /* =================================================================
+     OUTSIDE — back-flap | back-cover | front-cover
+     The brochure folds C-fold: when held closed the FRONT COVER is
+     panel 3 (rightmost on outside). Panel 1 is the inside-flap.
+     ================================================================= */
+
+  /* FRONT COVER (right panel of outside) */
+  .panel-front {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0;
+  }
+  .pf-frame {
+    position: absolute;
+    inset: 36px;
+    border: 1px solid rgba(255,255,255,0.10);
+    pointer-events: none;
+  }
+  .pf-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    padding: 84px 76px;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+  }
+  .pf-mark {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: 0.42em;
+    color: var(--paper);
+  }
+  .pf-mark .ampersand { color: var(--gold); font-style: italic; letter-spacing: 0; font-weight: 400; }
+
+  /* Logo treatments — preserve PNG alpha, recolor with filters only */
+  .logo-light {
+    /* For dark backgrounds — tint logo to warm cream */
+    filter: brightness(0) invert(1) sepia(0.18) saturate(0.6) brightness(0.98);
+    -webkit-filter: brightness(0) invert(1) sepia(0.18) saturate(0.6) brightness(0.98);
+  }
+  .logo-ink {
+    /* For light cream backgrounds — tint logo to deep navy ink */
+    filter: brightness(0) saturate(100%) invert(8%) sepia(35%) saturate(1800%) hue-rotate(195deg) brightness(0.85) contrast(1.1);
+    -webkit-filter: brightness(0) saturate(100%) invert(8%) sepia(35%) saturate(1800%) hue-rotate(195deg) brightness(0.85) contrast(1.1);
+  }
+  .pf-logo {
+    display: block;
+    height: 56px;
+    width: auto;
+  }
+  .pb-logo {
+    display: block;
+    height: 30px;
+    width: auto;
+    margin-bottom: 14px;
+  }
+  .pf-tagline {
+    margin-top: 14px;
+    font-size: 11px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: #8A92A1;
+    font-weight: 500;
+  }
+
+  .pf-mid {
+    margin-top: auto;
+    margin-bottom: 56px;
+  }
+  .pf-eyebrow {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 22px;
+    color: var(--gold);
+    margin-bottom: 28px;
+    letter-spacing: 0.02em;
+  }
+  .pf-title {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 64px;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    color: var(--paper);
+    margin: 0;
+  }
+  .pf-title .em { color: var(--gold); font-style: italic; font-weight: 500; }
+  .pf-sub {
+    margin-top: 36px;
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    color: #C5CBD6;
+    font-weight: 400;
+    max-width: 380px;
+  }
+
+  .pf-foot {
+    margin-top: 28px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.14);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .pf-foot .label { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #9098A6; font-weight: 500; line-height: 1.5; }
+  .pf-foot .value { font-family: var(--serif); font-size: 15px; color: var(--paper); margin-top: 6px; letter-spacing: 0.02em; }
+  .pf-foot .right { text-align: right; }
+  .pf-foot .vline {
+    width: 1px; height: 44px; background: rgba(255,255,255,0.16);
+  }
+
+  /* Decorative back-of-cover grid pattern */
+  .pf-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+  .pf-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    right: -200px; bottom: -200px;
+    background: radial-gradient(circle at center, rgba(156, 124, 78, 0.18) 0%, rgba(156, 124, 78, 0) 65%);
+    pointer-events: none;
+  }
+
+  /* BACK COVER (center panel of outside) */
+  .panel-back {
+    background: var(--paper);
+    border-left: 1px solid var(--line-soft);
+    border-right: 1px solid var(--line-soft);
+  }
+  .pb-section {
+    margin-bottom: 36px;
+  }
+  .pb-label {
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .pb-h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 26px;
+    color: var(--ink);
+    margin: 0 0 16px 0;
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+  }
+  .pb-body {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--ink-2);
+  }
+
+  .pb-stats {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .pb-stat {
+    padding: 22px 0;
+  }
+  .pb-stat + .pb-stat { border-left: 1px solid var(--rule); padding-left: 22px; }
+  .pb-stat-num {
+    font-family: var(--serif);
+    font-size: 40px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .pb-stat-num .unit { font-size: 18px; color: var(--gold-deep); font-style: italic; font-weight: 400; margin-left: 2px; }
+  .pb-stat-label {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+  }
+
+  .pb-cta {
+    margin-top: auto;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+  }
+  .pb-cta-eyebrow {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--gold-deep);
+    margin-bottom: 10px;
+  }
+  .pb-cta-title {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--ink);
+    line-height: 1.3;
+    margin: 0 0 18px 0;
+  }
+  .pb-contact {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 22px;
+    row-gap: 8px;
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .pb-contact dt { font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold-deep); font-weight: 600; padding-top: 3px; }
+  .pb-contact dd { margin: 0; font-family: var(--serif); font-size: 14px; color: var(--ink); letter-spacing: 0.01em; }
+
+  /* INSIDE FLAP (left panel of outside — folds into the inside) */
+  .panel-flap {
+    background: var(--cream);
+    color: var(--ink);
+  }
+  .panel-flap::before {
+    /* slightly darker edge where it folds in */
+    content: "";
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 24px;
+    background: linear-gradient(to right, rgba(14,24,40,0) 0%, rgba(14,24,40,0.05) 100%);
+    pointer-events: none;
+  }
+  .flap-label {
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .flap-h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 1.22;
+    color: var(--ink);
+    margin: 0 0 24px 0;
+    letter-spacing: -0.01em;
+  }
+  .flap-h1 .quiet { color: var(--ink-soft); font-weight: 400; }
+  .flap-lede {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--ink-2);
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .flap-sub {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--gold-deep);
+    margin-bottom: 16px;
+  }
+
+  .flap-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .flap-list li {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 4px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--ink-2);
+  }
+  .flap-list li:last-child { border-bottom: 0; }
+  .flap-num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--gold);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .flap-li-title {
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 14.5px;
+    display: block;
+    margin-bottom: 4px;
+    letter-spacing: -0.005em;
+  }
+
+  .flap-foot {
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* =================================================================
+     INSIDE — Module 01 | Module 02 | Module 03
+     ================================================================= */
+
+  .panel-mod {
+    background: var(--paper);
+    padding: 0;
+  }
+  .panel-mod + .panel-mod { border-left: 1px solid var(--line-soft); }
+
+  .mod-inner {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-rows: 380px 1fr;
+  }
+
+  .mod-image {
+    position: relative;
+    overflow: hidden;
+    background: #2A3346;
+  }
+  .mod-image .photo {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: grayscale(0.15) contrast(1.05) brightness(0.85);
+  }
+  .mod-image .vignette {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(14, 24, 40, 0.20) 0%,
+      rgba(14, 24, 40, 0.35) 55%,
+      rgba(14, 24, 40, 0.90) 100%
+    );
+  }
+  .mod-image .header {
+    position: absolute;
+    top: 36px; left: 56px; right: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    color: rgba(255,255,255,0.75);
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .mod-image .header .num {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    color: rgba(255,255,255,0.85);
+  }
+  .mod-image .legend {
+    position: absolute;
+    left: 56px;
+    right: 56px;
+    bottom: 28px;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 9px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    font-family: var(--mono);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+  }
+  .mod-image .legend::before {
+    content: "";
+    width: 18px; height: 1px;
+    background: rgba(255,255,255,0.45);
+  }
+
+  .mod-content {
+    padding: 48px 56px 64px;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    position: relative;
+  }
+  .mod-eyebrow {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    color: var(--gold-deep);
+    margin-bottom: 14px;
+    letter-spacing: 0.02em;
+  }
+  .mod-title {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.22;
+    color: var(--ink);
+    margin: 0 0 18px 0;
+    letter-spacing: -0.01em;
+  }
+  .mod-lede {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--ink-2);
+    margin-bottom: 28px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .mod-section {
+    margin-bottom: 22px;
+  }
+  .mod-section-label {
+    font-size: 9.5px;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .mod-bullets {
+    list-style: none;
+    padding: 0; margin: 0;
+  }
+  .mod-bullets li {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    gap: 10px;
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--ink-2);
+    padding: 7px 0;
+  }
+  .mod-bullets li::before {
+    content: "—";
+    color: var(--gold);
+    font-weight: 500;
+  }
+  .mod-bullets li b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .mod-kpi {
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .mod-kpi .kpi-figure {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .mod-kpi .kpi-figure .u {
+    font-size: 18px;
+    color: var(--gold-deep);
+    font-style: italic;
+    margin-left: 2px;
+    font-weight: 400;
+  }
+  .mod-kpi .kpi-label {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* Hand-curated image sources via Unsplash — fall back to gradient */
+  .img-mod1 .photo {
+    background-image:
+      linear-gradient(135deg, rgba(20,32,56,0.55), rgba(40,55,90,0.35)),
+      url('assets/module-01.jpg');
+  }
+  .img-mod2 .photo {
+    background-image:
+      linear-gradient(135deg, rgba(28,24,18,0.45), rgba(60,48,32,0.35)),
+      url('assets/module-02.jpg');
+  }
+  .img-mod3 .photo {
+    background-image:
+      linear-gradient(135deg, rgba(18,28,42,0.50), rgba(40,55,80,0.35)),
+      url('assets/module-03.jpg');
+  }
+
+  /* Optional: print sizing */
+  @media print {
+    body { background: white; }
+    .workspace { padding: 0; gap: 0; }
+    .deliverable-label { display: none; }
+    .spread {
+      box-shadow: none;
+      page-break-after: always;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="workspace">
+
+  <div class="deliverable-label">ASPN · Trifold Brochure · Outside</div>
+
+  <!-- ==================== OUTSIDE SPREAD ==================== -->
+  <section class="spread spread-outside" data-screen-label="01 Outside Spread">
+
+    <!-- LEFT: Inside Flap (folds in) -->
+    <article class="panel panel-flap" data-screen-label="01a Inside Flap">
+      <div class="corner-tag">
+        <span><span class="dot"></span>ASPN · Group Reporting</span>
+        <span class="panel-no">i. 진단</span>
+      </div>
+
+      <div style="margin-top: 60px;">
+        <div class="flap-label">현황 진단 · Status Quo</div>
+        <h2 class="flap-h1">
+          연결 숫자는 SAP에서<br />
+          나오는데, <span class="quiet">왜 주석은<br />아직도 엑셀입니까.</span>
+        </h2>
+        <p class="flap-lede">
+          S/4HANA Group Reporting은 표준 연결결산 엔진을 제공하지만,
+          국내 결산 실무의 '라스트 마일'은 여전히 엑셀과 이메일에 의존하고 있습니다.
+          ASPN Add-in은 그 마지막 공백을 정밀하게 채웁니다.
+        </p>
+      </div>
+
+      <div class="flap-sub">3가지 구조적 병목</div>
+      <ol class="flap-list">
+        <li>
+          <span class="flap-num">01</span>
+          <div>
+            <span class="flap-li-title">Non-SAP 법인 수취</span>
+            법인별 엑셀 양식·이메일 첨부 → 수동 변환·검증에 수십 시간 소요
+          </div>
+        </li>
+        <li>
+          <span class="flap-num">02</span>
+          <div>
+            <span class="flap-li-title">상각자산 미실현손익</span>
+            수동 대장으로 매기 추적 → 처분 시까지 누적되는 계산 오류 리스크
+          </div>
+        </li>
+        <li>
+          <span class="flap-num">03</span>
+          <div>
+            <span class="flap-li-title">연결주석 통합 관리</span>
+            법인별 주석 이메일 취합 → 양식·버전 통제 불가, 마감 직전 야근
+          </div>
+        </li>
+      </ol>
+
+      <div class="flap-foot" style="white-space: nowrap; letter-spacing: 0.18em; font-size: 10px; display: block; padding-top: 22px; overflow: hidden;">
+        <span style="float: right;">02</span>
+        <span>CLEAN CORE&nbsp;·&nbsp;RAP</span>
+      </div>
+    </article>
+
+    <!-- CENTER: Back Cover -->
+    <article class="panel panel-back" data-screen-label="01b Back Cover">
+      <div class="corner-tag">
+        <span><span class="dot"></span>왜 ASPN 인가</span>
+        <span class="panel-no">ii. 신뢰</span>
+      </div>
+
+      <div style="margin-top: 60px;">
+        <div class="pb-label">선택의 근거 · Why ASPN</div>
+        <h2 class="pb-h2">
+          국내 유일의 GR Add-in 상용 공급사,<br />
+          즉시 도입·검증 가능한<br />
+          단 하나의 선택지.
+        </h2>
+        <p class="pb-body">
+          SAP Korea Gold Partner로서 SAP Korea와 공동 영업·세미나 협력 체계를 운영합니다.
+          RAP 기반 독립 확장 레이어로 SAP 코어는 손대지 않으며, 향후 업그레이드에도 완전히 안전합니다.
+        </p>
+      </div>
+
+      <div class="pb-stats">
+        <div class="pb-stat">
+          <div class="pb-stat-num">100<span class="unit">%</span></div>
+          <div class="pb-stat-label">Clean Core 준수<br/>RAP 독립 확장 레이어</div>
+        </div>
+        <div class="pb-stat">
+          <div class="pb-stat-num">3<span class="unit">개</span></div>
+          <div class="pb-stat-label">독립 배포 모듈<br/>파일럿 → 단계 확장</div>
+        </div>
+      </div>
+
+      <div class="pb-section" style="margin-top: 32px;">
+        <div class="pb-label">실무 적합성</div>
+        <p class="pb-body" style="margin: 0;">
+          K-IFRS, DART 공시, 상각자산 추적 등 국내 연결결산 실무에
+          최적화된 국내 유일의 상용 솔루션. 표준 GR이 닿지 않는 영역까지,
+          감사 추적과 함께 자동화합니다.
+        </p>
+      </div>
+
+      <div class="pb-cta">
+        <div class="pb-cta-eyebrow">Next Step</div>
+        <h3 class="pb-cta-title">
+          30분 시연 미팅으로<br/>실제 GR 데이터 기반 작동을 확인하세요.
+        </h3>
+        <img src="assets/aspn-logo.png" alt="ASPN" class="pb-logo logo-ink" />
+        <dl class="pb-contact">
+          <dt>Web</dt>      <dd>www.aspn.co.kr</dd>
+          <dt>Email</dt>    <dd>aspn_support@aspnc.com</dd>
+          <dt>Company</dt>  <dd>주식회사 에이에스피엔 · ASPN Inc.</dd>
+        </dl>
+      </div>
+    </article>
+
+    <!-- RIGHT: Front Cover -->
+    <article class="panel panel-front" data-screen-label="01c Front Cover">
+      <div class="pf-grid-bg"></div>
+      <div class="pf-glow"></div>
+      <div class="pf-frame"></div>
+
+      <div class="pf-inner">
+        <div>
+          <img src="assets/aspn-logo.png" alt="ASPN · 주식회사 에이에스피엔" class="pf-logo logo-light" />
+          <div class="pf-tagline" style="margin-top: 22px;">SAP Korea Gold Partner</div>
+        </div>
+
+        <div class="pf-mid">
+          <div class="pf-eyebrow">SAP S/4HANA Group Reporting</div>
+          <h1 class="pf-title">
+            연결결산의<br/>
+            <span class="em">라스트 마일</span>을<br/>
+            자동화하다.
+          </h1>
+          <p class="pf-sub">
+            Clean Core 위에 정밀하게 얹은 세 개의 Add-in 모듈이,
+            S/4HANA 표준만으로 닿지 않던 결산의 마지막 공백을 채웁니다.
+          </p>
+        </div>
+
+        <div class="pf-foot">
+          <div>
+            <div class="label">Edition</div>
+            <div class="value">Sales Briefing · 2026</div>
+          </div>
+          <div class="vline"></div>
+          <div class="right">
+            <div class="label">Solution Brief</div>
+            <div class="value">Add-in for Group Reporting</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+
+  <div class="deliverable-label">ASPN · Trifold Brochure · Inside</div>
+
+  <!-- ==================== INSIDE SPREAD ==================== -->
+  <section class="spread spread-inside" data-screen-label="02 Inside Spread">
+
+    <!-- MODULE 01 -->
+    <article class="panel panel-mod" data-screen-label="02a Module 01">
+      <div class="mod-inner">
+        <div class="mod-image img-mod1">
+          <div class="photo" role="img" aria-label="Financial data analytics on screen"></div>
+          <div class="vignette"></div>
+          <div class="header">
+            <span>Module · 01</span>
+            <span class="num">i / iii</span>
+          </div>
+          <div class="legend">Non-SAP Entities · Auto Ingest</div>
+        </div>
+        <div class="mod-content">
+          <div class="mod-eyebrow">Module 01</div>
+          <h2 class="mod-title">Non-SAP 법인<br/>재무제표 자동 수취</h2>
+          <p class="mod-lede">
+            법인마다 다른 엑셀 양식과 이메일 첨부에 의존하던 수취 프로세스를,
+            표준 입력 포털과 자동 검증으로 일원화합니다. 계정 매핑은 CoA 규칙으로
+            자동 처리되며, 모든 제출 이력은 감사 추적과 함께 보존됩니다.
+          </p>
+
+          <div class="mod-section">
+            <div class="mod-section-label">Capabilities</div>
+            <ul class="mod-bullets">
+              <li><span><b>표준 입력 포털</b> · 웹·엑셀 양방향 수취</span></li>
+              <li><span><b>자동 검증</b> · 대차 일치·필수 항목 자동 점검</span></li>
+              <li><span><b>계정 자동 매핑</b> · CoA 변환 규칙 기반</span></li>
+              <li><span><b>GR 자동 전송</b> · 제출자·버전·이력 완전 보존</span></li>
+            </ul>
+          </div>
+
+          <div class="mod-kpi">
+            <div class="kpi-figure">80<span class="u">%+</span></div>
+            <div class="kpi-label" style="white-space: nowrap;">수취·검증 공수 절감<br/>오류율 감소</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- MODULE 02 -->
+    <article class="panel panel-mod" data-screen-label="02b Module 02">
+      <div class="mod-inner">
+        <div class="mod-image img-mod2">
+          <div class="photo" role="img" aria-label="Architectural infrastructure representing depreciable assets"></div>
+          <div class="vignette"></div>
+          <div class="header">
+            <span>Module · 02</span>
+            <span class="num">ii / iii</span>
+          </div>
+          <div class="legend">Depreciable Assets · Auto Eliminate</div>
+        </div>
+        <div class="mod-content">
+          <div class="mod-eyebrow">Module 02</div>
+          <h2 class="mod-title">상각자산<br/>미실현손익 자동화</h2>
+          <p class="mod-lede">
+            취득가액·감가상각률·내부이익률을 기반으로 매기 소거액을 자동 산출하며,
+            자산이 처분될 때까지 다년간 추적합니다. 한 번 등록하면 이후 매기 자동 처리되어,
+            수백 건 자산에도 추가 공수가 발생하지 않습니다.
+          </p>
+
+          <div class="mod-section">
+            <div class="mod-section-label">Capabilities</div>
+            <ul class="mod-bullets">
+              <li><span><b>자동 산출</b> · 연간 소거액 자동 계산</span></li>
+              <li><span><b>다년도 추적</b> · 처분 시까지 매기 자동 소거</span></li>
+              <li><span><b>처분 처리</b> · 잔여 미실현손익 자동 최종 인식</span></li>
+              <li><span><b>감사 트레일</b> · 원천 거래 → 분개까지 완전 추적</span></li>
+            </ul>
+          </div>
+
+          <div class="mod-kpi">
+            <div class="kpi-figure">≈ 0<span class="u">건</span></div>
+            <div class="kpi-label" style="white-space: nowrap;">계산 오류 목표<br/>감사 트레일 자동화</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- MODULE 03 -->
+    <article class="panel panel-mod" data-screen-label="02c Module 03">
+      <div class="mod-inner">
+        <div class="mod-image img-mod3">
+          <div class="photo" role="img" aria-label="Bound consolidated reports and disclosure documents"></div>
+          <div class="vignette"></div>
+          <div class="header">
+            <span>Module · 03</span>
+            <span class="num">iii / iii</span>
+          </div>
+          <div class="legend">Consolidation Notes · Unified Hub</div>
+        </div>
+        <div class="mod-content">
+          <div class="mod-eyebrow">Module 03</div>
+          <h2 class="mod-title">연결주석<br/>통합 관리</h2>
+          <p class="mod-lede">
+            법인별 주석 데이터를 단일 허브로 자동 집계하고, 내부거래 주석은
+            자동 상계됩니다. 표준 양식을 한 번 설정해 두면 매기 자동 집계되며,
+            K-IFRS 공시 초안을 즉시 출력할 수 있습니다.
+          </p>
+
+          <div class="mod-section">
+            <div class="mod-section-label">Capabilities</div>
+            <ul class="mod-bullets">
+              <li><span><b>표준 양식 수취</b> · 법인별 자동 집계</span></li>
+              <li><span><b>자동 상계</b> · 내부거래 주석 자동 처리</span></li>
+              <li><span><b>승인 워크플로우</b> · 수정 이력·승인 자동 기록</span></li>
+              <li><span><b>K-IFRS 공시 초안</b> · DART 최적화 Excel 출력</span></li>
+            </ul>
+          </div>
+
+          <div class="mod-kpi">
+            <div class="kpi-figure">T+2<span class="u">~3</span></div>
+            <div class="kpi-label" style="white-space: nowrap;">전체 결산 기간<br/>30~40% 단축</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <div class="deliverable-label">3개 모듈은 독립 배포 가능 · 우선순위에 따라 순차 적용</div>
+
+</div>
+</body>
+</html>
