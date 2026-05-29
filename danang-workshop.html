@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>다낭 워크샵 인포메이션</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #F5EFE4;
+    --ocean: #1A5F7A;
+    --ocean-light: #2980A0;
+    --coral: #C9634A;
+    --text: #2C2C2C;
+    --text-muted: #7A7A7A;
+    --white: #FFFFFF;
+    --divider: #DDD5C8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--sand);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 300;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 52px;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .header-eyebrow {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ocean);
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  .header-title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .header-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  .header-line {
+    width: 40px;
+    height: 2px;
+    background: var(--ocean);
+    margin: 20px auto 0;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 36px;
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .section:nth-child(2) { animation-delay: 0.08s; }
+  .section:nth-child(3) { animation-delay: 0.16s; }
+  .section:nth-child(4) { animation-delay: 0.24s; }
+  .section:nth-child(5) { animation-delay: 0.32s; }
+  .section:nth-child(6) { animation-delay: 0.40s; }
+  .section:nth-child(7) { animation-delay: 0.48s; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 24px 14px;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .section-icon {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ocean);
+  }
+
+  .section-body {
+    padding: 20px 24px;
+  }
+
+  /* Bullet list */
+  .info-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .info-list li {
+    font-size: 14px;
+    padding-left: 16px;
+    position: relative;
+    color: var(--text);
+  }
+
+  .info-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--ocean-light);
+  }
+
+  /* Place cards */
+  .place-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .place-card {
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .place-card.bad {
+    border-color: #E8D5CF;
+    background: #FDF8F7;
+  }
+
+  .place-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .badge-go {
+    background: #E8F4F8;
+    color: var(--ocean);
+  }
+
+  .badge-caution {
+    background: #FDF0EC;
+    color: var(--coral);
+  }
+
+  .badge-pass {
+    background: #F0F0F0;
+    color: #888;
+  }
+
+  .place-name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 3px;
+    color: var(--text);
+  }
+
+  .place-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* Food cards */
+  .food-card {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .food-card:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .food-card:first-child {
+    padding-top: 0;
+  }
+
+  .food-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .michelin-tag {
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--ocean);
+    color: white;
+    padding: 2px 7px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+
+  .food-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* Footer note */
+  .footer-note {
+    text-align: center;
+    margin-top: 44px;
+    animation: fadeUp 0.7s 0.5s ease both;
+  }
+
+  .footer-note p {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .footer-note .emoji {
+    font-size: 22px;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  /* Appendix divider */
+  .appendix-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 56px 0 40px;
+    animation: fadeUp 0.7s 0.55s ease both;
+  }
+
+  .appendix-divider::before,
+  .appendix-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--divider);
+  }
+
+  .appendix-label {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+  }
+
+  /* Essay */
+  .essay {
+    animation: fadeUp 0.7s 0.62s ease both;
+  }
+
+  .essay-header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .essay-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .essay-title-ko {
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  .essay-body {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 36px 32px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .essay-para {
+    font-size: 14.5px;
+    line-height: 2;
+    color: var(--text);
+    margin-bottom: 24px;
+    word-break: keep-all;
+  }
+
+  .essay-para:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .essay-closing {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--divider);
+    text-align: center;
+  }
+
+  .essay-closing-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* Animation */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-eyebrow">Da Nang Workshop</div>
+    <div class="header-title">다낭 워크샵 인포메이션</div>
+    <div class="header-sub">팀원 공유용 가이드</div>
+    <div class="header-line"></div>
+  </div>
+
+  <!-- 이동 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">✈️</span>
+      <span class="section-title">이동</span>
+    </div>
+    <div class="section-body">
+      <ul class="info-list">
+        <li>파라타 항공 좌석 간격이 넓어 장거리 비행에도 편안합니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 숙소 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🏨</span>
+      <span class="section-title">숙소 · 미케비치</span>
+    </div>
+    <div class="section-body">
+      <ul class="info-list">
+        <li>해변 바로 앞 위치, 바다 뷰 및 접근성 우수</li>
+        <li>수영장 퀄리티 좋음</li>
+        <li>조식은 무난한 수준 / 쌀국수는 해장용으로 강력 추천</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 관광지 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🗺️</span>
+      <span class="section-title">관광지</span>
+    </div>
+    <div class="section-body">
+      <div class="place-list">
+
+        <div class="place-card">
+          <span class="place-badge badge-go">추천</span>
+          <div>
+            <div class="place-name">바나힐</div>
+            <div class="place-desc">골든 브릿지 포토존은 괜찮으나 현재 공사 중으로 볼거리 제한적. 사진 목적으로만 방문 권장.</div>
+          </div>
+        </div>
+
+        <div class="place-card">
+          <span class="place-badge badge-go">야경 추천</span>
+          <div>
+            <div class="place-name">호이안</div>
+            <div class="place-desc">낮에는 더위로 활동 거의 불가. 해진 후 야경 보러 가는 것을 강력 추천.</div>
+          </div>
+        </div>
+
+        <div class="place-card">
+          <span class="place-badge badge-caution">더위 각오</span>
+          <div>
+            <div class="place-name">핑크성당 등 시내 투어</div>
+            <div class="place-desc">강한 더위 각오 필요. 콩카페 등 카페에서 중간중간 휴식하며 이동 권장.</div>
+          </div>
+        </div>
+
+        <div class="place-card bad">
+          <span class="place-badge badge-pass">비추</span>
+          <div>
+            <div class="place-name">한 시장</div>
+            <div class="place-desc">고온·혼잡으로 비추. 쾌적한 롯데마트 이용 권장.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 식사 & 음료 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">🍽️</span>
+      <span class="section-title">식사 &amp; 음료</span>
+    </div>
+    <div class="section-body">
+
+      <div class="food-card">
+        <div class="food-name">
+          마담란 레스토랑
+          <span class="michelin-tag">MICHELIN</span>
+        </div>
+        <div class="food-desc">미슐랭 셀렉티드 선정. 10만원대로 웨이팅 없이 미슐랭 경험 가능. 강력 추천.</div>
+      </div>
+
+      <div class="food-card">
+        <div class="food-name">루프탑 바</div>
+        <div class="food-desc">대부분 호텔에 운영 중. 밤바람이 시원하니 칵테일 한 잔 추천.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 마사지 -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-icon">💆</span>
+      <span class="section-title">마사지</span>
+    </div>
+    <div class="section-body">
+      <ul class="info-list">
+        <li>개인 취향 영역. 어디서 받으셔도 무방합니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-note">
+    <span class="emoji">🌴</span>
+    <p>다들 이번 워크샵에서 충분히 재충전하고 오세요!</p>
+  </div>
+
+  <!-- Appendix Divider -->
+  <div class="appendix-divider">
+    <span class="appendix-label">Appendix · 수필</span>
+  </div>
+
+  <!-- Essay -->
+  <div class="essay">
+    <div class="essay-header">
+      <div class="essay-title">다낭, 어느 며칠</div>
+    </div>
+    <div class="essay-body">
+      <p class="essay-para">커튼 너머로 파란 하늘과 해변이 보인다. 마지막 아침이다.</p>
+      <p class="essay-para">뜨거운 것들이 유리창 밖에서 이미 시작되고 있지만, 나는 아직 차가운 공기 속에 누워 있다. 에어컨이 낮게 돌아가고, 유튜브에서는 AI가 만들어낸 80년대 사랑 노래가 흐른다. 존재한 적 없는 감정들이 존재했던 것처럼 울린다. 바깥은 저렇게 눈부시고, 여기는 이렇게 조용하다.</p>
+      <p class="essay-para">며칠 전의 일들이 천천히 떠오른다.</p>
+      <p class="essay-para">미슐랭 셀렉티드의 저녁이 있었다. 접시 위에 정성껏 놓인 것들을 먹으며, 이 도시가 그냥 휴양지가 아니라는 걸 조금 알게 됐다. 루프탑 바에서는 시그니처 칵테일을 손에 쥐고 다낭의 밤을 내려다봤다. 불빛들이 멀리까지 펼쳐져 있었고, 바람은 적당히 불었고, 딱히 대단한 말은 오가지 않았지만 그게 좋았다.</p>
+      <p class="essay-para">그 사이 어딘가에, 뜨거운 한낮에 차가운 방 안에 누워 아무것도 하지 않던 시간이 있었다. 어쩌면 그 시간이 이 여정에서 가장 솔직한 순간이었을지도 모른다.</p>
+      <p class="essay-para">오늘 밤 비행기를 타면 끝난다. 일상이 기다리고 있다. 다시 해야 할 일들, 다시 쓸 언어들, 다시 맞춰야 할 템포.</p>
+      <p class="essay-para">짐을 싸면서 생각한다. 특별히 대단한 깨달음 같은 건 없다. 다만 잠깐, 뜨거운 바깥과 차가운 방 사이에서, 없었던 감정들의 노래를 들으며 가만히 누워 있을 수 있었다. 그것으로 충분한 며칠이었다.</p>
+      <div class="essay-closing">
+        <span class="essay-closing-text">커튼 너머 하늘은 오늘도 파랗다.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
