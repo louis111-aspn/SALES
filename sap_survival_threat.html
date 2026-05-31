@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP 생존 위협 분석 2026 — 컨설턴트 인사이트 브리핑</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #003366;
+    --navy-mid: #004488;
+    --navy-light: #E8EFF7;
+    --text: #1A1A2E;
+    --text-mid: #444466;
+    --text-light: #777799;
+    --white: #FFFFFF;
+    --gray-bg: #F4F6FA;
+    --border: #D0D8E8;
+    --green: #1A6B3C;
+    --green-bg: #EAF5EE;
+    --orange: #8B4B0A;
+    --orange-bg: #FDF2E6;
+    --red: #7B1D1D;
+    --red-bg: #FDF0F0;
+    --rule: 1px solid var(--border);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* ── HEADER ── */
+  .report-header {
+    background: var(--red);
+    color: var(--white);
+    padding: 56px 0 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .report-header::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 320px; height: 100%;
+    background: rgba(255,255,255,0.03);
+    clip-path: polygon(40% 0, 100% 0, 100% 100%, 0% 100%);
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 40px; }
+
+  .report-meta { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tag {
+    font-family: 'JetBrains Mono', 'Noto Sans KR', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.7);
+  }
+
+  .report-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 38px;
+    font-weight: 400;
+    line-height: 1.25;
+    margin-bottom: 16px;
+    color: var(--white);
+  }
+  .report-title span { opacity: 0.5; }
+  .report-subtitle { color: rgba(255,255,255,0.65); font-size: 15px; max-width: 620px; }
+
+  .header-stats {
+    display: flex;
+    gap: 0;
+    margin-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 32px;
+  }
+  .hstat {
+    flex: 1;
+    padding-right: 32px;
+    border-right: 1px solid rgba(255,255,255,0.12);
+    margin-right: 32px;
+  }
+  .hstat:last-child { border-right: none; margin-right: 0; }
+  .hstat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .hstat-label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ── SECTIONS ── */
+  .section { padding: 52px 0; border-bottom: var(--rule); }
+  .section:last-child { border-bottom: none; }
+
+  .section-eyebrow {
+    font-family: 'JetBrains Mono', 'Noto Sans KR', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .section-eyebrow.red { color: var(--red); }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 32px;
+  }
+
+  /* Action Title Banner */
+  .action-title-banner {
+    background: var(--navy);
+    color: var(--white);
+    padding: 18px 28px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 28px;
+    border-left: 4px solid #6699CC;
+  }
+  .action-title-banner::before {
+    content: 'Action Title';
+    display: block;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.5;
+    margin-bottom: 6px;
+    font-family: 'JetBrains Mono', 'Noto Sans KR', monospace;
+  }
+  .action-title-banner.red-banner {
+    background: var(--red);
+    border-left-color: rgba(255,255,255,0.4);
+  }
+
+  /* ── THREAT SCORE (신뢰도 패널 리믹스) ── */
+  .threat-overall {
+    background: var(--red-bg);
+    border: 1px solid #e8b4b4;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 32px;
+  }
+  .threat-score-big {
+    font-family: 'DM Serif Display', serif;
+    font-size: 72px;
+    color: var(--red);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .threat-score-label { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+  .threat-verdict { flex: 1; }
+  .threat-verdict-title { font-size: 18px; font-weight: 700; color: var(--red); margin-bottom: 8px; }
+  .threat-verdict-body { font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+
+  .score-bar-wrap { margin-top: 16px; }
+  .score-bar-track { height: 6px; background: var(--border); position: relative; }
+  .score-bar-fill { height: 100%; background: var(--red); }
+
+  /* ── CRED GRID (재활용 — 위협 항목) ── */
+  .cred-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .cred-item {
+    border: var(--rule);
+    padding: 20px 22px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .cred-badge {
+    width: 28px; height: 28px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+  .badge-critical { background: var(--red-bg); color: var(--red); }
+  .badge-high     { background: var(--orange-bg); color: var(--orange); }
+  .badge-mid      { background: var(--navy-light); color: var(--navy); }
+
+  .cred-item-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .cred-item-body  { font-size: 12px; color: var(--text-mid); line-height: 1.55; }
+  .cred-item-source { font-family: 'JetBrains Mono', 'Noto Sans KR', monospace; font-size: 10px; color: var(--text-light); margin-top: 6px; }
+
+  /* ── BTP COST LAYER DIAGRAM ── */
+  .arch-diagram {
+    background: var(--gray-bg);
+    border: var(--rule);
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+  .arch-title {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', 'Noto Sans KR', monospace;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+  }
+  .arch-layers { display: flex; flex-direction: column; gap: 0; }
+  .arch-layer {
+    padding: 12px 18px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--white);
+    position: relative;
+  }
+  .arch-layer + .arch-layer { border-top: none; }
+  .arch-layer.highlight { background: var(--navy); color: var(--white); border-color: var(--navy); }
+  .arch-layer.danger    { background: var(--red);  color: var(--white); border-color: var(--red); }
+  .arch-layer.warn      { background: #7B3B0A; color: var(--white); border-color: #7B3B0A; }
+  .arch-layer-label { font-size: 12px; font-weight: 700; flex: 1; }
+  .arch-layer.highlight .arch-layer-label,
+  .arch-layer.danger .arch-layer-label,
+  .arch-layer.warn .arch-layer-label { color: var(--white); }
+  .arch-layer-detail { font-size: 11px; color: var(--text-light); }
+  .arch-layer.highlight .arch-layer-detail,
+  .arch-layer.danger .arch-layer-detail,
+  .arch-layer.warn .arch-layer-detail { color: rgba(255,255,255,0.65); }
+  .arch-layer-num {
+    font-family: 'JetBrains Mono', 'Noto Sans KR', monospace;
+    font-size: 10px; font-weight: 600;
+    width: 22px; height: 22px;
+    background: var(--border);
+    color: var(--text-mid);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .arch-layer.highlight .arch-layer-num,
+  .arch-layer.danger .arch-layer-num,
+  .arch-layer.warn .arch-layer-num { background: rgba(255,255,255,0.2); color: var(--white); }
+  .arch-arrow { text-align: center; color: var(--red); font-size: 13px; line-height: 1; padding: 3px 0; background: var(--gray-bg); font-family: 'JetBrains Mono', 'Noto Sans KR', monospace; font-weight: 600; font-size: 10px; letter-spacing: 0.05em; }
+
+  /* ── ANALYSIS GRID ── */
+  .analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+  .analysis-card { border: var(--rule); padding: 24px; }
+  .analysis-card-eyebrow {
+    font-family: 'JetBrains Mono', 'Noto Sans KR', monospace;
+    font-size: 9px; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 10px;
+  }
+  .analysis-card-title {
+    font-size: 14px; font-weight: 700; color: var(--navy);
+    margin-bottom: 12px; padding-bottom: 12px; border-bottom: var(--rule);
+  }
+  .analysis-card-title.red { color: var(--red); }
+  .analysis-card-body { font-size: 13px; color: var(--text-mid); line-height: 1.65; }
+  .analysis-card-body ul { list-style: none; padding: 0; }
+  .analysis-card-body ul li {
+    padding: 7px 0; border-bottom: 1px solid var(--gray-bg);
+    padding-left: 14px; position: relative;
+    font-size: 12.5px;
+  }
+  .analysis-card-body ul li::before { content: '—'; position: absolute; left: 0; color: var(--navy); font-weight: 700; }
+  .analysis-card-body ul li.red-marker::before { color: var(--red); }
+  .analysis-card-body ul li:last-child { border-bottom: none; }
+
+  /* ── ROADMAP TIMELINE (재활용 — 액션 플랜) ── */
+  .roadmap-intro {
+    background: var(--navy);
+    color: var(--white);
+    padding: 24px 28px;
+    margin-bottom: 28px;
+  }
+  .roadmap-intro-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.6; margin-bottom: 6px; font-family: 'JetBrains Mono', 'Noto Sans KR', monospace; }
+  .roadmap-intro-text { font-size: 14px; opacity: 0.85; line-height: 1.6; }
+
+  .roadmap-timeline { position: relative; padding-left: 32px; }
+  .roadmap-timeline::before {
+    content: '';
+    position: absolute;
+    left: 10px; top: 0; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+  .roadmap-group { margin-bottom: 32px; }
+  .roadmap-quarter {
+    position: relative;
+    font-family: 'JetBrains Mono', 'Noto Sans KR', monospace;
+    font-size: 11px; font-weight: 600;
+    color: var(--white);
+    background: var(--navy);
+    display: inline-block;
+    padding: 4px 12px;
+    margin-bottom: 16px;
+    margin-left: -32px;
+  }
+  .roadmap-quarter::before {
+    content: '';
+    position: absolute;
+    left: -8px; top: 50%;
+    transform: translateY(-50%);
+    width: 10px; height: 10px;
+    background: var(--navy);
+    border-radius: 50%;
+  }
+  .roadmap-quarter.now { background: var(--red); }
+  .roadmap-quarter.now::before { background: var(--red); }
+
+  .roadmap-card {
+    border: var(--rule);
+    border-left: 3px solid var(--navy);
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    background: var(--white);
+  }
+  .roadmap-card.priority { border-left-color: var(--red); }
+  .roadmap-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 12px; }
+  .roadmap-card-title { font-size: 13px; font-weight: 700; color: var(--navy); flex: 1; }
+  .roadmap-card-title.red { color: var(--red); }
+  .roadmap-card-edition {
+    font-size: 10px; font-family: 'JetBrains Mono', 'Noto Sans KR', monospace;
+    color: var(--text-light); border: 1px solid var(--border);
+    padding: 2px 6px; white-space: nowrap; flex-shrink: 0;
+  }
+  .roadmap-card-edition.urgent { background: var(--red-bg); color: var(--red); border-color: #e8b4b4; }
+  .roadmap-card-body { font-size: 12px; color: var(--text-mid); line-height: 1.6; margin-bottom: 10px; }
+  .roadmap-card-benefits {
+    font-size: 11px; color: var(--green); background: var(--green-bg);
+    padding: 8px 12px; border-left: 2px solid var(--green);
+  }
+  .roadmap-card-benefits.warn { color: var(--orange); background: var(--orange-bg); border-left-color: var(--orange); }
+  .roadmap-focus-tags { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+  .focus-tag { font-size: 10px; padding: 2px 8px; background: var(--navy-light); color: var(--navy); }
+  .focus-tag.red-tag { background: var(--red-bg); color: var(--red); }
+
+  /* ── POSITIONING MATRIX (ASPN-BOX 리믹스) ── */
+  .position-box {
+    background: var(--navy);
+    color: var(--white);
+    padding: 32px 36px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .position-box::after {
+    content: '2026';
+    position: absolute;
+    right: -10px; bottom: -20px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 100px;
+    opacity: 0.05;
+    color: var(--white);
+    pointer-events: none;
+  }
+  .position-box-eyebrow { font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; opacity: 0.5; margin-bottom: 10px; font-family: 'JetBrains Mono', 'Noto Sans KR', monospace; }
+  .position-box-title { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 20px; color: var(--white); line-height: 1.35; }
+  .position-items { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .position-item { border: 1px solid rgba(255,255,255,0.15); padding: 16px 18px; }
+  .position-item-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; margin-bottom: 6px; font-family: 'JetBrains Mono', 'Noto Sans KR', monospace; }
+  .position-item-text { font-size: 13px; opacity: 0.85; line-height: 1.55; }
+
+  /* ── COMPARE TABLE ── */
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 24px; }
+  .compare-table th {
+    background: var(--navy); color: var(--white);
+    padding: 10px 13px; text-align: left;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap;
+  }
+  .compare-table td { padding: 10px 13px; border-bottom: var(--rule); vertical-align: top; line-height: 1.55; word-break: keep-all; }
+  .compare-table tr:nth-child(even) td { background: var(--gray-bg); }
+  .compare-table td:first-child { font-weight: 600; color: var(--navy); white-space: nowrap; }
+  .compare-table .good  { color: var(--green); font-weight: 600; }
+  .compare-table .bad   { color: var(--red);   font-weight: 600; }
+  .compare-table .mid   { color: var(--orange); font-weight: 600; }
+
+  /* ── LEGEND ── */
+  .legend { display: flex; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-mid); }
+  .legend-dot { width: 10px; height: 10px; flex-shrink: 0; }
+
+  /* ── FOOTER ── */
+  .report-footer {
+    background: var(--gray-bg);
+    border-top: var(--rule);
+    padding: 24px 0;
+    font-size: 11px;
+    color: var(--text-light);
+  }
+  .footer-inner { display: flex; justify-content: space-between; align-items: center; }
+  .footer-sources { display: flex; gap: 16px; }
+  .footer-src { font-family: 'JetBrains Mono', 'Noto Sans KR', monospace; font-size: 10px; }
+
+  /* ── NAV BAR ── */
+  .sticky-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.97);
+    border-bottom: var(--rule);
+    backdrop-filter: blur(6px);
+  }
+  .nav-inner {
+    max-width: 960px; margin: 0 auto; padding: 0 40px;
+    display: flex; gap: 0; overflow-x: auto;
+  }
+  .nav-item {
+    font-family: 'JetBrains Mono', 'Noto Sans KR', monospace;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-light);
+    padding: 14px 18px;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .nav-item:hover { color: var(--navy); }
+  .nav-item.active { color: var(--red); border-bottom-color: var(--red); }
+
+  @media (max-width: 720px) {
+    .cred-grid, .analysis-grid, .position-items { grid-template-columns: 1fr; }
+    .report-title { font-size: 26px; }
+    .header-stats { flex-direction: column; gap: 20px; }
+    .hstat { border-right: none; padding-right: 0; }
+    .container { padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="report-header">
+  <div class="container">
+    <div class="report-meta">
+      <span class="tag">Survival Intelligence</span>
+      <span class="tag">SAP Consulting Practice</span>
+      <span class="tag">BTP · AI Disruption</span>
+      <span class="tag">2026.05 기준</span>
+    </div>
+    <h1 class="report-title">SAP 생존 전략 브리핑<br><span>컨설턴트 조직을 위한 위협 분석</span></h1>
+    <p class="report-subtitle">BTP 과금 불투명성, 포트폴리오 복잡도, 범용 AI의 부상 — 고객 거부감의 구조적 원인과 컨설턴트 대응 전략</p>
+    <div class="header-stats">
+      <div class="hstat">
+        <div class="hstat-num">80%</div>
+        <div class="hstat-label">BTP 18개월 내 예산 초과율</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-num">2–3×</div>
+        <div class="hstat-label">실제 TCO ÷ 초기 제안가</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-num">8–12%</div>
+        <div class="hstat-label">SAP Cloud 연간 갱신 인상률</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-num">2027</div>
+        <div class="hstat-label">ECC 공식 지원 종료</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+  <div class="nav-inner">
+    <a class="nav-item active" href="#s01">01 — 구조적 위협</a>
+    <a class="nav-item" href="#s02">02 — BTP 과금 함정</a>
+    <a class="nav-item" href="#s03">03 — AI 경쟁 지형</a>
+    <a class="nav-item" href="#s04">04 — 포지셔닝 전환</a>
+    <a class="nav-item" href="#s05">05 — 액션 플랜</a>
+  </div>
+</nav>
+
+
+<!-- 01. STRUCTURAL THREATS -->
+<section class="section" id="s01">
+  <div class="container">
+    <p class="section-eyebrow red">Section 01 — Structural Threat Assessment</p>
+    <h2 class="section-title">고객 거부감의 구조적 원인 — 3대 위협 진단</h2>
+
+    <div class="threat-overall">
+      <div>
+        <div class="threat-score-big">임계</div>
+        <div class="threat-score-label">이탈 압력 수준</div>
+        <div class="score-bar-wrap">
+          <div class="score-bar-track"><div class="score-bar-fill" style="width:82%"></div></div>
+        </div>
+      </div>
+      <div class="threat-verdict">
+        <div class="threat-verdict-title">SAP는 "비싸고 무겁다"는 인식을 넘어 구조적 이탈 임계점에 진입 중</div>
+        <div class="threat-verdict-body">
+          국내 고객의 거부감은 단순한 가격 불만이 아닙니다. BTP 과금 구조의 불투명성, 이해 불가 수준의 포트폴리오 복잡도, 그리고 월 3만 원대 범용 AI가 수억 원짜리 SAP AI 기능을 상당 부분 대체하는 현실이 겹치면서 — 고객의 SAP 유지 동기가 구조적으로 약화되고 있습니다. 컨설턴트 조직에게 이것은 위기인 동시에, 어느 편에 서느냐에 따른 생존 갈림길입니다.
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Critical — 즉각적 고객 이탈 위험</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div> High — 12개월 내 가시화</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--navy)"></div> Mid — 중기 모니터링 필요</div>
+    </div>
+
+    <div class="cred-grid">
+
+      <div class="cred-item">
+        <div class="cred-badge badge-critical">!</div>
+        <div class="cred-item-content">
+          <div class="cred-item-title">BTP 과금 구조 — 의도된 불투명성</div>
+          <div class="cred-item-body">BTP 도입 기업의 80%가 18개월 내 클라우드 예산을 초과합니다. 이것은 운영 오류가 아니라 구조적 설계입니다. SAP는 크레딧 풀 대량 선구매를 유도한 뒤, 예측 불가한 소비 패턴으로 수익을 극대화합니다. 대기업 기준 SAP 라이선스의 20–40%를 BTP가 차지하는데, 그 비용 구조를 고객이 제대로 파악하는 경우는 드뭅니다.</div>
+          <div class="cred-item-source">Source: SAP Licensing Experts, G2 Reviews 2026, Redress Compliance</div>
+        </div>
+      </div>
+
+      <div class="cred-item">
+        <div class="cred-badge badge-critical">!</div>
+        <div class="cred-item-content">
+          <div class="cred-item-title">RISE 재브랜딩 — 숨겨진 비용 구조 전환</div>
+          <div class="cred-item-body">RISE with SAP가 Cloud ERP Private으로 재브랜딩되면서 기존 계약 구조가 사실상 무효화됐습니다. AI Units, Datasphere, Joule이 별도 과금 항목으로 분리됐고 — CIO들조차 전체 비용 구조를 파악하지 못하는 상황이 발생하고 있습니다. Gartner는 "많은 IT 리더들이 이 변화를 인지하지 못한 채 협상에 임하고 있다"고 경고합니다.</div>
+          <div class="cred-item-source">Source: CIO Magazine, Gartner Research 2025–2026, Redress Compliance</div>
+        </div>
+      </div>
+
+      <div class="cred-item">
+        <div class="cred-badge badge-critical">!</div>
+        <div class="cred-item-content">
+          <div class="cred-item-title">범용 AI — SAP AI를 현장에서 대체 중</div>
+          <div class="cred-item-body">Claude·ChatGPT·Microsoft Copilot 등 월 $20–30 모델이 SAP Joule이 수억 원에 제공하는 기능을 현장에서 이미 대체하고 있습니다. 재무 분석·이사회 보고서·경영 해석 업무에서 범용 AI가 앞선다는 평가가 다수입니다. SAP가 "Joule 무료 제공"이라고 홍보하는 지금 — 고객이 의존도를 높인 뒤 2026년 이후 과금이 시작되면 반발이 폭발할 구조입니다.</div>
+          <div class="cred-item-source">Source: UpperEdge Sapphire 2026, Prime AI Solutions, Intuition Labs</div>
+        </div>
+      </div>
+
+      <div class="cred-item">
+        <div class="cred-badge badge-high">▲</div>
+        <div class="cred-item-content">
+          <div class="cred-item-title">Outcome-based Pricing — 비용 통제권 소멸 위협</div>
+          <div class="cred-item-body">SAP는 Sapphire 2026에서 AI가 창출한 절감분의 일정 비율을 SAP가 가져가는 outcome-based 과금 모델을 공개 예고했습니다. Seat-based → Consumption-based → Outcome-based로의 진화는 고객의 비용 예측 및 통제 능력을 구조적으로 약화시킵니다. 2030년 목표: consumption 기반 매출 비중 30%.</div>
+          <div class="cred-item-source">Source: UpperEdge Sapphire 2026 Recap (May 2026)</div>
+        </div>
+      </div>
+
+      <div class="cred-item">
+        <div class="cred-badge badge-high">▲</div>
+        <div class="cred-item-content">
+          <div class="cred-item-title">국내 고객 특수성 — 거부감의 추가 레이어</div>
+          <div class="cred-item-body">글로벌 공통 문제에 한국 특유의 요인이 더해집니다. ECC EHP5 이하 사용 기업이 전체의 약 절반에 달하며, 국내 SI 기업들의 상호출자 제한 규정으로 인한 대형 프로젝트 입찰 제약, 더존비즈온 등 국산 ERP의 회계·인사 영역 경쟁력 강화, 공공기관의 SAP 이탈 검토 증가가 복합적으로 작용하고 있습니다.</div>
+          <div class="cred-item-source">Source: 디지털데일리, 전자신문, 한국가스공사 사례 (2024–2025)</div>
+        </div>
+      </div>
+
+      <div class="cred-item">
+        <div class="cred-badge badge-mid">○</div>
+        <div class="cred-item-content">
+          <div class="cred-item-title">Best-of-Breed 대안 — 통합 비용 약점 약화 중</div>
+          <div class="cred-item-body">BoB 전략의 가장 큰 약점이었던 시스템 통합 복잡도가 API 생태계 성숙과 iPaaS 플랫폼 발전으로 빠르게 약화되고 있습니다. Google Gemini Enterprise는 SAP 포함 멀티 ERP 직접 연결을 제공하며, "SAP 없이 SAP 데이터에 접근"하는 포지셔닝으로 BTP의 통합 플랫폼 역할을 외부에서 잠식 중입니다.</div>
+          <div class="cred-item-source">Source: JISEM Journal 2025, Google Cloud announcements</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- 02. BTP COST TRAP -->
+<section class="section" id="s02">
+  <div class="container">
+    <p class="section-eyebrow red">Section 02 — BTP Pricing Architecture</p>
+    <h2 class="section-title">BTP 과금 함정의 해부 — 가시성의 단층 구조</h2>
+
+    <div class="action-title-banner">
+      SAP BTP 과금 모델은 고객에게 "통합 가격"처럼 보이도록 설계되어 있으나, 실제 비용의 60–80%는 계약 이후에 발생하는 숨겨진 레이어에서 나온다 — 이 구조를 고객에게 먼저 설명하는 컨설턴트가 신뢰 어드바이저가 된다
+    </div>
+
+    <div class="arch-diagram">
+      <div class="arch-title">BTP 비용 가시성 맵 — 고객에게 보이는 레이어 vs 실제 과금 레이어</div>
+      <div class="arch-layers">
+
+        <div class="arch-layer highlight">
+          <div class="arch-layer-num">1</div>
+          <div class="arch-layer-label">RISE with SAP / Cloud ERP Private 계약</div>
+          <div class="arch-layer-detail">고객이 인식하는 "올인원 가격" — 계약 시 협상 대상의 전부라고 착각하는 레이어</div>
+        </div>
+
+        <div class="arch-arrow">↓ 번들에 포함되어 있으나 소진 방식은 별도 관리</div>
+
+        <div class="arch-layer highlight">
+          <div class="arch-layer-num">2</div>
+          <div class="arch-layer-label">BTP Credit Bundle (번들 내 배정)</div>
+          <div class="arch-layer-detail">연간 크레딧 배정 — 서비스별 소비 단가가 불투명하여 실소진율 예측 거의 불가. 미사용 크레딧은 이월 불가</div>
+        </div>
+
+        <div class="arch-arrow">↓ 2026년 이후 별도 과금 전환 예고 — "무료 기간"이 가장 위험한 시점</div>
+
+        <div class="arch-layer danger">
+          <div class="arch-layer-num">⚠</div>
+          <div class="arch-layer-label">AI Units — Joule 사용량 기반 (2026~ 과금 전환)</div>
+          <div class="arch-layer-detail">현재 무료 제공 중이나 Sapphire 2026에서 과금 전환 공식화. 고객이 워크플로를 구축한 뒤에는 SAP가 협상 주도권을 쥠</div>
+        </div>
+
+        <div class="arch-arrow">↓ 계약서에 상한(cap) 조항 없으면 무제한 청구 가능</div>
+
+        <div class="arch-layer warn">
+          <div class="arch-layer-num">⚠</div>
+          <div class="arch-layer-label">Datasphere + Integration Suite (별도 과금)</div>
+          <div class="arch-layer-detail">데이터 볼륨·연결 수 기반 과금. 클라우드 마이그레이션 후 데이터 연결이 늘수록 급증하는 구조</div>
+        </div>
+
+        <div class="arch-arrow">↓ 계약 갱신 시 협상 카드 없으면 자동 인상</div>
+
+        <div class="arch-layer" style="border-left: 3px solid var(--red);">
+          <div class="arch-layer-num" style="background:var(--red-bg); color:var(--red);">⚠</div>
+          <div class="arch-layer-label">Overage 요금 + 갱신 인상 (연 8–12%)</div>
+          <div class="arch-layer-detail">크레딧 초과 시 프리미엄 요율 즉시 적용. 계약서에 갱신 상한 조항 없으면 매년 8–12% 인상. 계약 기간 내 가격 cap 협상이 필수</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="analysis-grid">
+      <div class="analysis-card">
+        <div class="analysis-card-eyebrow">실증 데이터 — 비용 초과의 규모</div>
+        <div class="analysis-card-title">숫자로 보는 BTP 과금 함정</div>
+        <div class="analysis-card-body">
+          <ul>
+            <li>BTP 도입 기업의 <strong>80%</strong>가 18개월 내 예산 초과 경험 — 운영 오류가 아닌 구조적 결함</li>
+            <li>대기업 기준 BTP가 전체 SAP 라이선스의 <strong>20–40%</strong>를 차지하나 비용 가시성은 최하위</li>
+            <li>€10M RISE 계약에 번들된 €1M+ BTP 크레딧 중 연간 <strong>€30–50만</strong>이 낭비되는 것이 일반적</li>
+            <li>실제 5년 TCO는 초기 SAP 제안가의 <strong>2–3배</strong> — 숨겨진 비용 포함 시</li>
+            <li class="red-marker">SAP 영업팀 인센티브가 초기 계약 → 사용량 확대로 재편 — 고객 비용 증가가 SAP 수익</li>
+          </ul>
+        </div>
+      </div>
+      <div class="analysis-card">
+        <div class="analysis-card-eyebrow">컨설턴트 실행 지침 — BTP 비용 거버넌스</div>
+        <div class="analysis-card-title red">고객에게 먼저 제시해야 할 5가지</div>
+        <div class="analysis-card-body">
+          <ul>
+            <li><strong>서비스별 소비 대시보드</strong> 구축 — BTP Global Account 레벨 비용 모니터링 체계화</li>
+            <li><strong>AI Units 과금 상한 조항</strong> 계약서 명문화 — Joule 무료 기간 종료 전 반드시 협상</li>
+            <li><strong>크레딧 소진 계획 수립</strong> — 미사용 크레딧 이월 불가 구조에 맞는 사용 로드맵</li>
+            <li><strong>갱신 인상률 Cap 조항</strong> 요구 — 계약 갱신 시 연 인상률 상한을 계약서에 고정</li>
+            <li class="red-marker"><strong>Outcome-based pricing 조항 거부</strong> — SAP AI 절감분의 % 공유 조항은 비용 통제권 포기</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 사례 인용 -->
+    <div style="background:var(--navy); color:var(--white); padding:24px 28px; border-left:4px solid rgba(255,255,255,0.3);">
+      <div style="font-family:'JetBrains Mono','Noto Sans KR',monospace; font-size:9px; text-transform:uppercase; letter-spacing:0.14em; opacity:0.5; margin-bottom:8px;">Key Quote — UpperEdge, Sapphire 2026 분석</div>
+      <div style="font-family:'DM Serif Display',serif; font-size:17px; line-height:1.5; margin-bottom:10px;">"Joule 무료 기간이 끝나기 전에 downstream pricing을 계약서에 명문화하라.<br>고객이 워크플로를 구축하고 나면, SAP가 다음 협상의 모든 카드를 쥔다."</div>
+      <div style="font-size:11px; opacity:0.5;">— UpperEdge, Sapphire 2026 Recap: 5 Watchouts (May 2026)</div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- 03. AI COMPETITIVE LANDSCAPE -->
+<section class="section" id="s03">
+  <div class="container">
+    <p class="section-eyebrow red">Section 03 — AI Competitive Disruption</p>
+    <h2 class="section-title">범용 AI vs SAP Joule — 기능별 현장 평가</h2>
+
+    <div class="action-title-banner">
+      범용 AI의 위협은 "가격"이 아니라 "가성비"의 문제다 — 월 $20–30로 SAP AI 기능의 60–70%를 대체할 수 있다는 현장 평가가 고객의 의사결정을 바꾸고 있다
+    </div>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width:18%">업무 영역</th>
+          <th style="width:20%">SAP Joule</th>
+          <th style="width:20%">MS Copilot</th>
+          <th style="width:20%">Claude / ChatGPT</th>
+          <th style="width:22%">컨설턴트 권고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>재무 결산 (AP·AR·Close)</td>
+          <td class="mid">△ 기능 있으나 복잡</td>
+          <td class="good">✓ ERP 내장, M365 포함</td>
+          <td class="mid">△ 외부 연동 필요</td>
+          <td>Copilot 우선 검토. SAP 환경이라면 Joule 병행</td>
+        </tr>
+        <tr>
+          <td>이사회 보고서 · 경영 해석</td>
+          <td class="bad">✗ 범용 문서화 취약</td>
+          <td class="mid">△ 기능 제한</td>
+          <td class="good">✓ 최우수 — 문서 품질</td>
+          <td>Claude / ChatGPT가 명확한 우위. Joule 불필요</td>
+        </tr>
+        <tr>
+          <td>글로벌 컴플라이언스 · 세무</td>
+          <td class="good">✓ SAP 고유 컨텍스트</td>
+          <td class="bad">✗ SAP 데이터 직접 연동 불가</td>
+          <td class="bad">✗ ERP 컨텍스트 부재</td>
+          <td>Joule의 유일한 명확한 우위 영역. 유지 권고</td>
+        </tr>
+        <tr>
+          <td>SCM · 생산계획 최적화</td>
+          <td class="good">✓ S/4HANA 데이터 통합</td>
+          <td class="mid">△ 연동 설정 필요</td>
+          <td class="bad">✗ 실시간 ERP 데이터 부재</td>
+          <td>복잡 SCM 환경은 Joule이 우위. 단순 분석은 범용 AI</td>
+        </tr>
+        <tr>
+          <td>데이터 분석 · 인사이트</td>
+          <td class="mid">△ Datasphere 추가 비용</td>
+          <td class="good">✓ Power BI 통합</td>
+          <td class="good">✓ 고급 추론·해석 우수</td>
+          <td>Datasphere 도입 전 범용 AI ROI 비교 필수</td>
+        </tr>
+        <tr>
+          <td>HR · 인사 관리</td>
+          <td class="mid">△ SuccessFactors 연동</td>
+          <td class="mid">△ Viva 기능 제한</td>
+          <td class="mid">△ 독립 실행</td>
+          <td>HR 특화(Workday) 또는 SuccessFactors 중 TCO 비교 권고</td>
+        </tr>
+        <tr>
+          <td>코딩 · 개발 자동화</td>
+          <td class="bad">✗ ABAP 외 범위 제한</td>
+          <td class="mid">△ GitHub Copilot 별도</td>
+          <td class="good">✓ Claude Code 우수</td>
+          <td>SAP 개발이 아닌 일반 코딩은 범용 AI가 압도적 우위</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="analysis-grid">
+      <div class="analysis-card">
+        <div class="analysis-card-eyebrow">위협 시나리오 — Google Gemini Enterprise</div>
+        <div class="analysis-card-title">BTP의 통합 역할을 외부에서 잠식</div>
+        <div class="analysis-card-body">Google Gemini Enterprise는 SAP를 포함한 멀티 ERP에 직접 연결되는 커넥터를 제공하며 "단일 대화 인터페이스로 SAP 데이터에 접근"하는 포지셔닝을 공식화했습니다.<br><br>
+        이는 SAP가 BTP를 통해 제공하는 통합 플랫폼 역할 자체를 외부에서 대체하려는 시도입니다. SAP-BTP 의존도가 높을수록 이 위협에 취약합니다.<br><br>
+        Microsoft도 동일한 방향으로 움직이고 있습니다 — Copilot의 SAP 연동 커넥터가 2026년 내 강화될 예정입니다.</div>
+      </div>
+      <div class="analysis-card">
+        <div class="analysis-card-eyebrow">SAP의 반격 — Joule의 방어 가능 영역</div>
+        <div class="analysis-card-title">범용 AI가 대체하기 어려운 SAP 고유 강점</div>
+        <div class="analysis-card-body">범용 AI가 모든 것을 대체할 수는 없습니다. SAP Joule이 지킬 수 있는 영역이 분명히 존재합니다.<br><br>
+        <strong>방어 가능 영역:</strong> 글로벌 회계 기준(IFRS·GAAP) 컴플라이언스 자동화, 실시간 ATP(Available-to-Promise) 계산, 멀티-레저 연결 결산, SAP 트랜잭션 코드 직접 실행 권한이 필요한 업무.<br><br>
+        <strong>컨설턴트 역할:</strong> 고객이 "어느 업무에 Joule이 필요하고, 어느 업무는 범용 AI로 충분한가"를 정확히 구분하도록 도와주는 것이 2026년 최고의 컨설팅 서비스입니다.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- 04. POSITIONING -->
+<section class="section" id="s04">
+  <div class="container">
+    <p class="section-eyebrow">Section 04 — Consultant Positioning</p>
+    <h2 class="section-title">컨설턴트 포지셔닝 전환 — 고객과 같은 편에 서라</h2>
+
+    <div class="action-title-banner red-banner">
+      SAP 컨설턴트의 생존은 "SAP 대변인"을 포기하고 "고객 편의 중립 어드바이저"로 재포지셔닝하는 데 달려 있다 — 어느 쪽이든 신뢰받는 어드바이저만이 2028년에도 전화를 받는다
+    </div>
+
+    <div class="arch-diagram" style="margin-bottom:28px;">
+      <div class="arch-title">포지셔닝 전환 매트릭스 — 같은 상황, 다른 언어</div>
+      <div class="arch-layers">
+
+        <div class="arch-layer" style="background:var(--green-bg); border-color:var(--green);">
+          <div class="arch-layer-num" style="background:var(--green); color:var(--white);">✓</div>
+          <div class="arch-layer-label" style="color:var(--green);">BTP 비용 최적화 선제 제안</div>
+          <div class="arch-layer-detail" style="color:var(--green);">"크레딧 낭비 없이 쓰는 설계를 먼저 해드리겠습니다" — 고객의 돈을 지키는 어드바이저 포지션</div>
+        </div>
+        <div class="arch-layer" style="background:var(--red-bg); border-color:#e8b4b4; border-top:none;">
+          <div class="arch-layer-num" style="background:var(--red); color:var(--white);">✗</div>
+          <div class="arch-layer-label" style="color:var(--red);">"SAP BTP는 미래 플랫폼입니다, 지금 투자하셔야 합니다"</div>
+          <div class="arch-layer-detail" style="color:var(--red);">SAP 세일즈팀과 동일한 언어 — 고객은 이미 이 말을 불신하고 있습니다</div>
+        </div>
+
+        <div class="arch-arrow" style="margin-top:12px;">— 다음 상황 —</div>
+
+        <div class="arch-layer" style="background:var(--green-bg); border-color:var(--green); border-top:none;">
+          <div class="arch-layer-num" style="background:var(--green); color:var(--white);">✓</div>
+          <div class="arch-layer-label" style="color:var(--green);">범용 AI 솔루션 병행 추천</div>
+          <div class="arch-layer-detail" style="color:var(--green);">"이 업무는 Copilot으로 충분합니다. Joule 구매 안 하셔도 됩니다" — 중립적 기술 조언</div>
+        </div>
+        <div class="arch-layer" style="background:var(--red-bg); border-color:#e8b4b4; border-top:none;">
+          <div class="arch-layer-num" style="background:var(--red); color:var(--white);">✗</div>
+          <div class="arch-layer-label" style="color:var(--red);">모든 요구사항에 SAP 솔루션 매핑</div>
+          <div class="arch-layer-detail" style="color:var(--red);">파트너 포인트 추구로 이해충돌 발생 — 고객 이탈 가속</div>
+        </div>
+
+        <div class="arch-arrow" style="margin-top:12px;">— 다음 상황 —</div>
+
+        <div class="arch-layer" style="background:var(--green-bg); border-color:var(--green); border-top:none;">
+          <div class="arch-layer-num" style="background:var(--green); color:var(--white);">✓</div>
+          <div class="arch-layer-label" style="color:var(--green);">SAP 갱신 前 협상 지원 서비스화</div>
+          <div class="arch-layer-detail" style="color:var(--green);">계약 구조 분석 + 경쟁사 비교 TCO 제시 → 30–65% 할인 확보 지원을 독립 컨설팅으로</div>
+        </div>
+        <div class="arch-layer" style="background:var(--red-bg); border-color:#e8b4b4; border-top:none;">
+          <div class="arch-layer-num" style="background:var(--red); color:var(--white);">✗</div>
+          <div class="arch-layer-label" style="color:var(--red);">SAP 표준 계약서 검토 없이 통과</div>
+          <div class="arch-layer-detail" style="color:var(--red);">Outcome-based pricing 조항 방치 — 미래 비용 폭탄을 고객에게 떠넘기는 행위</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="position-box">
+      <div class="position-box-eyebrow">Bottom Line — 컨설턴트 조직에 전하는 핵심 메시지</div>
+      <div class="position-box-title">SAP가 살아남으려면 고객이 SAP를 계속 써야 한다.<br>그 ROI를 만들어주거나, 솔직하게 대안을 제시하거나.<br>어느 쪽이든 고객 편에 선 어드바이저만이 살아남는다.</div>
+      <div class="position-items">
+        <div class="position-item">
+          <div class="position-item-label">생존하는 컨설턴트의 언어</div>
+          <div class="position-item-text">"이 기능은 SAP 없이도 됩니다." "이 계약 조항은 3년 후 비용 폭탄입니다." "지금 협상하면 40% 절감 가능합니다." — 고객이 몰랐던 것을 알려주는 사람</div>
+        </div>
+        <div class="position-item">
+          <div class="position-item-label">도태되는 컨설턴트의 언어</div>
+          <div class="position-item-text">"SAP의 미래 방향과 정렬하셔야 합니다." "BTP는 장기적으로 반드시 필요합니다." "Joule을 통해 디지털 전환을 가속하세요." — 고객이 이미 SAP에서 들은 말</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- 05. ACTION PLAN -->
+<section class="section" id="s05">
+  <div class="container">
+    <p class="section-eyebrow">Section 05 — Action Plan</p>
+    <h2 class="section-title">컨설턴트 조직 전략 액션 플랜 (2026–2028)</h2>
+
+    <div class="roadmap-intro">
+      <div class="roadmap-intro-label">실행 원칙</div>
+      <div class="roadmap-intro-text">2027년 ECC 데드라인을 위기로 볼 것인가, 기회로 볼 것인가. 아래 로드맵은 이 데드라인을 최대의 사업 기회로 전환하는 동시에, 고객 신뢰를 기반으로 한 장기 포지션을 구축하기 위한 단계별 실행 계획입니다.</div>
+    </div>
+
+    <div class="roadmap-timeline">
+
+      <div class="roadmap-group">
+        <div class="roadmap-quarter now">즉시 실행 — 2026 H2</div>
+
+        <div class="roadmap-card priority">
+          <div class="roadmap-card-header">
+            <div class="roadmap-card-title red">① ECC EHP5 이하 고객 긴급 진단 서비스 출시</div>
+            <div class="roadmap-card-edition urgent">최우선</div>
+          </div>
+          <div class="roadmap-focus-tags">
+            <span class="focus-tag red-tag">2025년 지원 이미 종료</span>
+            <span class="focus-tag red-tag">즉각 행동 필요</span>
+          </div>
+          <div class="roadmap-card-body">
+            ECC EHP5 이하 고객은 이미 공식 지원이 종료됐습니다. 전체 고객사 ECC 버전 전수 조사 및 긴급도 매핑을 3개월 내 완료하고, 각 고객사별 5년 TCO 시뮬레이션 (SAP 유지 vs 전환 vs 하이브리드) 모델을 선제적으로 제시합니다. 파이프라인 50건 목표.
+          </div>
+          <div class="roadmap-card-benefits">→ 기대 효과: 2027 데드라인 프로젝트 파이프라인 선점 + 고객 신뢰 어드바이저 포지션 확보</div>
+        </div>
+
+        <div class="roadmap-card priority">
+          <div class="roadmap-card-header">
+            <div class="roadmap-card-title red">② SAP 협상 지원 서비스 패키지화</div>
+            <div class="roadmap-card-edition urgent">즉시 수익화 가능</div>
+          </div>
+          <div class="roadmap-focus-tags">
+            <span class="focus-tag red-tag">계약 분석</span>
+            <span class="focus-tag red-tag">TCO 비교</span>
+            <span class="focus-tag red-tag">30–65% 할인 가이드</span>
+          </div>
+          <div class="roadmap-card-body">
+            SAP의 가격 불투명성을 활용한 협상 전략 수립 및 지원 서비스를 독립 컨설팅 패키지로 출시합니다. AI Units 과금 상한, 갱신 인상률 Cap, Outcome-based pricing 조항 거부 전략을 포함한 계약 리뷰 서비스가 핵심입니다.
+          </div>
+          <div class="roadmap-card-benefits">→ 기대 효과: 구현 프로젝트 없이도 수익 발생. 고객 절감액의 일부를 성공 보수로 설계 가능</div>
+        </div>
+
+        <div class="roadmap-card priority">
+          <div class="roadmap-card-header">
+            <div class="roadmap-card-title red">③ 범용 AI vs SAP AI 비교 평가 역량 구축</div>
+            <div class="roadmap-card-edition urgent">내부 트레이닝</div>
+          </div>
+          <div class="roadmap-focus-tags">
+            <span class="focus-tag">Joule</span>
+            <span class="focus-tag">Copilot</span>
+            <span class="focus-tag">Claude</span>
+            <span class="focus-tag">ChatGPT</span>
+          </div>
+          <div class="roadmap-card-body">
+            컨설턴트 조직 내에 Joule·Copilot·Claude·ChatGPT를 업무 기능별로 실측 비교하고 ROI 매트릭스를 작성하는 역량을 즉시 구축합니다. "어떤 AI가 어떤 업무에 최적인가"를 중립적으로 제시하는 능력이 2026년 이후 핵심 차별화 포인트입니다.
+          </div>
+          <div class="roadmap-card-benefits warn">→ 주의: 특정 AI 솔루션 벤더와의 파트너십이 이 중립성을 훼손하지 않도록 거버넌스 설계 필요</div>
+        </div>
+      </div>
+
+      <div class="roadmap-group">
+        <div class="roadmap-quarter">역량 확장 — 2027 H1</div>
+
+        <div class="roadmap-card">
+          <div class="roadmap-card-header">
+            <div class="roadmap-card-title">④ Two-tier ERP 아키텍처 설계 방법론 표준화</div>
+            <div class="roadmap-card-edition">핵심 역량</div>
+          </div>
+          <div class="roadmap-focus-tags">
+            <span class="focus-tag">S/4HANA Core</span>
+            <span class="focus-tag">Workday HR</span>
+            <span class="focus-tag">Salesforce CRM</span>
+            <span class="focus-tag">더존 회계</span>
+          </div>
+          <div class="roadmap-card-body">
+            SAP S/4HANA를 재무·생산 Core로 유지하되, HR·CRM·SCM은 Best-of-Breed 특화 솔루션으로 구성하는 Two-tier ERP 설계 방법론을 내부 표준으로 확립합니다. 특히 국내 대기업 그룹사의 하이브리드 수요에 최적화된 설계 템플릿이 필요합니다.
+          </div>
+          <div class="roadmap-card-benefits">→ 기대 효과: SAP만 아는 컨설턴트 → 전체 ERP 생태계를 설계하는 어드바이저로 역할 전환</div>
+        </div>
+
+        <div class="roadmap-card">
+          <div class="roadmap-card-header">
+            <div class="roadmap-card-title">⑤ BoB 솔루션 파트너십 체결 (3종 이상)</div>
+            <div class="roadmap-card-edition">파트너 확장</div>
+          </div>
+          <div class="roadmap-focus-tags">
+            <span class="focus-tag">Workday</span>
+            <span class="focus-tag">Salesforce</span>
+            <span class="focus-tag">Microsoft</span>
+            <span class="focus-tag">국산 ERP</span>
+          </div>
+          <div class="roadmap-card-body">
+            Workday, Salesforce, Microsoft Dynamics 365 파트너십을 조기 확보하여 고객 레퍼럴 및 공동 수주 기회를 만들어야 합니다. 더존비즈온 등 국산 ERP와의 협력도 국내 중견기업 시장에서의 포지션 강화에 유효합니다. SAP 파트너 등급 유지와 BoB 인증을 병행합니다.
+          </div>
+          <div class="roadmap-card-benefits">→ 기대 효과: SAP 이탈 고객을 타 컨설팅사에 빼앗기지 않고 생태계 내에서 유지</div>
+        </div>
+      </div>
+
+      <div class="roadmap-group">
+        <div class="roadmap-quarter">포지션 고착화 — 2027 H2 ~ 2028</div>
+
+        <div class="roadmap-card">
+          <div class="roadmap-card-header">
+            <div class="roadmap-card-title">⑥ SAP AI(Joule/Composable ERP) 자문 역량 선점</div>
+            <div class="roadmap-card-edition">장기 투자</div>
+          </div>
+          <div class="roadmap-focus-tags">
+            <span class="focus-tag">Joule Studio</span>
+            <span class="focus-tag">AI Agent Hub</span>
+            <span class="focus-tag">MCP 연동</span>
+          </div>
+          <div class="roadmap-card-body">
+            SAP의 Composable ERP(Joule 기반 AI 에이전트 오케스트레이션) 자문 역량을 지금 투자해서 선점해야 합니다. AI Agent Hub GA 이후(Q3 2026~), A2A 프로토콜 기반 멀티 에이전트 설계, MCP 표준을 활용한 기존 시스템 연동 아키텍처가 핵심 자문 영역이 됩니다.
+          </div>
+          <div class="roadmap-card-benefits">→ 기대 효과: 2028년 이후 SAP AI 자문 시장에서의 선점 포지션 — 후발 주자가 따라오기 어려운 레퍼런스 자산</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 최종 메시지 -->
+    <div style="background:var(--navy); color:var(--white); padding:32px 36px; margin-top:8px;">
+      <div style="font-family:'JetBrains Mono','Noto Sans KR',monospace; font-size:9px; text-transform:uppercase; letter-spacing:0.14em; opacity:0.5; margin-bottom:12px;">Strategic Synthesis — 핵심 요약</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+        <div style="border:1px solid rgba(255,255,255,0.15); padding:18px;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.1em; opacity:0.5; margin-bottom:8px; font-family:'JetBrains Mono','Noto Sans KR',monospace;">SAP가 살아남기 위해 필요한 것</div>
+          <div style="font-size:13px; opacity:0.85; line-height:1.65;">고객이 SAP를 계속 쓰는 것. 고객이 계속 쓰려면 ROI가 납득되어야 한다. 그 ROI를 입증하거나 대안을 제시하는 것 — 이것이 컨설턴트의 2026년 핵심 역할이다.</div>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.15); padding:18px;">
+          <div style="font-size:10px; text-transform:uppercase; letter-spacing:0.1em; opacity:0.5; margin-bottom:8px; font-family:'JetBrains Mono','Noto Sans KR',monospace;">컨설턴트 조직이 선택해야 할 것</div>
+          <div style="font-size:13px; opacity:0.85; line-height:1.65;">SAP의 복잡성을 대신 해석해주는 역할이 아니라, 고객이 SAP에서 실제 가치를 뽑아내거나 — 혹은 떠나야 할 때를 정확히 알려주는 역할. 어느 쪽이든 신뢰가 전제다.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="report-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div>© 2026 SAP Consulting Practice · Survival Intelligence Briefing — 내부 배포용</div>
+      <div class="footer-sources">
+        <span class="footer-src">UpperEdge.com</span>
+        <span class="footer-src">saplicensingexperts.com</span>
+        <span class="footer-src">G2 Reviews</span>
+        <span class="footer-src">Gartner 2025–2026</span>
+        <span class="footer-src">Redress Compliance</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav active state on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const active = document.querySelector(`.nav-item[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
