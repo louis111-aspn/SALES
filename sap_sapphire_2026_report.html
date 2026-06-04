@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP Sapphire 2026 | 심층 분석 보고서</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #003366;
+    --navy-light: #004488;
+    --navy-dark: #002244;
+    --navy-10: rgba(0,51,102,0.08);
+    --navy-20: rgba(0,51,102,0.18);
+    --accent: #0055a5;
+    --bg: #f0f3f8;
+    --bg-card: #ffffff;
+    --text: #1a2236;
+    --text-muted: #5a6a80;
+    --border: #d4dbe8;
+    --warn: #b45309;
+    --warn-bg: #fffbeb;
+    --correct: #15803d;
+    --correct-bg: #f0fdf4;
+    --wrong: #b91c1c;
+    --wrong-bg: #fef2f2;
+    --pad-x: 72px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── STICKY NAV ── */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--navy);
+    border-bottom: 2px solid var(--navy-dark);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .sticky-nav::-webkit-scrollbar { display: none; }
+  .sticky-nav .brand {
+    flex-shrink: 0;
+    padding: 0 20px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sticky-nav .brand-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #60a5fa;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
+  }
+  .sticky-nav .brand-label {
+    color: rgba(255,255,255,0.9);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .nav-tabs { display: flex; }
+  .nav-tab {
+    padding: 0 18px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    color: rgba(255,255,255,0.65);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    text-decoration: none;
+    border: none;
+    background: none;
+    font-family: inherit;
+  }
+  .nav-tab:hover { color: #fff; background: rgba(255,255,255,0.08); }
+  .nav-tab.active { color: #fff; border-bottom: 3px solid #60a5fa; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    color: #fff;
+    padding: 64px var(--pad-x) 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; right: 80px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: #93c5fd;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 44px;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    max-width: 700px;
+    font-weight: 400;
+  }
+  .hero h1 em { font-style: italic; color: #93c5fd; }
+  .hero .subtitle {
+    font-size: 16px;
+    color: rgba(255,255,255,0.7);
+    max-width: 580px;
+    margin-bottom: 32px;
+    line-height: 1.65;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .hero-meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .hero-meta-item .label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+  .hero-meta-item .value {
+    font-size: 14px;
+    color: rgba(255,255,255,0.85);
+    font-weight: 500;
+  }
+
+  /* ── EXECUTIVE SUMMARY ── */
+  .exec-summary {
+    background: var(--navy-dark);
+    color: #fff;
+    padding: 36px var(--pad-x);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .exec-summary .action-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: #bfdbfe;
+    font-style: italic;
+    font-weight: 400;
+    max-width: 820px;
+    line-height: 1.5;
+  }
+  .exec-summary .action-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 10px;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 56px var(--pad-x);
+  }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 64px; scroll-margin-top: 60px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-badge {
+    background: var(--navy);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--navy);
+    font-weight: 400;
+  }
+  .section-action {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    border-left: 3px solid var(--navy);
+    background: var(--navy-10);
+    line-height: 1.6;
+  }
+
+  /* ── CARDS ── */
+  .card-grid { display: grid; gap: 16px; }
+  .card-grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .card-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .card:hover {
+    box-shadow: 0 4px 20px rgba(0,51,102,0.1);
+    transform: translateY(-2px);
+  }
+  .card-accent { border-top: 3px solid var(--navy); }
+  .card-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .card-body { font-size: 13.5px; color: var(--text-muted); line-height: 1.65; }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    line-height: 1.65;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout-icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+  .callout.navy { background: var(--navy-10); border-left: 3px solid var(--navy); color: var(--navy-dark); }
+  .callout.warn { background: var(--warn-bg); border-left: 3px solid var(--warn); color: #92400e; }
+  .callout.correct { background: var(--correct-bg); border-left: 3px solid var(--correct); color: #14532d; }
+  .callout.wrong { background: var(--wrong-bg); border-left: 3px solid var(--wrong); color: #7f1d1d; }
+
+  /* ── KEY NUMBERS ── */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .kpi-item {
+    background: var(--bg-card);
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .kpi-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: var(--navy);
+    font-weight: 400;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .kpi-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* ── ACCORDION ── */
+  .accordion { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .accordion-item { border-bottom: 1px solid var(--border); }
+  .accordion-item:last-child { border-bottom: none; }
+  .accordion-trigger {
+    width: 100%;
+    background: var(--bg-card);
+    border: none;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    transition: background 0.15s;
+  }
+  .accordion-trigger:hover { background: var(--bg); }
+  .accordion-trigger.open { background: var(--navy-10); color: var(--navy); }
+  .accordion-chevron {
+    flex-shrink: 0;
+    width: 16px; height: 16px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.25s;
+    margin-left: 12px;
+  }
+  .accordion-trigger.open .accordion-chevron { transform: rotate(-135deg); }
+  .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    background: var(--bg-card);
+  }
+  .accordion-content.open { max-height: 800px; }
+  .accordion-inner { padding: 0 20px 20px; font-size: 13.5px; color: var(--text-muted); line-height: 1.7; }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-item { position: relative; margin-bottom: 24px; }
+  .timeline-dot {
+    position: absolute;
+    left: -24px;
+    top: 6px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--navy);
+    border: 2px solid var(--bg);
+  }
+  .timeline-date {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+    font-family: 'JetBrains Mono', 'Noto Sans KR', monospace;
+  }
+  .timeline-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .timeline-body { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ── PARTNER BADGES ── */
+  .partner-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+  .partner-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .partner-badge:hover { border-color: var(--navy); box-shadow: 0 2px 8px var(--navy-10); }
+  .partner-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--navy); }
+
+  /* ── WATCHOUT TABLE ── */
+  .watchout-list { display: flex; flex-direction: column; gap: 12px; }
+  .watchout-item {
+    display: flex;
+    gap: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+  .watchout-item:hover { border-color: var(--navy); }
+  .watchout-num {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', 'Noto Sans KR', monospace;
+  }
+  .watchout-content .w-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .watchout-content .w-body { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+
+  /* ── PROGRESS ── */
+  .progress-item { margin-bottom: 14px; }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--navy);
+    border-radius: 3px;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 0;
+  }
+
+  /* ── JOULE FLOW ── */
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+  .flow-box {
+    flex: 1;
+    min-width: 120px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .flow-box.highlight { border-color: var(--navy); background: var(--navy-10); }
+  .flow-box .flow-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--navy); margin-bottom: 4px; }
+  .flow-box .flow-name { font-size: 13px; font-weight: 700; }
+  .flow-box .flow-sub { font-size: 11px; color: var(--text-muted); }
+  .flow-arrow {
+    color: var(--navy);
+    font-size: 20px;
+    flex-shrink: 0;
+    opacity: 0.5;
+  }
+
+  /* ── TABS ── */
+  .tab-group { margin-bottom: 20px; }
+  .tab-buttons { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
+  .tab-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .tab-btn:hover { border-color: var(--navy); color: var(--navy); }
+  .tab-btn.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── IMPLICATION BOX ── */
+  .implication-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .imp-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--navy);
+    border-radius: 6px;
+    padding: 20px;
+  }
+  .imp-item .imp-who {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .imp-item .imp-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .imp-item .imp-body { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--navy-dark);
+    color: rgba(255,255,255,0.5);
+    font-size: 11px;
+    padding: 20px var(--pad-x);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .footer strong { color: rgba(255,255,255,0.8); }
+
+  /* ── UTILITIES ── */
+  ul.bullet-list { padding-left: 20px; }
+  ul.bullet-list li { margin-bottom: 6px; font-size: 13.5px; color: var(--text-muted); line-height: 1.6; }
+  ul.bullet-list li::marker { color: var(--navy); }
+
+  strong { color: var(--text); }
+
+  @media (max-width: 768px) {
+    :root { --pad-x: 20px; }
+    .hero h1 { font-size: 28px; }
+    .card-grid-2, .card-grid-3, .card-grid-4 { grid-template-columns: 1fr; }
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .implication-grid { grid-template-columns: 1fr; }
+    .flow-diagram { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── STICKY NAV ── -->
+<nav class="sticky-nav">
+  <div class="brand">
+    <div class="brand-dot"></div>
+    <span class="brand-label">ASPN Research</span>
+  </div>
+  <div class="nav-tabs">
+    <a href="#overview" class="nav-tab active" onclick="setActiveTab(this)">개요</a>
+    <a href="#autonomous" class="nav-tab" onclick="setActiveTab(this)">자율 엔터프라이즈</a>
+    <a href="#joule" class="nav-tab" onclick="setActiveTab(this)">Joule 혁신</a>
+    <a href="#platform" class="nav-tab" onclick="setActiveTab(this)">AI 플랫폼</a>
+    <a href="#partnerships" class="nav-tab" onclick="setActiveTab(this)">파트너십</a>
+    <a href="#watchouts" class="nav-tab" onclick="setActiveTab(this)">주의사항</a>
+    <a href="#implications" class="nav-tab" onclick="setActiveTab(this)">시사점</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <div class="hero-badge">🔷 SAP Sapphire 2026 · 오를란도</div>
+  <h1>AI가 운영자가 되는 시대,<br><em>Autonomous Enterprise</em>의 시작</h1>
+  <p class="subtitle">SAP CEO Christian Klein이 "SAP 역사상 가장 중요한 발표"로 선언한 자율 엔터프라이즈 전략과 그 이면에 숨겨진 비즈니스 임팩트를 분석합니다.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="label">행사일</span>
+      <span class="value">2026년 5월 · 오를란도, 플로리다</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="label">슬로건</span>
+      <span class="value">"The Beginning of Better"</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="label">핵심 메시지</span>
+      <span class="value">AI 실험 → AI 실행 전환</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="label">보고서 작성</span>
+      <span class="value">ASPN Research Desk</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── EXEC SUMMARY ── -->
+<div class="exec-summary">
+  <div class="action-label">Executive Action Title</div>
+  <div class="action-title">SAP Sapphire 2026은 AI 보조 도구의 시대를 끝내고 AI가 비즈니스 프로세스를 직접 실행하는 'Autonomous Enterprise' 시대를 선언했으며, 고객사는 향후 18~24개월의 로드맵 및 라이선스 전략을 즉시 재검토해야 한다.</div>
+</div>
+
+<!-- ── MAIN ── -->
+<main class="main-content">
+
+  <!-- OVERVIEW -->
+  <section class="section" id="overview">
+    <div class="section-header">
+      <span class="section-badge">01 · 개요</span>
+      <h2 class="section-title">Sapphire 2026 핵심 지표</h2>
+    </div>
+    <div class="section-action">
+      AI 실험(Experimentation)에서 AI 실행(Execution)으로의 패러다임 전환이 공식 선언됨 — 기업들은 파일럿을 넘어 핵심 비즈니스 프로세스에 AI를 직접 내재화하는 단계로 진입해야 한다.
+    </div>
+
+    <div class="kpi-row" style="margin-bottom:24px;">
+      <div class="kpi-item">
+        <div class="kpi-number">200+</div>
+        <div class="kpi-desc">Joule Autonomous Suite<br>내 특화 AI 에이전트 수</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-number">50+</div>
+        <div class="kpi-desc">도메인 특화<br>Joule Assistants 수</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-number">35%</div>
+        <div class="kpi-desc">AI 기반 마이그레이션<br>툴킷 공수 절감 목표</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-number">26</div>
+        <div class="kpi-desc">Industry AI GA<br>적용 산업 수</div>
+      </div>
+    </div>
+
+    <div class="card-grid card-grid-3">
+      <div class="card card-accent">
+        <div class="card-label">빅픽처</div>
+        <div class="card-title">자율 엔터프라이즈(Autonomous Enterprise) 선언</div>
+        <div class="card-body">AI 어시스턴트에서 AI 오퍼레이터로 진화. 인간과 AI 에이전트가 협업하여 핵심 비즈니스 워크플로를 실행하는 새로운 운영 모델을 공식 발표.</div>
+      </div>
+      <div class="card card-accent">
+        <div class="card-label">아키텍처</div>
+        <div class="card-title">SAP Business AI Platform 통합 출시</div>
+        <div class="card-body">SAP BTP, Business Data Cloud, Business AI를 단일 통합 스택으로 통합. Anthropic Claude를 기본 추론 모델로 채택하는 구조적 결정 단행.</div>
+      </div>
+      <div class="card card-accent">
+        <div class="card-label">상용화</div>
+        <div class="card-title">라이선스 모델 소비 기반으로 전환</div>
+        <div class="card-body">시트 기반 → 소비/성과 기반 라이선스 전환 가속. 2030년까지 소비 기반 매출 30% 이상 목표. 2026년까지 Joule Studio 2.0 무료 제공으로 의존성 선점.</div>
+      </div>
+    </div>
+
+    <div class="callout navy" style="margin-top:20px;">
+      <span class="callout-icon">🏛️</span>
+      <div><strong>배경 맥락:</strong> 약 17,000개 기업이 여전히 SAP ECC(구형 ERP)를 사용 중이며, 주류 유지보수 종료 시점은 2027년 12월입니다. SAP은 이번 Sapphire에서 이 강제 마이그레이션 수요를 AI 업셀 기회로 전환하는 전략을 명시적으로 제시했습니다.</div>
+    </div>
+  </section>
+
+  <!-- AUTONOMOUS ENTERPRISE -->
+  <section class="section" id="autonomous">
+    <div class="section-header">
+      <span class="section-badge">02 · 자율 엔터프라이즈</span>
+      <h2 class="section-title">Autonomous Enterprise 전략 구조</h2>
+    </div>
+    <div class="section-action">
+      3개 레이어(Joule Work + Autonomous Suite + Business AI Platform)로 구성된 자율 엔터프라이즈 아키텍처가 발표됨 — 단순 AI 어시스턴트를 넘어 비즈니스 프로세스 실행 주체로 AI를 포지셔닝.
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-box highlight">
+        <div class="flow-label">사용자 레이어</div>
+        <div class="flow-name">Joule Work</div>
+        <div class="flow-sub">Intent-Driven UI<br>Web / Mobile / Desktop</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box highlight">
+        <div class="flow-label">실행 레이어</div>
+        <div class="flow-name">Autonomous Suite</div>
+        <div class="flow-sub">50+ Assistants<br>200+ Agents</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box highlight">
+        <div class="flow-label">플랫폼 레이어</div>
+        <div class="flow-name">Business AI Platform</div>
+        <div class="flow-sub">BTP + BDC + AI Foundation</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">
+        <div class="flow-label">데이터/모델</div>
+        <div class="flow-name">AI Models</div>
+        <div class="flow-sub">Claude / Mistral / Cohere<br>SAP-RPT-1</div>
+      </div>
+    </div>
+
+    <div class="tab-group">
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="switchTab(this, 'tab-finance')">Finance 자율화</button>
+        <button class="tab-btn" onclick="switchTab(this, 'tab-scm')">SCM 자율화</button>
+        <button class="tab-btn" onclick="switchTab(this, 'tab-hr')">HR 자율화</button>
+        <button class="tab-btn" onclick="switchTab(this, 'tab-industry')">Industry AI</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-finance">
+        <div class="card-grid card-grid-2">
+          <div class="card">
+            <div class="card-label">Financial Closing Assistant</div>
+            <div class="card-title">결산 사이클 자동화</div>
+            <div class="card-body">전체 결산 라이프사이클(전표, 발생주의, 분개 검증, 오류 해결, 내부거래 조정)을 AI 에이전트가 오케스트레이션. 결산 사이클 단축 및 마지막 순간 이슈 최소화.</div>
+          </div>
+          <div class="card">
+            <div class="card-label">Financial Planning Assistant</div>
+            <div class="card-title">시나리오 기반 재무계획</div>
+            <div class="card-body">내부/외부 데이터 신호를 실시간 모니터링하여 비즈니스 임팩트를 모델링하고 조치를 추천. 승인된 결정사항을 운영 프로세스에 자동 반영.</div>
+          </div>
+          <div class="card">
+            <div class="card-label">Governance Assistant</div>
+            <div class="card-title">규제 컴플라이언스 자동화</div>
+            <div class="card-body">EU CSRD 등 규제 변화 추적, 리스크 모니터링, 감사 준비 보고서 자동화. CFO, 컴플라이언스 리더, 내부 감사인을 동시 지원.</div>
+          </div>
+          <div class="card">
+            <div class="card-label">Billing / Tax Assistant</div>
+            <div class="card-title">청구·세무 오류 사전 방어</div>
+            <div class="card-body">청구 불일치를 사전 감지하고 인보이스 생성 전 데이터 검증. 세법 변경 자동 모니터링 및 e-인보이싱 컴플라이언스 유지.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-scm">
+        <div class="callout navy">
+          <span class="callout-icon">🔗</span>
+          <div><strong>SAP Autonomous Supply Chain:</strong> 공급망 전반에 AI 에이전트가 배치되어 수요 예측, 조달 최적화, 물류 실행을 자율적으로 수행. 실시간 외부 교란 신호를 처리하여 즉각적인 조정 조치를 실행합니다.</div>
+        </div>
+        <div class="card-grid card-grid-2" style="margin-top:16px;">
+          <div class="card">
+            <div class="card-label">Procurement Agent</div>
+            <div class="card-title">조달 프로세스 자율화</div>
+            <div class="card-body">공급업체 리스크 모니터링, 계약 조건 검토, 자동 발주 생성까지 조달 워크플로 전 구간을 AI가 감지하고 실행.</div>
+          </div>
+          <div class="card">
+            <div class="card-label">Logistics Execution Agent</div>
+            <div class="card-title">물류 실행 최적화</div>
+            <div class="card-body">운송 경로 최적화, 배송 예외 처리, 창고 운영 자동화. 실시간 공급망 가시성과 연결하여 선제적 조치를 수행.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-hr">
+        <div class="card-grid card-grid-2">
+          <div class="card">
+            <div class="card-label">HR Assistant</div>
+            <div class="card-title">인재 관리 자율화</div>
+            <div class="card-body">채용부터 온보딩, 성과 관리, 커리어 개발까지 HR 프로세스 전반을 Joule Assistants가 지원. 역할별 맞춤형 AI 경험 제공.</div>
+          </div>
+          <div class="card">
+            <div class="card-label">Workforce Intelligence</div>
+            <div class="card-title">인력 인텔리전스</div>
+            <div class="card-body">실시간 인력 데이터를 기반으로 스킬 갭 분석, 인력 배치 최적화, 리텐션 리스크 예측을 AI가 수행.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-industry">
+        <div class="section-action">
+          26개 산업에 GA(일반 제공) — Industry AI는 맥락이 핵심: 규제, 데이터 모델, KPI가 산업별로 상이하기 때문에 범용 AI로는 실질적 가치 창출 불가.
+        </div>
+        <div class="card-grid card-grid-3">
+          <div class="card">
+            <div class="card-label">소비재 · 리테일</div>
+            <div class="card-title">통합 커머스 + AI 매장 컨시어지</div>
+            <div class="card-body">H&M 라이브 키노트 데모. 매출 성장 관리, AI 기반 매장 내 고객 지원 시나리오.</div>
+          </div>
+          <div class="card">
+            <div class="card-label">석유 · 광업 · 화학</div>
+            <div class="card-title">자산 집약적 시나리오 자동화</div>
+            <div class="card-body">Fieldglass 기반 하도급업체 라이프사이클 관리, 자격증 검증, 시간 추적 자동화.</div>
+          </div>
+          <div class="card">
+            <div class="card-label">엔지니어링 · 건설</div>
+            <div class="card-title">프로젝트 · 공급망 통합 에이전트</div>
+            <div class="card-body">프로젝트 및 리소스 관리 에이전트와 공급망 통합, 건설 현장 실시간 진척 관리.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOULE -->
+  <section class="section" id="joule">
+    <div class="section-header">
+      <span class="section-badge">03 · Joule 혁신</span>
+      <h2 class="section-title">Joule 플랫폼 주요 업데이트</h2>
+    </div>
+    <div class="section-action">
+      Joule Work는 단순 챗봇 인터페이스를 탈피하여 사용자 의도를 해석하고 SAP/비SAP 시스템 전반에서 복잡한 비즈니스 목표를 자율 실행하는 통합 작업공간으로 진화.
+    </div>
+
+    <div class="accordion">
+      <div class="accordion-item">
+        <button class="accordion-trigger" onclick="toggleAccordion(this)">
+          Joule Work — Intent-Driven Dynamic Workspace
+          <span class="accordion-chevron"></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p>사용자가 자연어로 목표를 입력하면 Joule Assistants가 적절한 Joule Agents 팀을 조율하여 실시간으로 맞춤화된 작업 공간을 생성합니다. 수작업 조정과 다중 앱 전환을 제거하여 결정에서 실행까지의 사이클을 단축합니다.</p>
+            <div class="callout correct" style="margin-top:12px;">
+              <span class="callout-icon">✅</span>
+              <div><strong>현재 가용성:</strong> Joule Work 웹 클라이언트는 Early Adopter Care 프로그램으로 제공 중. 데스크탑 앱 EAC는 Q2 2026 예정. 모바일 앱(SAP Mobile Start 진화)은 일반 제공 중. 전체 GA는 H2 2026 계획.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-trigger" onclick="toggleAccordion(this)">
+          Joule Studio 2.0 — 에이전트 개발 플랫폼
+          <span class="accordion-chevron"></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p>2026년 연말까지 <strong>설계 타임 접근권 및 에이전트 런타임을 무료 제공</strong>. 키노트 라이브 데모에서 프로세스 컨설팅 에이전트가 약 <strong>$2,400만 마진 임팩트</strong>를 가진 가격·구매 이상 징후를 발견하고 자동으로 PRD, 기술 사양, 워크플로를 생성했습니다.</p>
+            <p style="margin-top:10px;">Joule Studio 2.0은 <strong>모델 불가지론적(Model-Agnostic)</strong> 아키텍처를 채택 — MCP(Model Context Protocol) 및 A2A(Agent-to-Agent) 프로토콜을 지원하여 서드파티 에이전트와의 상호운용성을 확보합니다.</p>
+            <div class="callout warn" style="margin-top:12px;">
+              <span class="callout-icon">⚠️</span>
+              <div><strong>주의:</strong> 2026년 무료 기간은 의존성 확보를 위한 전략적 선택. 2027년 이후 유료 전환 시 협상력이 현저히 저하됩니다. 지금 다운스트림 가격 조건을 협상해야 합니다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-trigger" onclick="toggleAccordion(this)">
+          LiveKit 파트너십 — 보이스 AI 통합
+          <span class="accordion-chevron"></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p>LiveKit와의 파트너십을 통해 Joule에 실시간 인텔리전트 보이스 기능을 추가. 키보드 앞에서 작업하지 않는 역할(현장 작업자, 이동 중인 영업사원 등)까지 Joule 접근 범위를 확장합니다.</p>
+            <p style="margin-top:10px;">LiveKit 음성 통합은 Joule Work 모바일 앱에서 Early Adopter Care 프로그램으로 현재 제공 중. GA는 H2 2026 예정.</p>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-trigger" onclick="toggleAccordion(this)">
+          SAP AI Agent Hub — 에이전트 거버넌스 플랫폼
+          <span class="accordion-chevron"></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p>기업 전체의 AI 에이전트를 발견, 인벤토리 관리, 거버넌스, 평가할 수 있는 중앙 허브. AI 에이전트가 실제 워크플로를 트리거하고 시스템을 업데이트하는 단계에서 <strong>리스크 프로파일이 달라지므로</strong> 거버넌스 프레임워크 구축이 필수입니다.</p>
+            <div class="callout navy" style="margin-top:12px;">
+              <span class="callout-icon">🛡️</span>
+              <div><strong>거버넌스 필수 요소:</strong> 소유권(Ownership), 모니터링(Monitoring), 감사 가능성(Auditability), 인간 감독(Human Oversight), 명확한 의사결정 권한(Decision Rights)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATFORM -->
+  <section class="section" id="platform">
+    <div class="section-header">
+      <span class="section-badge">04 · AI 플랫폼</span>
+      <h2 class="section-title">SAP Business AI Platform 아키텍처</h2>
+    </div>
+    <div class="section-action">
+      SAP BTP + Business Data Cloud + Business AI의 통합 단일 스택 출시 — 엔터프라이즈 AI의 실행 기반이 되는 플랫폼 레이어로, 데이터 거버넌스와 모델 유연성을 동시에 확보하는 구조.
+    </div>
+
+    <div class="card-grid card-grid-2" style="margin-bottom:20px;">
+      <div class="card card-accent">
+        <div class="card-label">파운데이션 모델 전략</div>
+        <div class="card-title">멀티모델 아키텍처 — "모델 불가지론"</div>
+        <div class="card-body">
+          <ul class="bullet-list">
+            <li><strong>Anthropic Claude</strong> — 주요 추론 및 에이전틱 모델</li>
+            <li><strong>SAP-RPT-1</strong> — SAP 자체 개발 테이블형 파운데이션 모델 (금일 출시)</li>
+            <li><strong>Mistral AI / Cohere</strong> — 규제 산업 대상 소버린 AI 옵션</li>
+            <li><strong>Prior Labs</strong> — 비SAP 테이블 데이터용 (Q2~Q3 2026 인수 완결 예정)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card card-accent">
+        <div class="card-label">RISE / GROW 업데이트</div>
+        <div class="card-title">AI 패키지 재편 및 마이그레이션 지원 강화</div>
+        <div class="card-body">
+          <ul class="bullet-list">
+            <li><strong>RISE with SAP:</strong> 첫 1년 내 Joule Assistants 3개 활성화 보장</li>
+            <li><strong>SAP GROW:</strong> 온보딩 즉시 20+ AI 어시스턴트 전체 제공</li>
+            <li><strong>신규 마이그레이션 툴킷:</strong> 에이전트 기반, 공수 35% 절감 목표</li>
+            <li><strong>파트너 지원 펀드:</strong> 1억 유로 규모 AI 전환 지원 기금 조성</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px;">SAP ECC → S/4HANA Cloud 마이그레이션 압력 지표</div>
+      <div class="progress-item">
+        <div class="progress-label"><span>ECC 고객 마이그레이션 시급성 (2027년 12월 EOM)</span><span>HIGH</span></div>
+        <div class="progress-bar"><div class="progress-fill" data-width="88"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>Joule 의존성 구축 속도 (2026 무료 기간)</span><span>MED-HIGH</span></div>
+        <div class="progress-bar"><div class="progress-fill" data-width="72"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>Industry AI Production 적용 성숙도</span><span>MED</span></div>
+        <div class="progress-bar"><div class="progress-fill" data-width="45"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>소비 기반 라이선스 전환 목표 (2030년 30%)</span><span>PLANNED</span></div>
+        <div class="progress-bar"><div class="progress-fill" data-width="30"></div></div>
+      </div>
+    </div>
+
+    <!-- GA TIMELINE -->
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:24px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:20px;color:var(--navy);">주요 제품 출시 타임라인</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">NOW (2026.05)</div>
+          <div class="timeline-title">Joule Work EAC · SAP-RPT-1 출시 · Industry AI 26개 산업 GA</div>
+          <div class="timeline-body">Joule Work 웹 클라이언트 Early Adopter Care 프로그램 시작. SAP 자체 테이블형 파운데이션 모델 출시. 26개 산업 Industry AI 일반 제공.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">Q2 2026</div>
+          <div class="timeline-title">Joule Work 데스크탑 EAC · Joule Studio 2.0 초기 롤아웃</div>
+          <div class="timeline-body">데스크탑 앱 EAC 시작. Joule Studio 2.0 첫 번째 배포 물결 (2026년 6월~). Prior Labs 인수 완결 예정.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">Q3 2026</div>
+          <div class="timeline-title">SAP Autonomous Suite 주요 기능 GA 계획</div>
+          <div class="timeline-body">Finance, SCM, HR 도메인 Joule Assistants 주요 GA. LiveKit 음성 통합 확대.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background:var(--text-muted)"></div>
+          <div class="timeline-date">H2 2026</div>
+          <div class="timeline-title">Joule Work 전체 GA · A2A 기능 GA</div>
+          <div class="timeline-body">Joule Work 웹/데스크탑/모바일 전체 일반 제공. Agent-to-Agent 상호운용성 GA. Joule Studio 2.0 GA.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background:var(--text-muted)"></div>
+          <div class="timeline-date">2027~</div>
+          <div class="timeline-title">유료 전환 · ECC 고객 마이그레이션 마감 압력</div>
+          <div class="timeline-body">Joule Studio 무료 기간 종료 및 유료 전환. ECC 주류 지원 종료(2027.12)에 따른 S/4HANA Cloud 강제 마이그레이션 가속.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNERSHIPS -->
+  <section class="section" id="partnerships">
+    <div class="section-header">
+      <span class="section-badge">05 · 파트너십</span>
+      <h2 class="section-title">전략적 파트너십 에코시스템</h2>
+    </div>
+    <div class="section-action">
+      SAP-Anthropic 파트너십이 기업 AI 생태계를 Microsoft-OpenAI 진영과 SAP-Anthropic 진영으로 양분하는 구조적 전환점이 됨 — Salesforce, Workday, Oracle은 멀티모델 중립 전략 유지.
+    </div>
+
+    <div class="callout navy" style="margin-bottom:24px;">
+      <span class="callout-icon">🤝</span>
+      <div><strong>Forrester 평가:</strong> Claude를 앵커 모델로 채택함으로써 Microsoft-OpenAI 대 SAP-Anthropic의 두 진영 생태계 분기가 발생. 파트너십 안정성과 Prior Labs 인수 완결이 포트폴리오 전략의 핵심 변수.</div>
+    </div>
+
+    <div class="card-grid card-grid-2" style="margin-bottom:20px;">
+      <div class="card card-accent" style="border-top-color:#5b21b6">
+        <div class="card-label" style="color:#5b21b6">🤖 Anthropic (핵심 파트너)</div>
+        <div class="card-title">Claude — 기본 추론·에이전틱 모델</div>
+        <div class="card-body">단순 API 제공이 아닌 깊은 통합. Finance, HR, Procurement, SCM 전반에 Claude 에이전트 내재화. 공공, 의료, 교육, 생명과학, 유틸리티 분야 맞춤형 에이전트 공동 개발 계획. SAP Business AI Platform에서 컨텍스트 기반 추론 수행.</div>
+      </div>
+      <div class="card card-accent" style="border-top-color:#f97316">
+        <div class="card-label" style="color:#f97316">☁️ Amazon Web Services</div>
+        <div class="card-title">제로 카피 데이터 통합</div>
+        <div class="card-body">SAP Business Data Cloud와 Amazon Athena 간 제로 카피 데이터 공유로 데이터 이동 지연·복잡성 제거. RISE with SAP 클라우드 네이티브 ERP 배포를 위한 핵심 인프라 파트너. 생성형 AI 개발 및 공동 혁신 강화.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">🪟 Microsoft Azure</div>
+        <div class="card-title">Azure 기반 RISE 강화 + 소버린 클라우드</div>
+        <div class="card-body">RISE with SAP on Azure 지원 확대. SAP Sovereign Cloud on Azure 통해 데이터 거주지·보안·거버넌스를 타협 없이 유지. 에이전트 간 상호운용성(A2A) 강화.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">🔵 Google Cloud</div>
+        <div class="card-title">양방향 A2A 상호운용성</div>
+        <div class="card-body">Joule 에이전트와 외부 AI 시스템 간 양방향 에이전트-투-에이전트 상호운용성. 개방형 AI 네트워크 구축의 핵심 파트너.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">🟢 NVIDIA</div>
+        <div class="card-title">에이전트 실행 보안 런타임</div>
+        <div class="card-body">NVIDIA OpenShell 기반의 안전한 에이전트 실행 환경. 거버넌스·컨트롤이 보장된 에이전트 런타임 인프라 제공.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">🔶 Palantir</div>
+        <div class="card-title">복잡 마이그레이션 시나리오</div>
+        <div class="card-body">Palantir AIP 플랫폼과 SAP 에이전트 기반 전환 툴체인 결합. 가장 복잡한 마이그레이션 시나리오 처리. Accenture와 함께 복잡 마이그레이션 전문 파트너로 지정.</div>
+      </div>
+    </div>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:20px;">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--navy);margin-bottom:12px;">추가 파트너 (소버린 AI / 모델 다양성)</div>
+      <div class="partner-grid">
+        <div class="partner-badge"><div class="dot"></div>Mistral AI — 소버린 AI 옵션</div>
+        <div class="partner-badge"><div class="dot"></div>Cohere North — 소버린 AI 옵션</div>
+        <div class="partner-badge"><div class="dot"></div>Prior Labs — 비SAP 테이블 데이터 (인수 예정)</div>
+        <div class="partner-badge"><div class="dot"></div>LiveKit — 실시간 음성 AI</div>
+        <div class="partner-badge"><div class="dot"></div>Accenture — 복잡 마이그레이션</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WATCHOUTS -->
+  <section class="section" id="watchouts">
+    <div class="section-header">
+      <span class="section-badge">06 · 주의사항</span>
+      <h2 class="section-title">고객 관점 5대 Watchout</h2>
+    </div>
+    <div class="section-action">
+      키노트 발표 이면에는 구매·배포·과금 방식을 재편하는 SAP의 전략적 의도가 있음 — 장밋빛 AI 비전에 매몰되기 전에 이하 5가지 리스크를 냉철하게 검토해야 한다.
+    </div>
+
+    <div class="watchout-list">
+      <div class="watchout-item">
+        <div class="watchout-num">01</div>
+        <div class="watchout-content">
+          <div class="w-title">AI 비전이 현실보다 앞서 있다 — 측정 가능한 성과를 요구하라</div>
+          <div class="w-body">SAP 스스로 AI 야망이 대규모 측정 가능한 성과를 제공하는 능력보다 앞서 있음을 인정. 대부분의 고객은 아직 파일럿 단계. 'Autonomous Enterprise'는 검증된 운영 모델이 아닌 전략적 베팅. 고객은 SAP에게 구체적 Use Case와 ROI 근거를 요구해야 한다.</div>
+        </div>
+      </div>
+      <div class="watchout-item">
+        <div class="watchout-num">02</div>
+        <div class="watchout-content">
+          <div class="w-title">2026년 무료 ≠ 공짜 — 지금 2027년 이후 가격 조건을 협상하라</div>
+          <div class="w-body">Joule Studio 2.0 무료 제공은 의존성 확보 전략. SAP의 실질적 클라우드 매출 가속은 2027년부터 시작될 예정. 지금 워크플로와 에이전트를 Joule에 구축하면 이후 협상력이 급락. 유료 전환 전 다운스트림 가격 조건을 반드시 계약에 명시해야 한다.</div>
+        </div>
+      </div>
+      <div class="watchout-item">
+        <div class="watchout-num">03</div>
+        <div class="watchout-content">
+          <div class="w-title">라이선스 모델이 소비·성과 기반으로 전환 — 비용 예측 가능성 저하</div>
+          <div class="w-body">2030년까지 소비 기반 매출 30% 이상 목표. SAP 영업 보상 체계도 초기 계약 체결이 아닌 고객 소비 증가로 재편. 성과 기반 가격 모델(AI 효율로 생성된 절감액의 일부를 SAP이 가져가는 구조)도 초기 개념 발표. 향후 예산 예측 가능성과 계약 구조를 사전에 명확히 해야 한다.</div>
+        </div>
+      </div>
+      <div class="watchout-item">
+        <div class="watchout-num">04</div>
+        <div class="watchout-content">
+          <div class="w-title">에이전트 거버넌스 없이 확장하면 감사·컴플라이언스 리스크 폭증</div>
+          <div class="w-body">AI 에이전트가 워크플로를 트리거하고 시스템을 업데이트하기 시작하면 리스크 프로파일이 질적으로 변화. 거버넌스 없는 에이전트 확장은 감사 추적 불가, 컴플라이언스 위반, 오작동 대응 불능으로 이어질 수 있음. 소유권, 모니터링, 감사 가능성, 인간 감독, 의사결정 권한 체계 구축이 선행되어야 한다.</div>
+        </div>
+      </div>
+      <div class="watchout-item">
+        <div class="watchout-num">05</div>
+        <div class="watchout-content">
+          <div class="w-title">Clean Core와 데이터 기반 없이는 AI 에이전트가 실패한다</div>
+          <div class="w-body">AI 에이전트가 올바른 추론을 하려면 신뢰할 수 있는 데이터 기반이 필수. SAP은 Sapphire 2026에서 Clean Core와 AI 도입 준비도의 연결고리를 명시적으로 강화. 커스터마이제이션·통합·ABAP 수정의 Clean Core 원칙 대비 정비 없이 에이전트를 배포하면 Garbage In, Garbage Out 문제가 확대재생산된다.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPLICATIONS -->
+  <section class="section" id="implications">
+    <div class="section-header">
+      <span class="section-badge">07 · 시사점</span>
+      <h2 class="section-title">역할별 전략적 시사점 및 90일 액션</h2>
+    </div>
+    <div class="section-action">
+      Sapphire 2026의 발표는 로드맵 공지가 아닌 즉각적 행동 촉구 — IT 리더, SAP 컨설턴트, CFO는 각자의 관점에서 향후 90일 내 구체적 조치를 취해야 한다.
+    </div>
+
+    <div class="implication-grid">
+      <div class="imp-item">
+        <div class="imp-who">CIO / IT 리더</div>
+        <div class="imp-title">AI 준비도 진단부터 시작</div>
+        <div class="imp-body">
+          <ul class="bullet-list">
+            <li>Clean Core 준비도 감사 — 커스터마이제이션 전수조사 및 우선순위 정비</li>
+            <li>데이터 자산 평가 — BDC 통합을 위한 마스터 데이터 품질·거버넌스 성숙도 점검</li>
+            <li>ECC 마이그레이션 로드맵 확정 — 2027년 12월 EOM 전 전략 수립</li>
+            <li>AI 에이전트 거버넌스 프레임워크 초안 작성</li>
+          </ul>
+        </div>
+      </div>
+      <div class="imp-item">
+        <div class="imp-who">SAP 컨설턴트 / 파트너</div>
+        <div class="imp-title">에이전트 전문성 확보가 차별화 핵심</div>
+        <div class="imp-body">
+          <ul class="bullet-list">
+            <li>Joule Studio 2.0 무료 기간 적극 활용하여 에이전트 개발 역량 선점</li>
+            <li>MCP / A2A 프로토콜 이해 및 적용 사례 개발</li>
+            <li>고객 AI Use Case 파이프라인 발굴 — 높은 비즈니스 가치, 반복 가능, 데이터 준비 완료 순서</li>
+            <li>Industry AI 전문 산업 버티컬화 강화</li>
+          </ul>
+        </div>
+      </div>
+      <div class="imp-item">
+        <div class="imp-who">CFO / 구매 의사결정자</div>
+        <div class="imp-title">계약 구조 재검토가 최우선</div>
+        <div class="imp-body">
+          <ul class="bullet-list">
+            <li>Joule Studio 무료 기간 내 2027년 이후 가격 조건 계약 확보</li>
+            <li>소비 기반 모델 도입 시 비용 상한선(Cap) 협상</li>
+            <li>성과 기반 가격 모델 조건 명확화 요구</li>
+            <li>AI ROI 측정 기준 및 책임 구조 SAP과 공동 정의</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout correct" style="margin-top:24px;">
+      <span class="callout-icon">🎯</span>
+      <div><strong>결론적 관점:</strong> Sapphire 2026은 SAP이 소프트웨어 회사에서 Business AI 회사로 전환을 공식 선언한 역사적 행사입니다. AI 에이전트가 실제로 비즈니스 프로세스를 실행하는 Autonomous Enterprise는 기술적으로 실현 가능한 방향이지만, 고객 입장에서는 데이터 기반 정비, 거버넌스 체계 구축, 라이선스 전략 재검토를 먼저 완료하지 않으면 화려한 키노트 발표가 실질적 가치로 이어지지 않을 것입니다.</div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div><strong>ASPN Research Desk</strong> · SAP Sapphire 2026 심층 분석 보고서</div>
+  <div>출처: SAP.com, SAP News Center, UpperEdge, Forrester, Clarkston Consulting, Talan, TNW · 2026년 6월 작성</div>
+  <div>Confidential — Internal Use Only</div>
+</footer>
+
+<script>
+  // ── NAV ACTIVE ──
+  function setActiveTab(el) {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Scroll-spy
+  const sections = document.querySelectorAll('.section');
+  const navLinks = document.querySelectorAll('.nav-tab');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + entry.target.id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }, { threshold: 0.3, rootMargin: '-60px 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // ── ACCORDION ──
+  function toggleAccordion(trigger) {
+    const isOpen = trigger.classList.contains('open');
+    document.querySelectorAll('.accordion-trigger.open').forEach(t => {
+      t.classList.remove('open');
+      t.nextElementSibling.classList.remove('open');
+    });
+    if (!isOpen) {
+      trigger.classList.add('open');
+      trigger.nextElementSibling.classList.add('open');
+    }
+  }
+
+  // ── TABS ──
+  function switchTab(btn, panelId) {
+    const group = btn.closest('.tab-group');
+    group.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    group.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
+  }
+
+  // ── PROGRESS BARS (animate on scroll) ──
+  const progressObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.progress-fill').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
+        });
+        progressObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll('.section').forEach(s => progressObserver.observe(s));
+</script>
+</body>
+</html>
