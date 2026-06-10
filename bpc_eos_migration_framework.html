@@ -492,7 +492,7 @@ html, body {
             <div class="sec-label" style="color:rgba(255,255,255,0.45);">핵심 결론 3줄</div>
             <ul class="exec-points">
               <li>
-                <strong>전환 착수는 지금이 마지막 기회입니다.</strong> BPC Mainstream 지원이 2026년 말 종료되며, Extended 지원도 2027년에 만료됩니다. 현재(2026년 6월)는 이미 의사결정 마지노선을 넘긴 시점으로, 지금 착수하지 않으면 Extended 종료 전 안정 가동이 어렵습니다.
+                <strong>버전에 따라 긴박감이 다릅니다 — 그러나 둘 다 지금 결정해야 합니다.</strong> MS 버전 사용 기업은 Mainstream이 2026년 6월 30일 종료(Extended 없음)되어 즉시 전환이 필요합니다. NW 버전 사용 기업은 Mainstream이 2027년 12월 31일까지이나, IFRS 18 의무 적용(2027년)과 전환 리드타임을 감안하면 지금이 착수 시점입니다.
               </li>
               <li>
                 <strong>GR 전환이 유일한 정답은 아닙니다.</strong> 기업 규모·복잡도·기존 커스터마이징 수준에 따라 최적 경로가 다릅니다. 이 자료는 선택지 전체를 중립적으로 제시하고, 귀사에 맞는 경로를 스스로 확인할 수 있도록 설계되었습니다.
@@ -505,37 +505,67 @@ html, body {
 
           <div class="gap-14"></div>
 
-          <div class="timeline-wrap">
-            <div class="sec-label">BPC 지원 종료 타임라인</div>
-            <div class="tl-track">
-              <div class="tl-item">
-                <div class="tl-dot now"></div>
-                <div class="tl-body">
-                  <div class="tl-year">2026.06</div>
-                  <div class="tl-desc w">현재 (착수 시점)</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div class="timeline-wrap" style="border-left:3px solid #c0392b;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div class="sec-label" style="margin-bottom:0;">BPC for Microsoft (MS 버전)</div>
+                <span style="font-size:9px;font-weight:700;background:#c0392b;color:#fff;padding:2px 8px;border-radius:2px;letter-spacing:0.06em;">즉시 전환 필요</span>
+              </div>
+              <div class="tl-track">
+                <div class="tl-item">
+                  <div class="tl-dot now"></div>
+                  <div class="tl-body">
+                    <div class="tl-year">2026.06</div>
+                    <div class="tl-desc w">현재</div>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-dot end"></div>
+                  <div class="tl-body">
+                    <div class="tl-year">2026.06.30</div>
+                    <div class="tl-desc d">Mainstream 종료</div>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-dot after" style="background:#ccc;"></div>
+                  <div class="tl-body">
+                    <div class="tl-year">Extended</div>
+                    <div class="tl-desc">N/A — 없음</div>
+                  </div>
                 </div>
               </div>
-              <div class="tl-item">
-                <div class="tl-dot ms"></div>
-                <div class="tl-body">
-                  <div class="tl-year">2026 말</div>
-                  <div class="tl-desc w">Mainstream 종료 임박</div>
+              <div style="margin-top:8px;font-size:10px;color:#c0392b;font-weight:600;">⚠ Mainstream이 오늘(2026.06.30) 종료. Extended 지원 없음 — 즉시 전환 착수 필요</div>
+            </div>
+
+            <div class="timeline-wrap" style="border-left:3px solid var(--navy);">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <div class="sec-label" style="margin-bottom:0;">BPC for SAP NetWeaver (NW 버전)</div>
+                <span style="font-size:9px;font-weight:700;background:var(--navy);color:#fff;padding:2px 8px;border-radius:2px;letter-spacing:0.06em;">전략적 전환 시점</span>
+              </div>
+              <div class="tl-track">
+                <div class="tl-item">
+                  <div class="tl-dot now"></div>
+                  <div class="tl-body">
+                    <div class="tl-year">2026.06</div>
+                    <div class="tl-desc w">현재</div>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-dot ms"></div>
+                  <div class="tl-body">
+                    <div class="tl-year">2027.12.31</div>
+                    <div class="tl-desc w">Mainstream 종료</div>
+                  </div>
+                </div>
+                <div class="tl-item">
+                  <div class="tl-dot end"></div>
+                  <div class="tl-body">
+                    <div class="tl-year">2030.12.31</div>
+                    <div class="tl-desc d">Extended 종료</div>
+                  </div>
                 </div>
               </div>
-              <div class="tl-item">
-                <div class="tl-dot end"></div>
-                <div class="tl-body">
-                  <div class="tl-year">2027</div>
-                  <div class="tl-desc d">Extended 종료</div>
-                </div>
-              </div>
-              <div class="tl-item">
-                <div class="tl-dot after"></div>
-                <div class="tl-body">
-                  <div class="tl-year">2028~</div>
-                  <div class="tl-desc">보안 패치 없음</div>
-                </div>
-              </div>
+              <div style="margin-top:8px;font-size:10px;color:var(--navy);font-weight:600;">Mainstream까지 약 18개월. IFRS 18(2027) 대응과 묶어 지금이 최적의 전환 준비 시점</div>
             </div>
           </div>
         </div>
@@ -583,58 +613,57 @@ html, body {
     <div class="tab-panel" id="t2">
       <div class="two-col">
         <div style="display:flex;flex-direction:column;gap:14px;">
-          <div class="card">
-            <div class="sec-label">SAP BPC 지원 종료 일정</div>
-            <div class="sec-title">지금(2026년 6월)이 전환 착수의 실질적 마지막 시점입니다</div>
-            <div class="body-text">
-              SAP BPC(Business Planning and Consolidation)의 Mainstream 지원은 <strong>2026년 말</strong> 종료가 임박하였으며, Extended 지원은 <strong>2027년</strong>에 만료됩니다. 
-              현재(2026년 6월) 기준으로 Mainstream EOS까지 불과 수개월이 남았습니다. 지원 종료 이후 <strong>보안 패치 제공이 중단</strong>되어 운영 리스크가 즉시 발생합니다.
+          <!-- MS 버전 -->
+          <div class="card" style="border-left:4px solid #c0392b;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <div class="sec-label" style="margin-bottom:0;">BPC 10.1 for Microsoft</div>
+              <span style="font-size:9px;font-weight:700;background:#c0392b;color:#fff;padding:2px 8px;border-radius:2px;letter-spacing:0.06em;">즉시 전환 필요</span>
             </div>
-            <div class="gap-14"></div>
-            <div class="timeline-wrap">
-              <div class="tl-track">
-                <div class="tl-item">
-                  <div class="tl-dot now"></div>
-                  <div class="tl-body">
-                    <div class="tl-year">2026.06</div>
-                    <div class="tl-desc w">현재 (착수 시점)</div>
-                </div>
-                <div class="tl-item">
-                  <div class="tl-dot ms"></div>
-                  <div class="tl-body">
-                    <div class="tl-year">2026 말</div>
-                    <div class="tl-desc w">Mainstream 종료 임박</div>
-                </div>
-                <div class="tl-item">
-                  <div class="tl-dot end"></div>
-                  <div class="tl-body">
-                    <div class="tl-year">2027</div>
-                    <div class="tl-desc d">Extended 종료</div>
-                  </div>
-                </div>
-                <div class="tl-item">
-                  <div class="tl-dot after"></div>
-                  <div class="tl-body">
-                    <div class="tl-year">2028~</div>
-                    <div class="tl-desc">패치 없음</div>
-                  </div>
-                </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+              <div style="background:#FFF0E6;border-radius:3px;padding:10px 12px;">
+                <div style="font-size:9px;font-weight:700;color:var(--warn);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">Mainstream 종료</div>
+                <div style="font-size:16px;font-weight:700;color:#c0392b;">2026.06.30</div>
+                <div style="font-size:10px;color:var(--warn);font-weight:600;margin-top:2px;">오늘이 마지노선</div>
               </div>
+              <div style="background:var(--bg-secondary);border-radius:3px;padding:10px 12px;">
+                <div style="font-size:9px;font-weight:700;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">Extended 종료</div>
+                <div style="font-size:16px;font-weight:700;color:var(--text-muted);">N/A</div>
+                <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Extended 지원 없음</div>
+              </div>
+            </div>
+            <div class="callout" style="margin:0;">
+              Mainstream 종료 후 <strong>Extended 없이 완전 종료</strong>됩니다. BPC for Microsoft 사용 기업은 지금 당장 전환 착수가 필요합니다.
             </div>
           </div>
 
-          <div class="callout">
-            <strong>"Extended 지원 기간에 연장하면 되지 않나요?"</strong> — 많이 받는 질문입니다. 
-            Extended 기간에는 Critical 패치만 제한적으로 제공됩니다. 
-            SAP 파트너의 BPC 전문 인력이 빠르게 감소하고 있어 운영 지원 비용도 상승합니다. 
-            <strong>연장은 '시간을 사는' 것이지, 문제를 해결하지 않습니다.</strong>
+          <!-- NW 버전 -->
+          <div class="card" style="border-left:4px solid var(--navy);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <div class="sec-label" style="margin-bottom:0;">BPC 10.1 for SAP NetWeaver</div>
+              <span style="font-size:9px;font-weight:700;background:var(--navy);color:#fff;padding:2px 8px;border-radius:2px;letter-spacing:0.06em;">전략적 전환 시점</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+              <div style="background:#FFF0E6;border-radius:3px;padding:10px 12px;">
+                <div style="font-size:9px;font-weight:700;color:var(--warn);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">Mainstream 종료</div>
+                <div style="font-size:16px;font-weight:700;color:var(--warn);">2027.12.31</div>
+                <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">약 18개월 남음</div>
+              </div>
+              <div style="background:var(--warn-light);border-radius:3px;padding:10px 12px;">
+                <div style="font-size:9px;font-weight:700;color:var(--warn);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">Extended 종료</div>
+                <div style="font-size:16px;font-weight:700;color:var(--warn);">2030.12.31</div>
+                <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">약 4.5년 남음</div>
+              </div>
+            </div>
+            <div class="callout navy" style="margin:0;">
+              Extended까지 시간이 있지만 <strong>IFRS 18 의무 적용(2027년)과 전환 리드타임(8~18개월)을 감안하면 지금이 착수 최적 시점</strong>입니다.
+            </div>
           </div>
         </div>
 
         <div style="display:flex;flex-direction:column;gap:14px;">
           <div class="card">
             <div class="sec-label">전환 프로젝트 리드타임 역산</div>
-            <div class="sec-title">지금 착수해야 Extended EOS(2027년) 전 안정 가동이 가능합니다</div>
+            <div class="sec-title">버전별 전환 리드타임 역산</div>
             <div class="lt-row">
               <div class="lt-cell">
                 <div class="lt-label">GR 전환 (Full)</div>
@@ -654,9 +683,11 @@ html, body {
             </div>
             <div class="gap-10"></div>
             <div style="font-size:11px;color:var(--text-muted);line-height:1.6;">
-              2027년 Extended EOS 이전 안정적 가동을 목표로 하면, 
-              GR Full(12~18개월)은 <strong style="color:var(--warn);">지금 즉시 착수</strong>해도 빠듯하며, 
-              GR Core(8~12개월)도 <strong style="color:var(--warn);">2026년 3분기 착수</strong>가 마지노선입니다.
+              <span style="font-weight:700;color:#c0392b;">MS 버전:</span> Mainstream이 오늘(2026.06.30) 종료, Extended 없음.
+              GR Full 착수 시 <strong style="color:#c0392b;">완료 2027년 말~2028년 초</strong> 예상.
+              <strong style="color:#c0392b;">지금 즉시 착수</strong>가 유일한 선택지입니다.<br><br>
+              <span style="font-weight:700;color:var(--navy);">NW 버전:</span> Mainstream 2027.12.31 종료.
+              GR Full(12~18개월) 기준 <strong style="color:var(--warn);">2026년 하반기 착수</strong>가 Mainstream 종료 전 안정 가동 마지노선입니다.
             </div>
           </div>
 
@@ -673,7 +704,7 @@ html, body {
               </div>
               <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;background:var(--warn-light);border-radius:3px;">
                 <span style="font-size:12px;">📋</span>
-                <span style="font-size:12px;color:var(--text-secondary);">IFRS 18 대응 불가 → <strong style="color:var(--warn);">2027년 K-IFRS 18 의무 적용 미충족</strong></span>
+                <span style="font-size:12px;color:var(--text-secondary);">IFRS 18 대응 불가 → <strong style="color:var(--warn);">2027년 K-IFRS 18 의무 적용 미충족 (NW 버전도 동일 리스크)</strong></span>
               </div>
               <div style="display:flex;gap:10px;align-items:center;padding:8px 10px;background:var(--warn-light);border-radius:3px;">
                 <span style="font-size:12px;">🔗</span>
@@ -1007,13 +1038,13 @@ html, body {
       <div class="sec-title" style="margin-bottom:16px;">조직 내 의사결정 구조에 따라 접근 순서가 달라질 수 있습니다. 아래 타임라인을 참고해 실행 계획을 수립하세요.</div>
       <div class="three-col">
         <div class="roadmap-card">
-          <div class="roadmap-head now">지금 당장 (2026 Q3 — 즉시 착수)</div>
+          <div class="roadmap-head now">지금 당장 (2026 Q2~Q3 — 즉시 착수)</div>
           <div class="roadmap-body">
             <ul class="roadmap-list">
-              <li><strong>현황 진단:</strong> 현재 BPC 커스터마이징 수준과 연결 법인 복잡도 파악</li>
-              <li><strong>내부 공감대:</strong> IT팀·재무팀 공동으로 EOS 리스크 인식 공유</li>
+              <li><strong>버전 확인:</strong> MS 버전 vs. NW 버전 여부 즉시 확인 — MS 버전은 Mainstream이 오늘 종료</li>
+              <li><strong>현황 진단:</strong> BPC 커스터마이징 수준과 연결 법인 복잡도 파악</li>
+              <li><strong>내부 공감대:</strong> IT팀·재무팀 공동으로 버전별 EOS 리스크 인식 공유</li>
               <li><strong>파트너 탐색:</strong> 복수 파트너 역량 비교 및 RFI 발송</li>
-              <li><strong>예산 확보:</strong> 의사결정에 필요한 예산 범위 설정</li>
             </ul>
           </div>
         </div>
