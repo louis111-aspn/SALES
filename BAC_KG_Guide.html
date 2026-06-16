@@ -189,7 +189,7 @@
     border-bottom: 1px solid var(--border);
     vertical-align: top;
   }
-  tr:nth-child(even) td { background: #f7f9fc; }
+  table tr:nth-child(even) td { background: #f7f9fc; }
 
   /* ── CODE ── */
   pre {
@@ -1266,10 +1266,10 @@ aspn:ASPN_Europe   rdf:type         aspn:Subsidiary ;
   <div class="card">
     <div class="card-title">4.1 지금 당장 할 것 / 보류할 것 / 하지 말 것</div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:16px 0;">
-      <div style="border-radius:4px;overflow:hidden;border:1px solid var(--correct-border);">
-        <div style="background:var(--correct-border);color:#fff;padding:10px 14px;font-size:13px;font-weight:700;">✓ 지금 할 것</div>
-        <div style="padding:14px;font-size:13px;line-height:1.8;background:var(--correct-bg);">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:16px 0;align-items:stretch;">
+      <div style="border-radius:4px;overflow:hidden;border:1px solid #2e7d32;display:flex;flex-direction:column;">
+        <div style="background:#2e7d32;color:#fff;padding:10px 14px;font-size:13px;font-weight:700;flex-shrink:0;">✓ 지금 할 것</div>
+        <div style="padding:14px;font-size:13px;line-height:1.8;background:#e8f5e9;flex:1;">
           <ul style="padding-left:14px;">
             <li>GR/MDG 프로젝트 산출물에 <strong>엔티티-관계 다이어그램</strong> 추가</li>
             <li>SPARQL 기초 문법 내부 학습</li>
@@ -1278,9 +1278,9 @@ aspn:ASPN_Europe   rdf:type         aspn:Subsidiary ;
           </ul>
         </div>
       </div>
-      <div style="border-radius:4px;overflow:hidden;border:1px solid var(--warn-border);">
-        <div style="background:var(--warn-border);color:#fff;padding:10px 14px;font-size:13px;font-weight:700;">△ 보류할 것</div>
-        <div style="padding:14px;font-size:13px;line-height:1.8;background:var(--warn-bg);">
+      <div style="border-radius:4px;overflow:hidden;border:1px solid #f59e0b;display:flex;flex-direction:column;">
+        <div style="background:#f59e0b;color:#fff;padding:10px 14px;font-size:13px;font-weight:700;flex-shrink:0;">△ 보류할 것</div>
+        <div style="padding:14px;font-size:13px;line-height:1.8;background:#fff8e1;flex:1;">
           <ul style="padding-left:14px;">
             <li>KG 독립 서비스 라인 신설</li>
             <li>metaphactory 파트너 인증 취득</li>
@@ -1290,9 +1290,9 @@ aspn:ASPN_Europe   rdf:type         aspn:Subsidiary ;
           <div style="margin-top:8px;color:#92650a;font-size:12px;">→ 2026~2027년 레퍼런스 확보 후 재검토</div>
         </div>
       </div>
-      <div style="border-radius:4px;overflow:hidden;border:1px solid var(--wrong-border);">
-        <div style="background:var(--wrong-border);color:#fff;padding:10px 14px;font-size:13px;font-weight:700;">✗ 하지 말 것</div>
-        <div style="padding:14px;font-size:13px;line-height:1.8;background:var(--wrong-bg);">
+      <div style="border-radius:4px;overflow:hidden;border:1px solid #c62828;display:flex;flex-direction:column;">
+        <div style="background:#c62828;color:#fff;padding:10px 14px;font-size:13px;font-weight:700;flex-shrink:0;">✗ 하지 말 것</div>
+        <div style="padding:14px;font-size:13px;line-height:1.8;background:#fce8e6;flex:1;">
           <ul style="padding-left:14px;">
             <li>KG를 프로젝트 목적으로 설계</li>
             <li>SAP KGE 단일 플랫폼에 전적 의존</li>
