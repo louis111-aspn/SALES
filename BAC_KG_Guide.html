@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP Knowledge Graph 실전 가이드 — BAC 컨설턴트를 위한 현실 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #003366;
+    --navy-light: #004488;
+    --bg: #f0f3f8;
+    --white: #ffffff;
+    --border: #d0d8e4;
+    --text: #1a1a2e;
+    --text-sub: #4a5568;
+    --text-muted: #718096;
+    --warn-bg: #fff8e1;
+    --warn-border: #f59e0b;
+    --correct-bg: #e8f5e9;
+    --correct-border: #2e7d32;
+    --wrong-bg: #fce8e6;
+    --wrong-border: #c62828;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 15px;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--navy);
+    color: #fff;
+    padding: 48px 0 40px;
+    text-align: center;
+  }
+  .site-header .eyebrow {
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #a0bcd8;
+    margin-bottom: 14px;
+  }
+  .site-header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    line-height: 1.25;
+    color: #fff;
+    max-width: 720px;
+    margin: 0 auto 16px;
+  }
+  .site-header .subtitle {
+    font-size: 15px;
+    color: #a0bcd8;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* ── NAV TABS ── */
+  .nav-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--navy);
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .nav-tabs {
+    display: flex;
+    max-width: 900px;
+    margin: 0 auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    flex: none;
+    padding: 13px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #a0bcd8;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .nav-tab:hover { color: #fff; }
+  .nav-tab.active { color: #fff; border-bottom-color: #fff; }
+
+  /* ── MAIN LAYOUT ── */
+  .main { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* ── SECTION ── */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 30px;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .section-desc {
+    font-size: 15px;
+    color: var(--text-sub);
+    margin-bottom: 36px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+  .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--navy);
+    display: inline-block;
+  }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    border-left: 4px solid var(--navy);
+    background: #eef2f8;
+    padding: 16px 20px;
+    margin: 20px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+  }
+  .callout.warn {
+    border-left-color: var(--warn-border);
+    background: var(--warn-bg);
+  }
+  .callout.correct {
+    border-left-color: var(--correct-border);
+    background: var(--correct-bg);
+  }
+  .callout.wrong {
+    border-left-color: var(--wrong-border);
+    background: var(--wrong-bg);
+  }
+  .callout-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    color: var(--navy);
+  }
+  .callout.warn .callout-label { color: #92650a; }
+  .callout.correct .callout-label { color: #1b5e20; }
+  .callout.wrong .callout-label { color: #b71c1c; }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; margin: 16px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th {
+    background: var(--navy);
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 13px;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #f7f9fc; }
+
+  /* ── CODE ── */
+  pre {
+    background: #0f1923;
+    color: #c9d1d9;
+    padding: 20px 24px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', 'Noto Sans KR', monospace;
+    font-size: 13px;
+    line-height: 1.65;
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+  .code-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    margin-top: 20px;
+  }
+  .kw { color: #79c0ff; }
+  .cm { color: #8b949e; font-style: italic; }
+  .str { color: #a5d6ff; }
+  .fn { color: #d2a8ff; }
+  .num { color: #f2cc60; }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0;
+  }
+  .flow-node {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+  }
+  .flow-node.navy {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .flow-node.muted {
+    background: #f0f3f8;
+    color: var(--text-muted);
+    border-style: dashed;
+  }
+  .flow-arrow {
+    color: var(--text-muted);
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  /* ── TRIPLE VISUAL ── */
+  .triple-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 10px 0;
+    flex-wrap: wrap;
+  }
+  .triple-node {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    min-width: 120px;
+    text-align: center;
+  }
+  .triple-node.subject { background: #e8f0fb; border: 1px solid #b8cef0; color: var(--navy); }
+  .triple-node.predicate { background: #f3e8fb; border: 1px solid #d8b8f0; color: #5b2d8e; }
+  .triple-node.object { background: #e8fbee; border: 1px solid #b8e8c8; color: #1b5e20; }
+  .triple-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 3px;
+  }
+
+  /* ── COMPARE GRID ── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .compare-col { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .compare-col-head {
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .compare-col-body { padding: 14px 16px; font-size: 13px; line-height: 1.8; }
+
+  /* ── ROADMAP ── */
+  .roadmap { margin: 20px 0; }
+  .roadmap-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+  }
+  .roadmap-year {
+    flex: none;
+    width: 80px;
+    background: var(--navy);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 2px;
+  }
+  .roadmap-content {
+    flex: 1;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  .roadmap-content strong { color: var(--navy); }
+
+  /* ── DO/DONT ── */
+  .do-dont {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .do-box, .dont-box {
+    border-radius: 4px;
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+  .do-box {
+    background: var(--correct-bg);
+    border: 1px solid var(--correct-border);
+  }
+  .dont-box {
+    background: var(--wrong-bg);
+    border: 1px solid var(--wrong-border);
+  }
+  .do-box .box-label { color: #1b5e20; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+  .dont-box .box-label { color: #b71c1c; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+  .do-box li, .dont-box li { margin-left: 16px; margin-bottom: 6px; }
+
+  /* ── ACCORDION ── */
+  .accordion { margin: 12px 0; }
+  .accordion-btn {
+    width: 100%;
+    text-align: left;
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 13px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px;
+    transition: background 0.15s;
+  }
+  .accordion-btn:hover { background: #f7f9fc; }
+  .accordion-btn.open { background: #eef2f8; color: var(--navy); border-color: var(--navy); }
+  .accordion-icon { font-size: 18px; transition: transform 0.2s; }
+  .accordion-btn.open .accordion-icon { transform: rotate(45deg); }
+  .accordion-body {
+    display: none;
+    background: #fafbfd;
+    border: 1px solid var(--border);
+    border-top: none;
+    padding: 16px 20px;
+    font-size: 14px;
+    line-height: 1.75;
+    border-radius: 0 0 4px 4px;
+  }
+  .accordion-body.open { display: block; }
+
+  /* ── COMPONENT MAP ── */
+  .comp-map {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    margin: 20px 0;
+    font-size: 13px;
+  }
+  .comp-layer {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .comp-layer-head {
+    background: var(--navy);
+    color: #fff;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .comp-layer-body {
+    display: flex;
+    gap: 10px;
+    padding: 12px 16px;
+    flex-wrap: wrap;
+  }
+  .comp-chip {
+    background: #eef2f8;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--navy);
+  }
+  .comp-chip.highlight {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+
+  /* ── PATTERN TABLE ── */
+  .pattern-row {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .pattern-row:last-child { border-bottom: none; }
+  .pattern-year {
+    flex: none;
+    width: 100px;
+    padding: 12px 16px;
+    font-weight: 700;
+    color: var(--navy);
+    border-right: 1px solid var(--border);
+  }
+  .pattern-content { flex: 1; padding: 12px 16px; }
+
+  /* ── POSITIONING BOX ── */
+  .position-box {
+    border: 2px solid var(--navy);
+    border-radius: 4px;
+    padding: 24px 28px;
+    margin: 20px 0;
+    background: #eef2f8;
+  }
+  .position-box .pos-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .position-box p { font-size: 15px; line-height: 1.8; }
+
+  /* ── QUIZ ── */
+  .quiz-wrap { margin: 24px 0; }
+  .quiz-q {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 11px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    text-align: left;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text);
+  }
+  .quiz-opt:hover { background: #eef2f8; border-color: var(--navy); }
+  .quiz-opt.correct { background: var(--correct-bg); border-color: var(--correct-border); color: #1b5e20; }
+  .quiz-opt.wrong { background: var(--wrong-bg); border-color: var(--wrong-border); color: #b71c1c; }
+  .quiz-feedback {
+    margin-top: 12px;
+    font-size: 14px;
+    padding: 12px 16px;
+    border-radius: 4px;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: var(--correct-bg); color: #1b5e20; border: 1px solid var(--correct-border); }
+  .quiz-feedback.wrong { background: var(--wrong-bg); color: #b71c1c; border: 1px solid var(--wrong-border); }
+  .quiz-retry {
+    margin-top: 10px;
+    background: none;
+    border: 1px solid var(--navy);
+    color: var(--navy);
+    padding: 7px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    display: none;
+  }
+  .quiz-retry.show { display: inline-block; }
+
+  /* ── PROGRESS ── */
+  .progress-wrap { margin-bottom: 28px; }
+  .progress-label { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+  .progress-bar { height: 4px; background: var(--border); border-radius: 2px; }
+  .progress-fill { height: 100%; background: var(--navy); border-radius: 2px; transition: width 0.4s; }
+
+  /* ── MISC ── */
+  p { margin-bottom: 14px; }
+  p:last-child { margin-bottom: 0; }
+  ul, ol { padding-left: 20px; margin-bottom: 14px; }
+  li { margin-bottom: 6px; }
+  strong { font-weight: 700; }
+  h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin: 24px 0 10px; }
+  h4 { font-size: 14px; font-weight: 700; color: var(--text); margin: 18px 0 8px; }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 6px;
+  }
+  .tag-navy { background: var(--navy); color: #fff; }
+  .tag-warn { background: var(--warn-border); color: #fff; }
+  .tag-ok { background: #2e7d32; color: #fff; }
+  .tag-muted { background: var(--border); color: var(--text-sub); }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  @media (max-width: 640px) {
+    .compare-grid { grid-template-columns: 1fr; }
+    .do-dont { grid-template-columns: 1fr; }
+    .site-header h1 { font-size: 26px; }
+    .section-title { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="eyebrow">BAC 내부 교육자료 · 2025</div>
+  <h1>SAP Knowledge Graph 실전 가이드</h1>
+  <p class="subtitle">BAC 컨설턴트를 위한 현실 분석 — 기술 실체부터 전략적 포지셔닝까지</p>
+</header>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showSection('s1', this)">1. KG란 무엇인가</button>
+    <button class="nav-tab" onclick="showSection('s2', this)">2. SAP 생태계 현황</button>
+    <button class="nav-tab" onclick="showSection('s3', this)">3. 시장성과 ROI</button>
+    <button class="nav-tab" onclick="showSection('s4', this)">4. BAC 전략 시사점</button>
+  </div>
+</div>
+
+<main class="main">
+
+<!-- ═══════════════════════════════════════════ SECTION 1 -->
+<div id="s1" class="section active">
+  <div class="progress-wrap">
+    <div class="progress-label">Section 1 / 4</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
+  </div>
+
+  <h2 class="section-title">SAP Knowledge Graph란 무엇인가</h2>
+  <p class="section-desc">기술적 실체를 파악하고, 전통적 데이터 모델과의 구조적 차이를 ASPN Group 시나리오로 비교합니다.</p>
+
+  <!-- 1.1 -->
+  <div class="card">
+    <div class="card-title">1.1 기술적 실체 — 전통 데이터 모델과 무엇이 다른가</div>
+    <p>Knowledge Graph(KG)는 <strong>엔티티(Node) + 관계(Edge) + 속성(Property)</strong>로 구성된 그래프 데이터베이스 위에, 의미 체계(Ontology)를 얹은 데이터 아키텍처입니다. SAP가 "Knowledge Graph"를 선언할 때의 실체는 다음 세 가지 레이어입니다.</p>
+
+    <div class="comp-map" style="padding:16px;">
+      <div class="comp-layer" style="margin-bottom:8px;">
+        <div class="comp-layer-head">레이어 3 — 시맨틱 (의미 부여)</div>
+        <div class="comp-layer-body">
+          <span class="comp-chip highlight">Ontology (OWL)</span>
+          <span class="comp-chip highlight">SHACL 제약</span>
+          <span class="comp-chip">추론 (Inference)</span>
+        </div>
+      </div>
+      <div class="comp-layer" style="margin-bottom:8px;">
+        <div class="comp-layer-head">레이어 2 — 그래프 구조</div>
+        <div class="comp-layer-body">
+          <span class="comp-chip highlight">Node (엔티티)</span>
+          <span class="comp-chip highlight">Edge (관계)</span>
+          <span class="comp-chip">RDF Triple Store</span>
+          <span class="comp-chip">SPARQL 쿼리</span>
+        </div>
+      </div>
+      <div class="comp-layer">
+        <div class="comp-layer-head">레이어 1 — 데이터 (기존 SAP와 동일)</div>
+        <div class="comp-layer-body">
+          <span class="comp-chip">S/4HANA 마스터데이터</span>
+          <span class="comp-chip">트랜잭션 데이터</span>
+          <span class="comp-chip">ACDOCA</span>
+          <span class="comp-chip">외부 데이터</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">핵심 포인트</div>
+      레이어 1의 데이터 자체는 기존 HANA 테이블과 동일합니다. KG가 추가하는 것은 레이어 2와 3 — 관계를 명시적으로 정의하고, AI가 의미를 읽을 수 있도록 시맨틱을 부여하는 것입니다.
+    </div>
+  </div>
+
+  <!-- 1.2 -->
+  <div class="card">
+    <div class="card-title">1.2 RDB / DW / KG 구조 비교 — ASPN Group 동일 데이터로</div>
+    <p>ASPN Holdings가 자회사 ASPN Korea의 판매 현황을 파악하는 동일한 비즈니스 질문을 세 가지 방식으로 표현합니다.</p>
+
+    <h3>시나리오: "반도체 고객사의 오픈 수주 현황 파악"</h3>
+
+    <div class="compare-grid">
+      <div class="compare-col">
+        <div class="compare-col-head">관계형 DB (RDB)</div>
+        <div class="compare-col-body">
+          <strong>저장 방식</strong><br>
+          테이블 행/열로 저장<br><br>
+          <strong>관계 표현</strong><br>
+          FK JOIN으로 암묵적 연결<br><br>
+          <strong>조회 방식</strong><br>
+          SQL — 스키마를 알아야 함<br><br>
+          <strong>AI 친화성</strong><br>
+          낮음 — 구조 이해 필요
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-col-head">Data Warehouse (DW)</div>
+        <div class="compare-col-body">
+          <strong>저장 방식</strong><br>
+          Star/Snowflake Schema<br><br>
+          <strong>관계 표현</strong><br>
+          Fact-Dimension 구조<br><br>
+          <strong>조회 방식</strong><br>
+          MDX — 큐브 계층 알아야 함<br><br>
+          <strong>AI 친화성</strong><br>
+          중간 — 계층 이해 필요
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-col-head" style="background:#1a4a7a;">Knowledge Graph (KG)</div>
+        <div class="compare-col-body">
+          <strong>저장 방식</strong><br>
+          Node + Edge + Triple<br><br>
+          <strong>관계 표현</strong><br>
+          Edge로 명시적 연결<br><br>
+          <strong>조회 방식</strong><br>
+          SPARQL — 관계 이름만으로 가능<br><br>
+          <strong>AI 친화성</strong><br>
+          높음 — 의미 기반 탐색 가능
+        </div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <tr>
+          <th>항목</th>
+          <th>RDB</th>
+          <th>DW</th>
+          <th>KG</th>
+        </tr>
+        <tr>
+          <td>데이터 모델</td>
+          <td>테이블/행/열</td>
+          <td>큐브/차원/멤버</td>
+          <td>트리플 (주어-서술어-목적어)</td>
+        </tr>
+        <tr>
+          <td>관계 표현</td>
+          <td>FK (암묵적)</td>
+          <td>Fact-Dim (구조적)</td>
+          <td>Edge (명시적)</td>
+        </tr>
+        <tr>
+          <td>스키마 변경</td>
+          <td>고비용</td>
+          <td>고비용</td>
+          <td>유연 (온톨로지 확장)</td>
+        </tr>
+        <tr>
+          <td>집계/분석</td>
+          <td>GROUP BY</td>
+          <td>자연스러움 (강점)</td>
+          <td>어색함 (약점)</td>
+        </tr>
+        <tr>
+          <td>추론 기능</td>
+          <td>없음</td>
+          <td>없음</td>
+          <td>OWL 기반 추론 가능</td>
+        </tr>
+        <tr>
+          <td>SAP 구현체</td>
+          <td>HANA Cloud (RDB)</td>
+          <td>BW/4HANA, SAC</td>
+          <td>HANA Cloud KGE (2025 Q1 GA)</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 1.3 -->
+  <div class="card">
+    <div class="card-title">1.3 핵심 개념 3가지 — Triple / Ontology / SPARQL</div>
+
+    <h3>① Triple — 모든 데이터의 최소 단위</h3>
+    <p>KG에서 모든 정보는 <strong>주어(Subject) — 서술어(Predicate) — 목적어(Object)</strong>의 3항 구조로 표현됩니다. ASPN Group 시나리오 적용:</p>
+
+    <div class="triple-row">
+      <div>
+        <div class="triple-node subject">ASPN Korea</div>
+        <div class="triple-label">Subject (주어)</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div>
+        <div class="triple-node predicate">subsidiaryOf</div>
+        <div class="triple-label">Predicate (서술어)</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div>
+        <div class="triple-node object">ASPN Holdings</div>
+        <div class="triple-label">Object (목적어)</div>
+      </div>
+    </div>
+    <div class="triple-row">
+      <div>
+        <div class="triple-node subject">SO-4500001</div>
+        <div class="triple-label">Subject</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div>
+        <div class="triple-node predicate">placedBy</div>
+        <div class="triple-label">Predicate</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div>
+        <div class="triple-node object">고객사-K001</div>
+        <div class="triple-label">Object</div>
+      </div>
+    </div>
+    <div class="triple-row">
+      <div>
+        <div class="triple-node subject">SO-4500001</div>
+        <div class="triple-label">Subject</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div>
+        <div class="triple-node predicate">amount</div>
+        <div class="triple-label">Predicate</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div>
+        <div class="triple-node object">50,000,000 KRW</div>
+        <div class="triple-label">Object (값)</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h3>② Ontology — 비즈니스 개념의 공식 정의</h3>
+    <p>온톨로지는 Triple에서 쓰이는 클래스(Node 종류)와 관계(Edge 이름)를 공식적으로 정의한 설계도입니다. ASPN Group 온톨로지 일부를 Turtle 형식으로 표현하면:</p>
+
+    <div class="code-label">Turtle 형식 (.ttl) — ASPN Group 온톨로지 정의</div>
+    <pre><span class="cm"># 네임스페이스 선언</span>
+<span class="kw">@prefix</span> aspn: &lt;http://aspn.com/ontology#&gt; .
+<span class="kw">@prefix</span> rdf:  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+<span class="kw">@prefix</span> owl:  &lt;http://www.w3.org/2002/07/owl#&gt; .
+
+<span class="cm"># 클래스(Node 종류) 정의</span>
+aspn:LegalEntity   rdf:type owl:Class .
+aspn:Subsidiary    rdf:type owl:Class ;
+                   rdfs:subClassOf aspn:LegalEntity .   <span class="cm"># 상속 관계</span>
+aspn:Customer      rdf:type owl:Class .
+aspn:SalesOrder    rdf:type owl:Class .
+aspn:CostCenter    rdf:type owl:Class .
+
+<span class="cm"># 관계(Edge) 정의</span>
+aspn:subsidiaryOf  rdf:type owl:ObjectProperty ;
+                   rdfs:domain aspn:Subsidiary ;
+                   rdfs:range  aspn:LegalEntity .
+
+aspn:placedBy      rdf:type owl:ObjectProperty ;
+                   rdfs:domain aspn:SalesOrder ;
+                   rdfs:range  aspn:Customer .
+
+aspn:ownershipPct  rdf:type owl:DatatypeProperty ;
+                   rdfs:range  xsd:decimal .
+
+<span class="cm"># 실제 데이터 인스턴스</span>
+aspn:ASPN_Korea    rdf:type         aspn:Subsidiary ;
+                   aspn:subsidiaryOf aspn:ASPN_Holdings ;
+                   aspn:ownershipPct <span class="num">"0.80"</span>^^xsd:decimal ;
+                   aspn:currency     <span class="str">"KRW"</span> .
+
+aspn:ASPN_Europe   rdf:type         aspn:Subsidiary ;
+                   aspn:subsidiaryOf aspn:ASPN_Holdings ;
+                   aspn:ownershipPct <span class="num">"1.00"</span>^^xsd:decimal ;
+                   aspn:currency     <span class="str">"EUR"</span> .</pre>
+
+    <hr class="divider">
+
+    <h3>③ SPARQL — 그래프 패턴 매칭 쿼리</h3>
+    <p>동일한 비즈니스 질문 <em>"ASPN Korea 담당 컨설턴트가 수주한 고객사 목록"</em>을 SQL / MDX / SPARQL로 비교합니다.</p>
+
+    <div class="code-label">SQL — 테이블 구조와 FK 관계를 알아야 함</div>
+    <pre><span class="kw">SELECT DISTINCT</span> c.customer_name
+<span class="kw">FROM</span>   vbak o
+<span class="kw">JOIN</span>   kna1  c  <span class="kw">ON</span> o.kunnr   = c.kunnr
+<span class="kw">JOIN</span>   pa0001 sr <span class="kw">ON</span> o.pernr   = sr.pernr
+<span class="kw">JOIN</span>   t_team t  <span class="kw">ON</span> sr.team_id = t.team_id
+<span class="kw">WHERE</span>  t.team_name = <span class="str">'BAC사업부'</span>
+  <span class="kw">AND</span>  o.bukrs     = <span class="str">'ASPN_KR'</span>
+  <span class="kw">AND</span>  o.gbstk     = <span class="str">'A'</span>;   <span class="cm">-- 테이블명, 컬럼명, FK 구조 선행 지식 필요</span></pre>
+
+    <div class="code-label">MDX — 큐브 계층 구조를 알아야 함</div>
+    <pre><span class="kw">SELECT</span>
+  [Customer].[Name].Members       <span class="kw">ON COLUMNS</span>,
+  [Measures].[Order Count]        <span class="kw">ON ROWS</span>
+<span class="kw">FROM</span>   [Sales_Cube]
+<span class="kw">WHERE</span>  (
+  [Team].[BAC사업부],
+  [Company].[ASPN_Korea],
+  [Order Status].[Open]
+);   <span class="cm">-- 큐브명, 차원명, 멤버명 선행 지식 필요</span></pre>
+
+    <div class="code-label">SPARQL — 관계 이름(Edge label)만으로 탐색 가능</div>
+    <pre><span class="kw">SELECT DISTINCT</span> ?customerName
+<span class="kw">WHERE</span> {
+  <span class="cm"># 패턴 선언 — 테이블 구조 몰라도 됨</span>
+  ?rep       aspn:memberOf      aspn:BAC사업부 .
+  ?rep       aspn:worksFor      aspn:ASPN_Korea .
+  ?order     aspn:assignedTo    ?rep .
+  ?order     aspn:placedBy      ?customer .
+  ?order     aspn:status        <span class="str">"Open"</span> .
+  ?customer  aspn:name          ?customerName .
+}
+<span class="kw">ORDER BY</span> ?customerName</pre>
+
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>항목</th><th>SQL</th><th>MDX</th><th>SPARQL</th></tr>
+        <tr><td>사고 방식</td><td>테이블에서 꺼낸다</td><td>축 교차로 집계한다</td><td>패턴을 선언하면 매칭된다</td></tr>
+        <tr><td>사전 지식</td><td>스키마/FK 필수</td><td>큐브 계층 필수</td><td>Edge 이름만으로 가능</td></tr>
+        <tr><td>집계 표현</td><td>GROUP BY</td><td>자연스러움 (강점)</td><td>어색함 (약점)</td></tr>
+        <tr><td>학습 허들</td><td>중</td><td>높음</td><td>중~높음 (사고 전환)</td></tr>
+        <tr><td>MDX 경험자 전환</td><td>—</td><td>—</td><td>2~3주면 문법 습득 가능</td></tr>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-label">실무 포인트</div>
+      SPARQL 문법보다 진짜 허들은 <strong>온톨로지 설계</strong>입니다 — Edge 이름을 누가, 어떻게 정의하는가. 이것이 SAP GR/CO 도메인 전문가가 KG 프로젝트에서 대체 불가능한 이유입니다.
+    </div>
+
+    <!-- QUIZ -->
+    <hr class="divider">
+    <h3>확인 퀴즈</h3>
+    <div class="quiz-wrap" id="q1">
+      <div class="quiz-q">Q. SPARQL이 SQL과 가장 근본적으로 다른 점은 무엇인가요?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="checkQuiz('q1', this, false)">① 집계 함수를 지원하지 않는다</button>
+        <button class="quiz-opt" onclick="checkQuiz('q1', this, false)">② 클라우드에서만 동작한다</button>
+        <button class="quiz-opt" onclick="checkQuiz('q1', this, true)">③ 테이블 구조를 몰라도 관계 이름만으로 데이터를 탐색할 수 있다</button>
+        <button class="quiz-opt" onclick="checkQuiz('q1', this, false)">④ MDX보다 계층 표현이 강력하다</button>
+      </div>
+      <div class="quiz-feedback" id="q1-fb"></div>
+      <button class="quiz-retry" id="q1-retry" onclick="retryQuiz('q1')">다시 풀기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SECTION 2 -->
+<div id="s2" class="section">
+  <div class="progress-wrap">
+    <div class="progress-label">Section 2 / 4</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+  </div>
+
+  <h2 class="section-title">SAP KG 생태계 현황</h2>
+  <p class="section-desc">GA 수준, 컴포넌트 관계, 툴링 현황, 도메인 설계 프로세스를 컨설턴트 시각으로 정리합니다.</p>
+
+  <!-- 2.1 -->
+  <div class="card">
+    <div class="card-title">2.1 SAP HANA Cloud KGE — GA 수준과 현재 성숙도</div>
+
+    <div class="callout correct">
+      <div class="callout-label">공식 GA 상태</div>
+      SAP HANA Cloud Knowledge Graph Engine은 TechEd 2024 발표 후 <strong>2025년 Q1(QRC1-2025)에 GA</strong>되었습니다. 현재 기준으로 GA 약 1년 경과.
+    </div>
+
+    <h3>성숙도 체크리스트</h3>
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>항목</th><th>상태</th><th>비고</th></tr>
+        <tr><td>RDF Triple Store 기능</td><td><span class="tag tag-ok">GA</span></td><td>SPARQL 1.1 지원</td></tr>
+        <tr><td>Property Graph → KG 전환</td><td><span class="tag tag-ok">GA</span></td><td>단, 양방향 자동 동기화 미지원</td></tr>
+        <tr><td>OWL 추론 (Inference)</td><td><span class="tag tag-warn">제한적</span></td><td>기본 추론만 지원, 복잡 추론 미성숙</td></tr>
+        <tr><td>컨설턴트용 모델링 UI</td><td><span class="tag tag-muted">미제공</span></td><td>3rd party (metaphactory) 의존</td></tr>
+        <tr><td>S/4HANA 자동 연계</td><td><span class="tag tag-muted">미제공</span></td><td>수동 ETL 파이프라인 필요</td></tr>
+        <tr><td>Joule AI 연계</td><td><span class="tag tag-warn">Preview</span></td><td>GraphRAG 기반, 안정화 진행 중</td></tr>
+        <tr><td>국내 프로덕션 레퍼런스</td><td><span class="tag tag-muted">미확인</span></td><td>해외 PoC 사례 소수 존재</td></tr>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-label">참고</div>
+      SAP 신제품은 GA 이후 실무 안정화까지 통상 2~3년이 소요됩니다. BPC, SAC, BTP 모두 동일한 패턴을 보였습니다.
+    </div>
+  </div>
+
+  <!-- 2.2 -->
+  <div class="card">
+    <div class="card-title">2.2 SAP KG 컴포넌트 맵 — 전체 아키텍처 관계</div>
+
+    <div class="comp-map">
+      <div class="comp-layer" style="margin-bottom:8px;">
+        <div class="comp-layer-head">AI / 사용자 인터페이스 레이어</div>
+        <div class="comp-layer-body">
+          <span class="comp-chip">Joule (AI 어시스턴트)</span>
+          <span class="comp-chip">Joule Studio (에이전트 빌더)</span>
+          <span class="comp-chip highlight">GraphRAG 연계</span>
+        </div>
+      </div>
+      <div class="comp-layer" style="margin-bottom:8px;">
+        <div class="comp-layer-head">시맨틱 / KG 레이어</div>
+        <div class="comp-layer-body">
+          <span class="comp-chip highlight">HANA Cloud KGE (GA 2025 Q1)</span>
+          <span class="comp-chip">온톨로지 정의 (OWL)</span>
+          <span class="comp-chip">SPARQL 엔진</span>
+          <span class="comp-chip">Vector Engine</span>
+        </div>
+      </div>
+      <div class="comp-layer" style="margin-bottom:8px;">
+        <div class="comp-layer-head">데이터 통합 / 거버넌스 레이어</div>
+        <div class="comp-layer-body">
+          <span class="comp-chip highlight">SAP Business Data Cloud (BDC)</span>
+          <span class="comp-chip">Datasphere (시맨틱 레이어)</span>
+          <span class="comp-chip">MDG (마스터데이터)</span>
+          <span class="comp-chip">Zero-Copy Sharing</span>
+        </div>
+      </div>
+      <div class="comp-layer">
+        <div class="comp-layer-head">소스 시스템 레이어</div>
+        <div class="comp-layer-body">
+          <span class="comp-chip">S/4HANA (ACDOCA)</span>
+          <span class="comp-chip">SAC Planning</span>
+          <span class="comp-chip">그룹리포팅 (GR)</span>
+          <span class="comp-chip">외부 시스템</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">BAC 관련 포인트</div>
+      GR과 SAC-P는 KG 아키텍처의 <strong>소스 시스템</strong> 위치에 있습니다. BAC의 핵심 역량이 KG의 데이터 원천과 직결됩니다. GR의 ACDOCA 데이터 구조를 이해하는 것이 KG 온톨로지 설계의 출발점입니다.
+    </div>
+  </div>
+
+  <!-- 2.3 -->
+  <div class="card">
+    <div class="card-title">2.3 컨설턴트 툴링 현황 — 전체 조망</div>
+
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>툴</th><th>제공사</th><th>역할</th><th>컨설턴트 접근성</th></tr>
+        <tr><td><strong>HANA Cloud DB Explorer</strong></td><td>SAP</td><td>SPARQL 실행, 데이터 조회</td><td>개발자 수준 필요</td></tr>
+        <tr><td><strong>Datasphere Business Layer</strong></td><td>SAP</td><td>엔티티 관계 정의 (그나마 가장 UI 친화적)</td><td>중간</td></tr>
+        <tr><td><strong>Protégé</strong></td><td>Stanford (오픈소스)</td><td>OWL 온톨로지 설계 전문 툴</td><td>낮음 (전문 툴)</td></tr>
+        <tr><td><strong>metaphactory</strong></td><td>metaphacts (SAP 파트너)</td><td>KG 전체 사이클 관리 플랫폼</td><td>중간 (GUI 제공)</td></tr>
+        <tr><td><strong>Excel + draw.io</strong></td><td>—</td><td>초안 온톨로지 설계</td><td>높음 (현실적 시작점)</td></tr>
+      </table>
+    </div>
+
+    <h3>metaphactory 커버리지 상세</h3>
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>KG 단계</th><th>metaphactory 지원</th><th>수준</th></tr>
+        <tr><td>온톨로지 설계</td><td>비주얼 OWL 에디터</td><td><span class="tag tag-ok">실용적</span></td></tr>
+        <tr><td>SHACL 제약 정의</td><td>편집 + 검증 통합</td><td><span class="tag tag-ok">강점</span></td></tr>
+        <tr><td>데이터 탐색/편집</td><td>로우코드 UI 빌더</td><td><span class="tag tag-ok">실용적</span></td></tr>
+        <tr><td>SPARQL 쿼리</td><td>쿼리 UI + 카탈로그</td><td><span class="tag tag-ok">실용적</span></td></tr>
+        <tr><td>거버넌스/버저닝</td><td>편집 워크플로 + 버전 관리</td><td><span class="tag tag-ok">강점</span></td></tr>
+        <tr><td>S/4HANA ETL 파이프라인</td><td>미지원</td><td><span class="tag tag-muted">외부 필요</span></td></tr>
+        <tr><td>AI/LLM 연계</td><td>개발 중</td><td><span class="tag tag-warn">미성숙</span></td></tr>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-label">핵심 단절 구간</div>
+      <strong>SAP 소스 데이터 → RDF 트리플 변환</strong> 구간은 어떤 툴도 자동화하지 않습니다. 이 구간의 설계가 프로젝트 성패를 결정하며, SAP 도메인 전문성이 가장 필요한 지점입니다.
+    </div>
+  </div>
+
+  <!-- 2.4 -->
+  <div class="card">
+    <div class="card-title">2.4 도메인 설계 프로세스 — 단계별 전체 흐름</div>
+    <p>ASPN Group KG 구축을 예시로, 실제 프로세스 단계와 각 단계의 책임 주체를 정리합니다.</p>
+
+    <div class="flow" style="flex-direction:column; align-items:stretch; gap:0;">
+      <div style="display:flex; gap:0; align-items:stretch; margin-bottom:2px;">
+        <div style="flex:none;width:160px;background:var(--navy);color:#fff;padding:12px 16px;font-size:13px;font-weight:700;border-radius:4px 0 0 4px;">Step 1</div>
+        <div style="flex:1;background:var(--white);border:1px solid var(--border);border-left:none;padding:12px 16px;font-size:13px;border-radius:0 4px 4px 0;">
+          <strong>비즈니스 엔티티 정의</strong> — "ASPN Group에서 KG로 표현할 대상이 무엇인가"<br>
+          <span style="color:var(--text-muted)">예: LegalEntity, CostCenter, Customer, IntercoTransaction, FXRate</span><br>
+          <span class="tag tag-navy" style="margin-top:4px;">BAC 도메인 역할</span>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:20px;color:var(--text-muted);margin:2px 0;">↓</div>
+      <div style="display:flex; gap:0; align-items:stretch; margin-bottom:2px;">
+        <div style="flex:none;width:160px;background:var(--navy);color:#fff;padding:12px 16px;font-size:13px;font-weight:700;border-radius:4px 0 0 4px;">Step 2</div>
+        <div style="flex:1;background:var(--white);border:1px solid var(--border);border-left:none;padding:12px 16px;font-size:13px;border-radius:0 4px 4px 0;">
+          <strong>관계(Edge) 명명 및 정의</strong> — "엔티티 간 관계를 어떻게 표현하는가"<br>
+          <span style="color:var(--text-muted)">예: subsidiaryOf, reportedIn, eliminatedWith, translatedAt</span><br>
+          <span class="tag tag-navy" style="margin-top:4px;">BAC 도메인 역할</span>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:20px;color:var(--text-muted);margin:2px 0;">↓</div>
+      <div style="display:flex; gap:0; align-items:stretch; margin-bottom:2px;">
+        <div style="flex:none;width:160px;background:var(--navy);color:#fff;padding:12px 16px;font-size:13px;font-weight:700;border-radius:4px 0 0 4px;">Step 3</div>
+        <div style="flex:1;background:var(--white);border:1px solid var(--border);border-left:none;padding:12px 16px;font-size:13px;border-radius:0 4px 4px 0;">
+          <strong>OWL 온톨로지 형식화</strong> — Protégé 또는 metaphactory로 Turtle(.ttl) 생성<br>
+          <span style="color:var(--text-muted);">클래스 계층, 속성 제약(SHACL), URI 체계 확정</span><br>
+          <span class="tag tag-warn" style="margin-top:4px;">기술 협업 필요</span>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:20px;color:var(--text-muted);margin:2px 0;">↓</div>
+      <div style="display:flex; gap:0; align-items:stretch; margin-bottom:2px;">
+        <div style="flex:none;width:160px;background:var(--navy);color:#fff;padding:12px 16px;font-size:13px;font-weight:700;border-radius:4px 0 0 4px;">Step 4</div>
+        <div style="flex:1;background:var(--white);border:1px solid var(--border);border-left:none;padding:12px 16px;font-size:13px;border-radius:0 4px 4px 0;">
+          <strong>ETL 파이프라인 설계</strong> — S/4HANA/GR 데이터 → RDF 트리플 매핑<br>
+          <span style="color:var(--text-muted);">ACDOCA → aspn:JournalEntry 트리플 변환 등</span><br>
+          <span class="tag tag-warn" style="margin-top:4px;">기술 협업 필요</span>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:20px;color:var(--text-muted);margin:2px 0;">↓</div>
+      <div style="display:flex; gap:0; align-items:stretch; margin-bottom:2px;">
+        <div style="flex:none;width:160px;background:var(--navy);color:#fff;padding:12px 16px;font-size:13px;font-weight:700;border-radius:4px 0 0 4px;">Step 5</div>
+        <div style="flex:1;background:var(--white);border:1px solid var(--border);border-left:none;padding:12px 16px;font-size:13px;border-radius:0 4px 4px 0;">
+          <strong>HANA Cloud KGE 적재 및 검증</strong><br>
+          <span style="color:var(--text-muted);">SHACL 검증, 데이터 품질 확인, SPARQL 테스트</span><br>
+          <span class="tag tag-warn" style="margin-top:4px;">기술 협업 필요</span>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:20px;color:var(--text-muted);margin:2px 0;">↓</div>
+      <div style="display:flex; gap:0; align-items:stretch;">
+        <div style="flex:none;width:160px;background:var(--navy);color:#fff;padding:12px 16px;font-size:13px;font-weight:700;border-radius:4px 0 0 4px;">Step 6</div>
+        <div style="flex:1;background:var(--white);border:1px solid var(--border);border-left:none;padding:12px 16px;font-size:13px;border-radius:0 4px 4px 0;">
+          <strong>AI 연계 및 엔드유저 앱</strong> — Joule GraphRAG 또는 metaphactory UI<br>
+          <span style="color:var(--text-muted);">비즈니스 질의 → SPARQL 자동 변환 검증</span><br>
+          <span class="tag tag-navy" style="margin-top:4px;">BAC 도메인 역할</span> <span class="tag tag-warn">기술 협업 필요</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SECTION 3 -->
+<div id="s3" class="section">
+  <div class="progress-wrap">
+    <div class="progress-label">Section 3 / 4</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+  </div>
+
+  <h2 class="section-title">시장성과 ROI 현실 진단</h2>
+  <p class="section-desc">수요 지형, 고객사 ROI 구조, SAP 신제품 도입 사이클 패턴, KG가 실질적으로 해결하는 것과 남는 과제를 정리합니다.</p>
+
+  <!-- 3.1 -->
+  <div class="card">
+    <div class="card-title">3.1 수요 지형 — 대기업 vs 중견기업</div>
+
+    <div class="compare-grid" style="grid-template-columns:1fr 1fr;">
+      <div class="compare-col">
+        <div class="compare-col-head" style="background:#1a4a7a;">실질 수요 있는 곳</div>
+        <div class="compare-col-body">
+          <ul style="padding-left:16px;">
+            <li>매출 5조+, 계열사 10개+ 대기업</li>
+            <li>마스터데이터가 계열사별로 파편화된 곳</li>
+            <li>AI 도입 의지 + 예산이 동시에 존재</li>
+            <li>데이터 통합 숙제가 이미 수년째 미해결</li>
+            <li>MDG나 Datasphere가 이미 도입된 곳</li>
+          </ul>
+        </div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-col-head" style="background:#718096;">실질 수요 없는 곳</div>
+        <div class="compare-col-body">
+          <ul style="padding-left:16px;">
+            <li>중견기업 이하 — DW도 미완성 상태</li>
+            <li>단순 보고/분석 목적 — BW/SAC으로 충분</li>
+            <li>데이터 품질이 낮은 곳 — MDG가 먼저</li>
+            <li>AI를 실험 수준으로만 도입한 곳</li>
+            <li>IT 거버넌스가 약한 조직</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">시장성 판정</div>
+      <strong>좁고 깊은 시장 — 대형 딜 소수.</strong> 국내에서 KG 도입 조건을 동시에 만족하는 기업은 현시점에서 손에 꼽힙니다.
+    </div>
+  </div>
+
+  <!-- 3.2 -->
+  <div class="card">
+    <div class="card-title">3.2 고객사 ROI — 구조화된 현실 평가</div>
+
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>항목</th><th>현실</th></tr>
+        <tr><td>구축 비용</td><td>DW 대비 <strong>1.5~2배</strong> — 온톨로지 설계 + ETL + 검증 + 툴 라이선스 합산</td></tr>
+        <tr><td>회수 기간</td><td>최소 <strong>3~5년</strong> — AI 활용 성숙도 달성 전제</td></tr>
+        <tr><td>가시적 효과</td><td>AI 질의 정확도 향상 — 그러나 수치 측정이 어려움</td></tr>
+        <tr><td>ROI 달성 조건</td><td>① AI를 실제 의사결정에 활용하는 조직<br>② 데이터 품질이 이미 확보된 조직<br><strong>두 조건 동시 만족 기업 — 국내 극소수</strong></td></tr>
+        <tr><td>주요 리스크</td><td>SAP KGE 서비스 성숙도 미확보 / 온톨로지 설계 오류 시 재작업 비용 高</td></tr>
+      </table>
+    </div>
+
+    <h3>컨설팅사(BAC) 관점 ROI</h3>
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>단계</th><th>수익성</th><th>리스크</th></tr>
+        <tr><td>구축 단계</td><td>높음 — 신규 방법론 = 고단가 정당화 가능</td><td>구현 실패 시 평판 리스크</td></tr>
+        <tr><td>유지보수 단계</td><td>높음 — 온톨로지 변경 = 지속 의존 구조</td><td>SAP 자동화 내재화 시 잠식 가능</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 3.3 -->
+  <div class="card">
+    <div class="card-title">3.3 SAP 신제품 도입 사이클 패턴 분석</div>
+    <p>SAP가 새로운 플랫폼 컨셉을 도입하는 방식은 반복적인 패턴을 보입니다. KG를 이 맥락에서 객관적으로 위치시켜 봅니다.</p>
+
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin:16px 0;">
+      <div class="pattern-row" style="background:#f0f3f8;font-weight:700;font-size:13px;">
+        <div class="pattern-year">시기</div>
+        <div class="pattern-content">SAP 발표 컨셉 / 실제 현장 상황 / 안정화 시점</div>
+      </div>
+      <div class="pattern-row">
+        <div class="pattern-year">2000년대</div>
+        <div class="pattern-content"><strong>NetWeaver</strong> — "통합 플랫폼" 선언 → 구성 복잡, 문서 부족 → 3~4년 후 안정</div>
+      </div>
+      <div class="pattern-row">
+        <div class="pattern-year">2010년대</div>
+        <div class="pattern-content"><strong>HANA</strong> — "인메모리 혁신" 선언 → 마이그레이션 고비용 → 3년 후 안정</div>
+      </div>
+      <div class="pattern-row">
+        <div class="pattern-year">2015~</div>
+        <div class="pattern-content"><strong>S/4HANA</strong> — "디지털 전환 표준" 선언 → 마이그레이션 툴 미완성 → 5년+ 후 안정</div>
+      </div>
+      <div class="pattern-row">
+        <div class="pattern-year">2020~</div>
+        <div class="pattern-content"><strong>BTP</strong> — "클라우드 확장 플랫폼" 선언 → 서비스 난립, 통합성 부족 → 현재도 진행 중</div>
+      </div>
+      <div class="pattern-row" style="background:#eef2f8;">
+        <div class="pattern-year" style="color:#c62828;">2024~</div>
+        <div class="pattern-content"><strong>KG + Joule</strong> — "AI 기반 시맨틱 엔터프라이즈" 선언 → 툴 미완성, 레퍼런스 부재 → <strong>안정화 시점 미정</strong></div>
+      </div>
+    </div>
+
+    <h3>공통 메커니즘</h3>
+    <div class="accordion">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        ① 비전 선행 발표 → 라이선스 판매 선행
+        <span class="accordion-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        SAP는 구현 환경이 완비되기 전에 비전을 발표하고 라이선스를 선판매합니다. 이는 Enterprise SW 업계의 일반적 관행이기도 하나, SAP는 ERP 코어와의 통합을 "표준"으로 포장하기 때문에 고객 기대치가 높아지는 구조입니다.
+      </div>
+    </div>
+    <div class="accordion">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        ② 파트너에게 구현 리스크 전가
+        <span class="accordion-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        SAP는 비전과 인프라를 제공하고, 실제 구현은 파트너(SI, 컨설팅사)가 담당합니다. 구현 실패 시 고객 불만은 파트너에게 향하는 구조입니다. Early Adopter Program은 파트너가 자비로 SAP 신제품을 검증해 주는 형태입니다.
+      </div>
+    </div>
+    <div class="accordion">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        ③ Analyst 생태계를 통한 수요 창출
+        <span class="accordion-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        Gartner, Forrester 등 분석 보고서에서 "리더" 포지션을 확보하면, CIO는 보고서를 근거로 도입을 결정합니다. 실제 구현 가능성은 보고서에 포함되지 않습니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 3.4 -->
+  <div class="card">
+    <div class="card-title">3.4 KG가 실질적으로 해결하는 것 vs 남는 과제</div>
+
+    <div class="do-dont">
+      <div class="do-box">
+        <div class="box-label">✓ KG가 해결하는 것</div>
+        <ul>
+          <li>이종 시스템 간 데이터 관계의 <strong>명시적 표현</strong></li>
+          <li>스키마를 모르는 사용자도 관계 기반 탐색 가능</li>
+          <li>LLM이 비즈니스 컨텍스트를 이해하는 기반 (GraphRAG)</li>
+          <li>마스터데이터 거버넌스의 시맨틱 레이어 역할</li>
+          <li>계열사 간 관계 (ASPN Group 구조 등) 표현에 적합</li>
+        </ul>
+      </div>
+      <div class="dont-box">
+        <div class="box-label">✗ KG가 해결 못하는 것</div>
+        <ul>
+          <li>집계/분석 — BW/SAC이 여전히 우위</li>
+          <li>데이터 품질 — MDG 없으면 KG도 쓰레기</li>
+          <li>실시간 트랜잭션 처리 — S/4HANA 역할</li>
+          <li>ETL 파이프라인 자동화 — 별도 구축 필요</li>
+          <li>중소기업 규모의 ROI 확보</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <hr class="divider">
+    <h3>확인 퀴즈</h3>
+    <div class="quiz-wrap" id="q2">
+      <div class="quiz-q">Q. KG 프로젝트 도입 시 ROI를 달성하기 위한 두 가지 전제 조건은?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="checkQuiz('q2', this, false)">① S/4HANA 최신 버전 도입 + BTP 라이선스 보유</button>
+        <button class="quiz-opt" onclick="checkQuiz('q2', this, true)">② AI를 실제 의사결정에 활용하는 조직 + 데이터 품질이 이미 확보된 조직</button>
+        <button class="quiz-opt" onclick="checkQuiz('q2', this, false)">③ metaphactory 라이선스 + 전담 데이터 사이언티스트 보유</button>
+        <button class="quiz-opt" onclick="checkQuiz('q2', this, false)">④ Gartner 보고서 참조 + CIO 승인</button>
+      </div>
+      <div class="quiz-feedback" id="q2-fb"></div>
+      <button class="quiz-retry" id="q2-retry" onclick="retryQuiz('q2')">다시 풀기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SECTION 4 -->
+<div id="s4" class="section">
+  <div class="progress-wrap">
+    <div class="progress-label">Section 4 / 4</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  </div>
+
+  <h2 class="section-title">BAC 전략적 시사점</h2>
+  <p class="section-desc">지금 당장 할 것과 보류할 것, 기존 역량의 KG 연결 포지셔닝, 고객 대화 프레임, 2027년을 겨냥한 역량 로드맵을 제시합니다.</p>
+
+  <!-- 4.1 -->
+  <div class="card">
+    <div class="card-title">4.1 지금 당장 할 것 / 보류할 것 / 하지 말 것</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:16px 0;">
+      <div style="border-radius:4px;overflow:hidden;border:1px solid var(--correct-border);">
+        <div style="background:var(--correct-border);color:#fff;padding:10px 14px;font-size:13px;font-weight:700;">✓ 지금 할 것</div>
+        <div style="padding:14px;font-size:13px;line-height:1.8;background:var(--correct-bg);">
+          <ul style="padding-left:14px;">
+            <li>GR/MDG 프로젝트 산출물에 <strong>엔티티-관계 다이어그램</strong> 추가</li>
+            <li>SPARQL 기초 문법 내부 학습</li>
+            <li>Datasphere Business Layer를 "KG 준비 레이어"로 포지셔닝</li>
+            <li>고객사 데이터 품질 현황 진단 역량 강화</li>
+          </ul>
+        </div>
+      </div>
+      <div style="border-radius:4px;overflow:hidden;border:1px solid var(--warn-border);">
+        <div style="background:var(--warn-border);color:#fff;padding:10px 14px;font-size:13px;font-weight:700;">△ 보류할 것</div>
+        <div style="padding:14px;font-size:13px;line-height:1.8;background:var(--warn-bg);">
+          <ul style="padding-left:14px;">
+            <li>KG 독립 서비스 라인 신설</li>
+            <li>metaphactory 파트너 인증 취득</li>
+            <li>KG 전담 인력 채용</li>
+            <li>고객사에 KG 선제안</li>
+          </ul>
+          <div style="margin-top:8px;color:#92650a;font-size:12px;">→ 2026~2027년 레퍼런스 확보 후 재검토</div>
+        </div>
+      </div>
+      <div style="border-radius:4px;overflow:hidden;border:1px solid var(--wrong-border);">
+        <div style="background:var(--wrong-border);color:#fff;padding:10px 14px;font-size:13px;font-weight:700;">✗ 하지 말 것</div>
+        <div style="padding:14px;font-size:13px;line-height:1.8;background:var(--wrong-bg);">
+          <ul style="padding-left:14px;">
+            <li>KG를 프로젝트 목적으로 설계</li>
+            <li>SAP KGE 단일 플랫폼에 전적 의존</li>
+            <li>고객사에 "SAP가 다 해준다" 전달</li>
+            <li>데이터 품질 미확보 상태에서 KG 착수</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4.2 -->
+  <div class="card">
+    <div class="card-title">4.2 기존 BAC 역량의 KG 연결 포지셔닝</div>
+    <p>BAC의 핵심 역량은 KG 아키텍처에서 가장 중요한 위치에 있습니다. 이를 의식적으로 포지셔닝할 필요가 있습니다.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <tr><th>BAC 기존 역량</th><th>KG에서의 역할</th><th>포지셔닝 메시지</th></tr>
+        <tr>
+          <td><strong>SAP GR</strong><br>ACDOCA, 연결조정, IC제거</td>
+          <td>KG 소스 데이터 구조 설계<br>연결 관계 Edge 정의</td>
+          <td>"GR 데이터를 KG로 연결하면<br>Joule이 연결재무를 이해합니다"</td>
+        </tr>
+        <tr>
+          <td><strong>SAC Planning</strong><br>Write-Back, ACDOCP</td>
+          <td>계획 데이터 KG 연계<br>예산-실적 관계 표현</td>
+          <td>"계획 편차를 AI가 맥락과 함께<br>설명하는 기반"</td>
+        </tr>
+        <tr>
+          <td><strong>MDG</strong><br>마스터데이터 거버넌스</td>
+          <td>KG 노드(엔티티) 품질 보장<br>온톨로지 거버넌스 연계</td>
+          <td>"MDG 없이 KG는 없습니다 —<br>품질이 의미를 만듭니다"</td>
+        </tr>
+        <tr>
+          <td><strong>IFRS 회계 전문성</strong><br>K-IFRS, 연결회계</td>
+          <td>비즈니스 온톨로지 설계<br>Edge 의미 정의의 정확성</td>
+          <td>"회계 기준을 이해하는 컨설턴트만이<br>올바른 온톨로지를 설계합니다"</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="position-box">
+      <div class="pos-title">BAC 차별화 포지션</div>
+      <p>KG 프로젝트에서 기술 구현(SPARQL, RDF 적재)은 BTP 파트너와 협업할 수 있습니다. 그러나 <strong>"어떤 비즈니스 개념을 어떤 관계로 연결할 것인가"</strong>는 SAP 재무/회계 도메인 전문가만이 정확하게 정의할 수 있습니다. 이것이 BAC의 KG 프로젝트 참여 근거입니다.</p>
+    </div>
+  </div>
+
+  <!-- 4.3 -->
+  <div class="card">
+    <div class="card-title">4.3 고객 대화 프레임 — 현실적 기대 설정</div>
+    <p>고객이 SAP 영업으로부터 KG 비전을 들은 후 문의할 때, BAC 컨설턴트가 활용할 수 있는 대화 프레임입니다.</p>
+
+    <div class="accordion">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        고객: "SAP가 KG로 AI 분석이 된다고 하던데, 우리도 바로 할 수 있나요?"
+        <span class="accordion-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <div class="callout correct" style="margin-top:0;">
+          <div class="callout-label">추천 대응</div>
+          "기술적으로는 가능합니다. 다만 KG가 가치를 내려면 두 가지가 선행되어야 합니다. 첫째, 현재 마스터데이터 품질이 KG에 올릴 수 있는 수준인지 확인이 필요합니다. 둘째, AI가 생성한 인사이트를 실제 의사결정에 쓰는 프로세스가 있어야 합니다. 저희가 먼저 현황 진단을 해드릴 수 있습니다."
+        </div>
+      </div>
+    </div>
+    <div class="accordion">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        고객: "경쟁사가 KG 한다고 하는데 우리도 해야 하지 않나요?"
+        <span class="accordion-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <div class="callout correct" style="margin-top:0;">
+          <div class="callout-label">추천 대응</div>
+          "경쟁사가 KG를 도입한다고 하면, 어느 단계에 있는지가 중요합니다. PoC 수준인지, 프로덕션인지에 따라 의미가 완전히 다릅니다. 현재 국내에서 KG가 프로덕션으로 운영되는 사례는 매우 제한적입니다. 지금 당장 따라가는 것보다, 데이터 품질과 MDG를 먼저 갖추는 것이 KG를 포함한 어떤 AI 전략에서도 선행 조건입니다."
+        </div>
+      </div>
+    </div>
+    <div class="accordion">
+      <button class="accordion-btn" onclick="toggleAccordion(this)">
+        고객: "KG 구축 프로젝트 견적을 내줄 수 있나요?"
+        <span class="accordion-icon">+</span>
+      </button>
+      <div class="accordion-body">
+        <div class="callout warn" style="margin-top:0;">
+          <div class="callout-label">내부 검토 포인트</div>
+          현 시점에서 KG 구축 단독 프로젝트 수주는 신중해야 합니다. 고객사 데이터 품질, SAP 환경, AI 활용 성숙도를 먼저 진단하는 <strong>Readiness Assessment</strong> 형태로 진입하는 것이 리스크 대비 유리합니다. 견적 전 다음을 확인하세요: ① 현재 MDG/Datasphere 도입 여부 ② AI 실사용 의지와 예산 ③ IT 거버넌스 수준
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4.4 -->
+  <div class="card">
+    <div class="card-title">4.4 2027년을 겨냥한 역량 준비 로드맵</div>
+
+    <div class="roadmap">
+      <div class="roadmap-row">
+        <div class="roadmap-year">2025<br>하반기</div>
+        <div class="roadmap-content">
+          <strong>기초 내재화 단계</strong><br>
+          SPARQL 기초 문법 팀 내 학습 / GR·SAC-P 프로젝트 산출물에 엔티티-관계 관점 추가 / SAP HANA Cloud KGE 무료 Trial 환경 실습 / Datasphere Business Layer를 KG 관점으로 재해석
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <div class="roadmap-year">2026<br>상반기</div>
+        <div class="roadmap-content">
+          <strong>방법론 정비 단계</strong><br>
+          ASPN Group 픽션 시나리오 기반 내부 PoC 수행 / 온톨로지 설계 템플릿 (Excel + Turtle) 표준화 / MDG 강화 제안에 "KG-Ready 마스터데이터" 메시지 적용 / BTP 파트너와 기술 협업 체계 구축
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <div class="roadmap-year">2026<br>하반기</div>
+        <div class="roadmap-content">
+          <strong>시장 진입 준비 단계</strong><br>
+          해외 KG 레퍼런스 케이스 분석 / 국내 대형 고객사 대상 Readiness Assessment 제안 / SAP BDC 성숙도 재평가 / 필요 시 metaphactory 파트너 검토
+        </div>
+      </div>
+      <div class="roadmap-row">
+        <div class="roadmap-year">2027<br>~</div>
+        <div class="roadmap-content">
+          <strong>서비스 전면화 판단 시점</strong><br>
+          국내 KG 프로덕션 레퍼런스 확인 / SAP KGE + Joule 안정화 수준 재평가 / KG 독립 서비스 라인 신설 여부 결정 / IFRS 18 대응과 KG 연계 비즈니스 케이스 개발
+        </div>
+      </div>
+    </div>
+
+    <div class="callout correct">
+      <div class="callout-label">최종 메시지</div>
+      SAP Knowledge Graph는 방향이 맞는 기술입니다. 다만 <strong>지금은 준비하는 시기</strong>이고, 올인하는 시기는 아닙니다. BAC가 GR·SAC-P·MDG에서 쌓아온 도메인 전문성은 KG 시대에 더 높은 가치를 갖게 됩니다. 기술이 성숙해질 때 그 가치를 연결할 준비를 지금 해두는 것이 BAC의 전략입니다.
+    </div>
+
+    <!-- FINAL QUIZ -->
+    <hr class="divider">
+    <h3>최종 확인 퀴즈</h3>
+    <div class="quiz-wrap" id="q3">
+      <div class="quiz-q">Q. 현 시점에서 BAC가 KG와 관련하여 가장 우선해야 할 행동은?</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="checkQuiz('q3', this, false)">① KG 전담 서비스 라인을 즉시 신설하고 metaphactory 파트너 인증을 취득한다</button>
+        <button class="quiz-opt" onclick="checkQuiz('q3', this, false)">② SAP 영업과 협력하여 고객사에 KG 도입을 선제안한다</button>
+        <button class="quiz-opt" onclick="checkQuiz('q3', this, true)">③ 기존 GR·MDG 역량을 KG 친화적으로 포지셔닝하며 내부 기초 역량을 축적한다</button>
+        <button class="quiz-opt" onclick="checkQuiz('q3', this, false)">④ KG는 2030년 이후 이슈이므로 당분간 관망한다</button>
+      </div>
+      <div class="quiz-feedback" id="q3-fb"></div>
+      <button class="quiz-retry" id="q3-retry" onclick="retryQuiz('q3')">다시 풀기</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleAccordion(btn) {
+  const body = btn.nextElementSibling;
+  btn.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+const quizAnswers = {
+  q1: { correct: '테이블 구조를 몰라도 관계 이름만으로 데이터를 탐색할 수 있다', explanation: '정확합니다. SPARQL의 핵심은 패턴 매칭입니다 — 테이블 구조나 FK를 몰라도 Edge 이름(관계)만으로 그래프를 탐색할 수 있습니다. 이것이 AI 연계에서 KG가 강점을 갖는 이유입니다.' },
+  q2: { correct: 'AI를 실제 의사결정에 활용하는 조직 + 데이터 품질이 이미 확보된 조직', explanation: '정확합니다. 이 두 조건을 동시에 만족하는 국내 기업이 현시점에서 극히 제한적입니다. KG 프로젝트 전 반드시 이 두 가지를 먼저 확인해야 합니다.' },
+  q3: { correct: '기존 GR·MDG 역량을 KG 친화적으로 포지셔닝하며 내부 기초 역량을 축적한다', explanation: '정확합니다. 지금은 올인하는 시기가 아닌 준비하는 시기입니다. BAC의 도메인 전문성을 KG 관점으로 재해석하고, 기술이 성숙해질 2027년에 연결할 준비를 지금 해두는 것이 최적 전략입니다.' }
+};
+
+function checkQuiz(id, btn, isCorrect) {
+  const wrap = document.getElementById(id);
+  const opts = wrap.querySelectorAll('.quiz-opt');
+  const fb = document.getElementById(id + '-fb');
+  const retry = document.getElementById(id + '-retry');
+
+  opts.forEach(o => o.disabled = true);
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    fb.textContent = '✓ ' + quizAnswers[id].explanation;
+    fb.className = 'quiz-feedback correct show';
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = '✗ 다시 생각해 보세요. 정답과 해설을 위해 다시 풀기를 눌러보세요.';
+    fb.className = 'quiz-feedback wrong show';
+    retry.classList.add('show');
+  }
+}
+
+function retryQuiz(id) {
+  const wrap = document.getElementById(id);
+  const opts = wrap.querySelectorAll('.quiz-opt');
+  const fb = document.getElementById(id + '-fb');
+  const retry = document.getElementById(id + '-retry');
+
+  opts.forEach(o => {
+    o.disabled = false;
+    o.classList.remove('correct', 'wrong');
+  });
+  fb.className = 'quiz-feedback';
+  retry.classList.remove('show');
+}
+</script>
+</body>
+</html>
