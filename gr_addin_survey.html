@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GR Add-in 소개 세션 사전 설문</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#003366;
+    --navy-tint:#EEF3F8;
+    --ink:#333333;
+    --ink-light:#6B7280;
+    --border:#E1E5EA;
+    --bg:#FFFFFF;
+    --danger:#B3261E;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Noto Sans KR', sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* progress bar */
+  #progress-track{
+    position:fixed; top:0; left:0; width:100%; height:3px;
+    background:var(--border); z-index:100;
+  }
+  #progress-fill{
+    height:100%; width:0%; background:var(--navy);
+    transition:width .3s ease;
+  }
+
+  .wrap{max-width:720px; margin:0 auto; padding:64px 24px 120px;}
+
+  /* hero */
+  .eyebrow{
+    font-family:'JetBrains Mono','Noto Sans KR',monospace;
+    font-size:12px; letter-spacing:.12em; color:var(--navy);
+    text-transform:uppercase; margin-bottom:16px; display:block;
+  }
+  h1{
+    font-family:'DM Serif Display', 'Noto Sans KR', serif;
+    font-size:34px; line-height:1.35; color:var(--navy);
+    font-weight:400; margin-bottom:18px;
+  }
+  .lede{font-size:16px; color:var(--ink-light); max-width:560px;}
+
+  .meta-box{
+    margin-top:32px; border:1px solid var(--border); border-left:3px solid var(--navy);
+    padding:20px 24px; background:var(--navy-tint);
+    display:grid; grid-template-columns:1fr 1fr; gap:12px 24px;
+    font-size:14px;
+  }
+  .meta-box div span{
+    display:block; font-family:'JetBrains Mono','Noto Sans KR',monospace;
+    font-size:11px; color:var(--ink-light); letter-spacing:.04em; margin-bottom:4px;
+  }
+  .meta-box div strong{font-weight:500;}
+
+  .fit-list{margin-top:40px;}
+  .fit-list h2{
+    font-family:'JetBrains Mono','Noto Sans KR',monospace;
+    font-size:13px; letter-spacing:.06em; color:var(--navy);
+    text-transform:uppercase; margin-bottom:14px;
+  }
+  .fit-list ul{list-style:none;}
+  .fit-list li{
+    padding:10px 0 10px 20px; border-bottom:1px solid var(--border);
+    position:relative; font-size:14.5px; color:var(--ink);
+  }
+  .fit-list li::before{
+    content:''; position:absolute; left:0; top:18px;
+    width:6px; height:6px; background:var(--navy);
+  }
+
+  /* form sections */
+  form{margin-top:56px;}
+  .sec{
+    border:1px solid var(--border); margin-bottom:20px; background:#fff;
+  }
+  .sec-head{
+    background:var(--navy); color:#fff; padding:14px 24px;
+    display:flex; align-items:baseline; gap:10px;
+  }
+  .sec-head .tag{
+    font-family:'JetBrains Mono',monospace; font-size:12px; opacity:.75;
+  }
+  .sec-head h3{font-size:15px; font-weight:500; letter-spacing:.01em;}
+  .sec-body{padding:28px 24px 8px;}
+
+  .q{margin-bottom:26px;}
+  .q label.qtitle{
+    display:block; font-size:14.5px; font-weight:500; color:var(--ink);
+    margin-bottom:12px;
+  }
+  .qhint{
+    font-size:12.5px; color:var(--ink-light); margin-top:-8px; margin-bottom:12px;
+  }
+  .req{color:var(--danger); margin-left:3px; font-size:13px;}
+
+  .options{display:flex; flex-direction:column; gap:8px;}
+  .opt{
+    display:flex; align-items:flex-start; gap:10px;
+    border:1px solid var(--border); padding:11px 14px; cursor:pointer;
+    font-size:14px; transition:border-color .15s, background .15s;
+  }
+  .opt:hover{border-color:var(--navy);}
+  .opt input{margin-top:2px; accent-color:var(--navy); flex-shrink:0;}
+  .opt.checked{border-color:var(--navy); background:var(--navy-tint);}
+
+  .opt input[type="text"].other-input{
+    flex:1; border:none; border-bottom:1px solid var(--border);
+    font-family:'Noto Sans KR',sans-serif; font-size:14px; padding:2px 4px;
+    background:transparent; outline:none;
+  }
+
+  textarea, input[type="text"], input[type="email"], input[type="tel"]{
+    width:100%; border:1px solid var(--border); padding:11px 14px;
+    font-family:'Noto Sans KR',sans-serif; font-size:14px; color:var(--ink);
+    background:#fff; outline:none; transition:border-color .15s;
+  }
+  textarea:focus, input:focus{border-color:var(--navy);}
+  textarea{min-height:88px; resize:vertical;}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:560px){ .grid2{grid-template-columns:1fr;} .meta-box{grid-template-columns:1fr;} }
+
+  .field-label{
+    display:block; font-size:12.5px; color:var(--ink-light); margin-bottom:6px;
+    font-family:'JetBrains Mono','Noto Sans KR',monospace;
+  }
+
+  /* consent */
+  .consent-box{
+    border:1px solid var(--border); background:var(--navy-tint);
+    padding:20px 24px; margin-bottom:28px; font-size:13px; color:var(--ink-light);
+    line-height:1.7;
+  }
+  .consent-box strong{color:var(--ink); font-weight:500;}
+  .consent-check{
+    display:flex; align-items:flex-start; gap:10px; margin-top:14px;
+    font-size:14px; color:var(--ink); cursor:pointer;
+  }
+  .consent-check input{margin-top:3px; accent-color:var(--navy);}
+
+  .submit-row{margin-top:8px; text-align:center;}
+  button#submit-btn{
+    background:var(--navy); color:#fff; border:none; padding:16px 56px;
+    font-size:15px; font-weight:500; letter-spacing:.02em; cursor:pointer;
+    font-family:'Noto Sans KR',sans-serif; transition:background .15s;
+  }
+  button#submit-btn:hover{background:#00264d;}
+  button#submit-btn:disabled{background:#B9C4CF; cursor:not-allowed;}
+
+  .note-under{
+    text-align:center; font-size:12.5px; color:var(--ink-light); margin-top:14px;
+  }
+
+  /* success state */
+  #success-view{
+    display:none; text-align:center; padding:100px 24px;
+  }
+  #success-view .mark{
+    width:56px; height:56px; border:2px solid var(--navy); border-radius:50%;
+    margin:0 auto 24px; display:flex; align-items:center; justify-content:center;
+    color:var(--navy); font-size:26px;
+  }
+  #success-view h2{
+    font-family:'DM Serif Display', serif; font-size:26px; color:var(--navy);
+    font-weight:400; margin-bottom:12px;
+  }
+  #success-view p{color:var(--ink-light); font-size:14.5px;}
+
+  #error-msg{
+    display:none; color:var(--danger); font-size:13px; text-align:center;
+    margin-top:14px; padding:12px; border:1px solid var(--danger); background:#FCEEEE;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-track"><div id="progress-fill"></div></div>
+
+<div class="wrap" id="form-view">
+  <span class="eyebrow">ASPN · SAP S/4HANA Group Reporting</span>
+  <h1>연결결산 마감, 여전히 엑셀과 SAP 사이를 오가고 계신가요?</h1>
+  <p class="lede">
+    GR Add-in 소개 세션에서는 비-SAP 계열사 재무제표 수집, 내부거래 미실현손익 자동화,
+    연결 주석 관리까지 — 연결결산 실무의 반복 작업을 SAP S/4HANA Group Reporting 표준
+    아키텍처 위에서 어떻게 자동화할 수 있는지 다룹니다.
+  </p>
+
+  <div class="meta-box">
+    <div><span>대상</span><strong>K-IFRS 연결결산 실무 담당자</strong></div>
+    <div><span>구성</span><strong>제품 소개 + Q&amp;A</strong></div>
+    <div><span>방식</span><strong>온라인 / 오프라인 선택 가능</strong></div>
+    <div><span>소요시간</span><strong>약 60분</strong></div>
+  </div>
+
+  <div class="fit-list">
+    <h2>이런 분들께 추천드립니다</h2>
+    <ul>
+      <li>SAP Group Reporting 도입 또는 전환을 검토 중이신 분</li>
+      <li>비-SAP 계열사 재무제표를 수기로 취합하고 계신 분</li>
+      <li>내부거래 미실현손익 처리, 연결 주석 작성에 많은 시간을 쓰고 계신 분</li>
+      <li>기존 BPC·EC-CS 등에서 GR로의 전환을 고려 중이신 분</li>
+    </ul>
+  </div>
+
+  <form id="survey-form">
+
+    <!-- A. 참여 의사 -->
+    <div class="sec">
+      <div class="sec-head"><span class="tag">A</span><h3>참여 의사 및 기본 정보</h3></div>
+      <div class="sec-body">
+
+        <div class="q">
+          <label class="qtitle">세션 참여 의사가 있으신가요?<span class="req">*</span></label>
+          <div class="options" data-group="a1" data-required="true">
+            <label class="opt"><input type="radio" name="a1" value="참여 희망">참여 희망</label>
+            <label class="opt"><input type="radio" name="a1" value="일정 조율 후 참여">일정 조율 후 참여</label>
+            <label class="opt"><input type="radio" name="a1" value="자료만 우선 수신 희망">자료만 우선 수신 희망</label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="qtitle">희망 참여 방식<span class="req">*</span></label>
+          <div class="options" data-group="a2" data-required="true">
+            <label class="opt"><input type="radio" name="a2" value="온라인">온라인</label>
+            <label class="opt"><input type="radio" name="a2" value="오프라인">오프라인</label>
+            <label class="opt"><input type="radio" name="a2" value="무관">무관</label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="qtitle">소속 회사명 / 부서 / 직책<span class="req">*</span></label>
+          <div class="grid2">
+            <input type="text" name="a3_company" placeholder="회사명" required>
+            <input type="text" name="a3_dept" placeholder="부서 / 직책" required>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="qtitle">연락처<span class="req">*</span></label>
+          <div class="grid2">
+            <input type="email" name="a4_email" placeholder="이메일" required>
+            <input type="tel" name="a4_phone" placeholder="전화번호 (선택)">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- B. 현재 연결결산 환경 -->
+    <div class="sec">
+      <div class="sec-head"><span class="tag">B</span><h3>현재 연결결산 환경</h3></div>
+      <div class="sec-body">
+
+        <div class="q">
+          <label class="qtitle">현재 사용 중인 연결결산 솔루션<span class="req">*</span></label>
+          <div class="options" data-group="b1" data-required="true" data-other="b1_other">
+            <label class="opt"><input type="radio" name="b1" value="SAP Group Reporting">SAP Group Reporting</label>
+            <label class="opt"><input type="radio" name="b1" value="SAP BPC">SAP BPC</label>
+            <label class="opt"><input type="radio" name="b1" value="SAP EC-CS">SAP EC-CS</label>
+            <label class="opt"><input type="radio" name="b1" value="Hyperion / HFM">Hyperion / HFM</label>
+            <label class="opt"><input type="radio" name="b1" value="국내 솔루션(더존 등)">국내 솔루션(더존 등)</label>
+            <label class="opt"><input type="radio" name="b1" value="자체 Excel">자체 Excel</label>
+            <label class="opt">
+              <input type="radio" name="b1" value="기타">기타
+              <input type="text" class="other-input" name="b1_other" placeholder="직접 입력">
+            </label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="qtitle">SAP S/4HANA 사용 환경<span class="req">*</span></label>
+          <div class="options" data-group="b2" data-required="true">
+            <label class="opt"><input type="radio" name="b2" value="Public Cloud">Public Cloud</label>
+            <label class="opt"><input type="radio" name="b2" value="Private Cloud / On-premise">Private Cloud / On-premise</label>
+            <label class="opt"><input type="radio" name="b2" value="미도입">미도입</label>
+            <label class="opt"><input type="radio" name="b2" value="도입 검토 중">도입 검토 중</label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="qtitle">연결 대상 자회사 수<span class="req">*</span></label>
+          <div class="options" data-group="b3" data-required="true">
+            <label class="opt"><input type="radio" name="b3" value="5개 이하">5개 이하</label>
+            <label class="opt"><input type="radio" name="b3" value="6~20개">6~20개</label>
+            <label class="opt"><input type="radio" name="b3" value="21~50개">21~50개</label>
+            <label class="opt"><input type="radio" name="b3" value="50개 초과">50개 초과</label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="qtitle">비-SAP 계열사 재무제표를 별도로 취합하고 계신가요?<span class="req">*</span></label>
+          <div class="options" data-group="b4" data-required="true">
+            <label class="opt"><input type="radio" name="b4" value="예">예</label>
+            <label class="opt"><input type="radio" name="b4" value="아니오">아니오</label>
+            <label class="opt"><input type="radio" name="b4" value="일부">일부</label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- C. 어려움 -->
+    <div class="sec">
+      <div class="sec-head"><span class="tag">C</span><h3>현재 겪고 있는 어려움</h3></div>
+      <div class="sec-body">
+
+        <div class="q">
+          <label class="qtitle">연결결산 프로세스에서 가장 시간이 많이 소요되는 영역은?<span class="req">*</span></label>
+          <div class="qhint">복수 선택 가능</div>
+          <div class="options" data-group="c1" data-required="true" data-multi="true" data-other="c1_other">
+            <label class="opt"><input type="checkbox" name="c1" value="비-SAP 재무제표 수집">비-SAP 재무제표 수집</label>
+            <label class="opt"><input type="checkbox" name="c1" value="내부거래 미실현손익 처리">내부거래 미실현손익 처리</label>
+            <label class="opt"><input type="checkbox" name="c1" value="주석 작성">주석 작성</label>
+            <label class="opt">
+              <input type="checkbox" name="c1" value="기타">기타
+              <input type="text" class="other-input" name="c1_other" placeholder="직접 입력">
+            </label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="qtitle">가장 큰 애로사항</label>
+          <div class="qhint">자유롭게 작성해 주세요 (선택)</div>
+          <textarea name="c2" placeholder="예: 계열사별 계정과목 매핑이 매번 달라 수작업 검증에 시간이 많이 소요됩니다."></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- D. 관심 기능 -->
+    <div class="sec">
+      <div class="sec-head"><span class="tag">D</span><h3>관심 기능</h3></div>
+      <div class="sec-body">
+
+        <div class="q">
+          <label class="qtitle">GR Add-in 기능 중 가장 관심 있는 항목은?<span class="req">*</span></label>
+          <div class="qhint">복수 선택 가능</div>
+          <div class="options" data-group="d1" data-required="true" data-multi="true">
+            <label class="opt"><input type="checkbox" name="d1" value="비-SAP 재무제표 수집·자동화">비-SAP 재무제표 수집·자동화</label>
+            <label class="opt"><input type="checkbox" name="d1" value="감가상각자산 미실현손익 자동화">감가상각자산 미실현손익 자동화</label>
+            <label class="opt"><input type="checkbox" name="d1" value="연결 주석 관리">연결 주석 관리</label>
+            <label class="opt"><input type="checkbox" name="d1" value="전체 다 관심">전체 다 관심</label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label class="qtitle">그 외 궁금하신 점이나 세션에서 다뤄주었으면 하는 내용</label>
+          <div class="qhint">선택 입력</div>
+          <textarea name="d2" placeholder="자유롭게 남겨주세요."></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="consent-box">
+      <strong>개인정보 수집 및 이용 안내</strong><br>
+      수집 항목: 회사명, 부서/직책, 이메일, 전화번호(선택) 및 설문 응답 내용 ·
+      수집 목적: GR Add-in 소개 세션 안내 및 관련 상담 ·
+      보유 기간: 세션 종료 후 6개월 이내 파기. 동의를 거부할 권리가 있으며, 동의 거부 시 세션 안내가 제한될 수 있습니다.
+      <label class="consent-check">
+        <input type="checkbox" id="consent" required>
+        위 내용에 동의하며 설문을 제출합니다.<span class="req">*</span>
+      </label>
+    </div>
+
+    <div class="submit-row">
+      <button type="submit" id="submit-btn">설문 제출하기</button>
+      <div class="note-under">제출해 주신 정보를 바탕으로 담당자가 개별 안내드립니다.</div>
+      <div id="error-msg">제출 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>
+    </div>
+
+  </form>
+</div>
+
+<div id="success-view">
+  <div class="mark">✓</div>
+  <h2>설문이 정상적으로 제출되었습니다</h2>
+  <p>제출해 주신 정보를 바탕으로 담당자가 개별 연락드리겠습니다.<br>참여를 희망해 주셔서 감사합니다.</p>
+</div>
+
+<script>
+  // ⚠️ 배포 후 아래 URL을 Google Apps Script 웹앱 URL로 교체하세요.
+  const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwOkv2nof6_izgJfN4UzwLSULDV9Wwb79WVZQFb0DQ-DOyj7PVClHxBBClE4Fm6oe5x/exec";
+
+  const form = document.getElementById('survey-form');
+  const progressFill = document.getElementById('progress-fill');
+  const requiredGroups = ['a1','a2','b1','b2','b3','b4','c1','d1'];
+
+  // checked 상태 시각 표시 + progress 갱신
+  form.addEventListener('change', () => {
+    document.querySelectorAll('.opt').forEach(opt => {
+      const input = opt.querySelector('input[type="radio"], input[type="checkbox"]');
+      if (input && input.checked) opt.classList.add('checked');
+      else if (input) opt.classList.remove('checked');
+    });
+    updateProgress();
+  });
+
+  function updateProgress(){
+    let filled = 0;
+    const total = requiredGroups.length + 3; // + 회사명/이메일/동의
+    requiredGroups.forEach(g => {
+      if (form.querySelector(`[name="${g}"]:checked`)) filled++;
+    });
+    if (form.a3_company.value.trim()) filled++;
+    if (form.a4_email.value.trim()) filled++;
+    if (document.getElementById('consent').checked) filled++;
+    progressFill.style.width = Math.min(100, (filled/total)*100) + '%';
+  }
+  form.addEventListener('input', updateProgress);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    const errorMsg = document.getElementById('error-msg');
+    errorMsg.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = '제출 중...';
+
+    const fd = new FormData(form);
+    const payload = new FormData();
+
+    payload.append('a1', fd.get('a1') || '');
+    payload.append('a2', fd.get('a2') || '');
+    payload.append('a3_company', fd.get('a3_company') || '');
+    payload.append('a3_dept', fd.get('a3_dept') || '');
+    payload.append('a4_email', fd.get('a4_email') || '');
+    payload.append('a4_phone', fd.get('a4_phone') || '');
+
+    let b1 = fd.get('b1') || '';
+    if (b1 === '기타' && fd.get('b1_other')) b1 = '기타: ' + fd.get('b1_other');
+    payload.append('b1', b1);
+    payload.append('b2', fd.get('b2') || '');
+    payload.append('b3', fd.get('b3') || '');
+    payload.append('b4', fd.get('b4') || '');
+
+    let c1 = fd.getAll('c1');
+    let c1idx = c1.indexOf('기타');
+    if (c1idx > -1 && fd.get('c1_other')) c1[c1idx] = '기타: ' + fd.get('c1_other');
+    payload.append('c1', c1.join(', '));
+    payload.append('c2', fd.get('c2') || '');
+
+    payload.append('d1', fd.getAll('d1').join(', '));
+    payload.append('d2', fd.get('d2') || '');
+    payload.append('submitted_at', new Date().toISOString());
+
+    try {
+      if (ENDPOINT_URL.includes('YOUR_APPS_SCRIPT')) {
+        throw new Error('endpoint-not-configured');
+      }
+      await fetch(ENDPOINT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: payload
+      });
+      document.getElementById('form-view').style.display = 'none';
+      document.getElementById('success-view').style.display = 'block';
+      window.scrollTo(0,0);
+    } catch (err) {
+      errorMsg.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = '설문 제출하기';
+    }
+  });
+</script>
+
+</body>
+</html>
